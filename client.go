@@ -81,9 +81,19 @@ func (c *ConjurClient) RetrieveVariable(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
+	switch resp.StatusCode {
+	case 404:
+		return "", fmt.Errorf("%v Variable '%s' not found", resp.StatusCode, path)
+	case 403:
+		return "", fmt.Errorf("%s Invalid permissions on '%s'", resp.StatusCode, path)
+	case 200:
+		body, err := ioutil.ReadAll(resp.Body)
+		defer resp.Body.Close()
+		if err != nil {
+			return "", err
+		}
+		return string(body), nil
+	default:
+		return "", fmt.Errorf("%s %s", resp.StatusCode, resp.Status)
 	}
-	return string(body), nil
 }
