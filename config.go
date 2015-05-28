@@ -65,7 +65,6 @@ func (c *Config) mergeEnv() {
 }
 
 func (c *Config) mergeNetrc() {
-
     rc, err := netrc.ParseFile(os.ExpandEnv("$HOME/.netrc"))
     if err != nil {
         return
@@ -117,11 +116,11 @@ func LoadConfig() (*Config, error) {
         c.mergeYAML(path)
     }
 
+    c.mergeEnv()
+
     // merge credentials from netrc
     c.mergeNetrc()
 
-    // merge in the environment
-    c.mergeEnv()
 
     err := c.validate()
 

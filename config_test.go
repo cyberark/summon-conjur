@@ -72,6 +72,29 @@ cert_file: rc-cert-file
 
 
 func TestReadNetrc(t *testing.T) {
-    // BUT HOW?? Maybe testify/mock?  TODO for now
+    tmpDir, err := ioutil.TempDir("","test-netrc")
+    if err != nil { panic(err) }
+    os.Setenv("CONJURRC", "")
+    os.Setenv("CONJUR_AUTHN_LOGIN", "")
+    os.Setenv("CONJUR_API_KEY", "")
+
+    netrc := []byte(`machine https://foo.bar.com/api/authn
+  login foo
+  password s3cr3t
+`)
+    err = ioutil.WriteFile(tmpDir + "/.netrc", netrc, 0600)
+    if err != nil { panic(err) } 
+
+    cloberEnv(tmpDir, "", func(){
+        os.Setenv("CONJUR_APPLIANCE_URL", "https://foo.bar.com/api")
+        os.Setenv("CONJUR_CERT_FILE", "cert-file")
+        c, e := LoadConfig()
+
+        assert.Nil(t,e)
+
+        assert.Equal(t, c.APIKey, "s3cr3t")
+        assert.Equal(t, c.Username, "foo")
+    })
 }
+
 
