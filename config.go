@@ -71,7 +71,7 @@ func (c *Config) mergeNetrc() {
         return
     }
 
-    m := rc.FindMachine(c.ApplianceUrl)
+    m := rc.FindMachine(c.ApplianceUrl + "/authn")
 
     if m != nil {
         c.APIKey = m.Password

@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
 
@@ -19,17 +18,24 @@ type ConjurClient struct {
 }
 
 func NewConjurClient() (*ConjurClient, error) {
-	sslCertPath := os.Getenv("GO_CONJUR_SSL_CERTIFICATE_PATH")
-	httpClient, err := NewConjurHTTPClient(sslCertPath)
+	
+    config, err := LoadConfig()
+
+    if err != nil {
+        return nil, err
+    }
+
+    httpClient, err := NewConjurHTTPClient(config.SSLCertPath)
+
 	if err != nil {
 		return nil, err
 	}
 
 	return &ConjurClient{
-		ApplianceUrl: os.Getenv("GO_CONJUR_APPLIANCE_URL"),
-		Username:     os.Getenv("GO_CONJUR_AUTHN_LOGIN"),
-		APIKey:       os.Getenv("GO_CONJUR_AUTHN_API_KEY"),
-		SSLCertPath:  sslCertPath,
+		ApplianceUrl: config.ApplianceUrl,
+		Username:     config.Username,
+		APIKey:       config.APIKey,
+		SSLCertPath:  config.SSLCertPath,
 		httpClient:   httpClient,
 	}, nil
 }
