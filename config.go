@@ -4,6 +4,7 @@ import (
     "github.com/bgentry/go-netrc/netrc"
     "io/ioutil"
     "os"
+    "fmt"
 )
 
 // Contains information to connect to a Conjur appliance
@@ -48,19 +49,19 @@ func (c *Config) mergeYAML(filename string) {
         return
     }
 
-    c.merge(tmp)
+    c.merge(&tmp)
 }
 
 
 func (c *Config) mergeEnv() {
     env := Config {
-        ApplianceUrl: os.Getenv("CONJUR_APPLIANCE_URL")
-        Username: os.Getenv("CONJUR_AUTHN_LOGIN")
-        SSLCertPath: os.Getenv("CONJUR_CERT_FILE")
-        APIKey: os.Getenv("CONJUR_API_KEY")
+        ApplianceUrl: os.Getenv("CONJUR_APPLIANCE_URL"),
+        Username: os.Getenv("CONJUR_AUTHN_LOGIN"),
+        SSLCertPath: os.Getenv("CONJUR_CERT_FILE"),
+        APIKey: os.Getenv("CONJUR_API_KEY"),
     }
 
-    c.merge(env)
+    c.merge(&env)
 }
 
 func (c *Config) mergeNetrc() {
@@ -103,7 +104,7 @@ func LoadConfig() (*Config, error) {
     c.mergeYAML("/etc/conjur.conf")
 
     // check for $CONJURRC
-    conjurrc = os.Getenv("CONJURRC")
+    conjurrc := os.Getenv("CONJURRC")
 
     if conjurrc != "" {
         c.mergeYAML(conjurrc)
@@ -128,6 +129,6 @@ func LoadConfig() (*Config, error) {
         return nil, err
     }
 
-    return &c
+    return &c, nil
 }
 
