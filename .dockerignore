@@ -1,0 +1,5 @@
+.git
+.godeps
+pkg/*
+cauldron-conjur
+junit.xml
