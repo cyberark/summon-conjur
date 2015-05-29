@@ -18,14 +18,14 @@ type ConjurClient struct {
 }
 
 func NewConjurClient() (*ConjurClient, error) {
-	
-    config, err := LoadConfig()
 
-    if err != nil {
-        return nil, err
-    }
+	config, err := LoadConfig()
 
-    httpClient, err := NewConjurHTTPClient(config.SSLCertPath)
+	if err != nil {
+		return nil, err
+	}
+
+	httpClient, err := NewConjurHTTPClient(config.SSLCertPath)
 
 	if err != nil {
 		return nil, err
