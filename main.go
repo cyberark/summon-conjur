@@ -22,6 +22,6 @@ func main() {
 }
 
 func printAndExit(err error) {
-	fmt.Print(err.Error())
+	os.Stderr.Write([]byte(err.Error()))
 	os.Exit(1)
 }
