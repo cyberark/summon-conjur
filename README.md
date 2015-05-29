@@ -12,14 +12,27 @@ $ cauldron-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
 
-Reading Conjur configuration isn't implemented yet, so set these environment
-variables for development.
+## Configuration
 
-```
-GO_CONJUR_APPLIANCE_URL
-GO_CONJUR_AUTHN_LOGIN
-GO_CONJUR_AUTHN_API_KEY
-GO_CONJUR_SSL_CERTIFICATE_PATH
-```
+This provider uses the same configuration pattern as the [Conjur CLI
+Client](https://github.com/conjurinc/api-ruby#configuration) to connect to Conjur.  
+Specifically, it loads configuration from:
 
-This implementation has no 3rd-party dependencies.
+ * `.conjurrc` files, located in the home and current directories, or at the 
+    path specified by the `CONJURRC` environment variable.
+ * Read `/etc/conjur.conf` as a `.conjurrc` file.
+ * Environment variables:
+    * `CONJUR_AUTHN_LOGIN`
+    * `CONJUR_API_KEY`
+    * `CONJUR_CERT_FILE`
+    * `CONJUR_APPLIANCE_URL`
+ * A username and api key can be read from `~/.netrc` if stored there by
+    `conjur authn login`
+
+The provider will fail unless all of the following values are provided:
+
+ * The appliance url
+ * A username and api key
+ * A path to the appliance's SSL certificate
+
+
