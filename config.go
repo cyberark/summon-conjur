@@ -14,10 +14,32 @@ type Config struct {
 	ApplianceUrl string `yaml:"appliance_url"`
 	// Your conjur username (aka login)
 	Username string
+
+	// Alternate URL for authentication service
+	AltAuthnUrl string `yaml:"authn_url"`
+
+	// Alternate URL for core services
+	AltCoreUrl string `yaml:"core_url"`
+
 	// Your conjur API key (aka password)
 	APIKey string
 	// Path to the certificate for your Conjur appliance
 	SSLCertPath string `yaml:"cert_file"`
+}
+
+func (c *Config) AuthnUrl() string {
+	if c.AltAuthnUrl != "" {
+		return c.AltAuthnUrl
+	}
+
+	return c.ApplianceUrl + "/authn"
+}
+
+func (c *Config) CoreUrl() string {
+	if c.AltCoreUrl != "" {
+		return c.AltCoreUrl
+	}
+	return c.ApplianceUrl
 }
 
 func mergeValue(a, b string) string {
@@ -32,6 +54,8 @@ func (c *Config) merge(o *Config) {
 	c.Username = mergeValue(c.Username, o.Username)
 	c.SSLCertPath = mergeValue(c.SSLCertPath, o.SSLCertPath)
 	c.APIKey = mergeValue(c.APIKey, o.APIKey)
+	c.AltAuthnUrl = mergeValue(c.AltAuthnUrl, o.AltAuthnUrl)
+	c.AltCoreUrl  = mergeValue(c.AltCoreUrl, o.AltCoreUrl)
 }
 
 func (c *Config) mergeYAML(filename string) {
@@ -58,6 +82,8 @@ func (c *Config) mergeEnv() {
 		Username:     os.Getenv("CONJUR_AUTHN_LOGIN"),
 		SSLCertPath:  os.Getenv("CONJUR_CERT_FILE"),
 		APIKey:       os.Getenv("CONJUR_API_KEY"),
+		AltCoreUrl:   os.Getenv("CONJUR_CORE_URL"),
+		AltAuthnUrl:  os.Getenv("CONJUR_AUTHN_URL"),
 	}
 
 	c.merge(&env)
@@ -78,11 +104,13 @@ func (c *Config) mergeNetrc() {
 }
 
 func (c *Config) validate() error {
-	if c.ApplianceUrl == "" ||
-		c.Username == "" ||
-		c.APIKey == "" ||
-		c.SSLCertPath == "" {
-		return fmt.Errorf("Missing config info in %V", c)
+	// check urls, a bit more complex than the other stuff
+	if (c.AltCoreUrl == "" || c.AltAuthnUrl == "") && c.ApplianceUrl == "" {
+		return fmt.Errorf("Must specify either authn and core urls or an appliance url in %v", c);
+	}
+	
+	if c.Username == "" || c.APIKey == "" || c.SSLCertPath == "" {
+		return fmt.Errorf("Missing config info in %v", c)
 	}
 	return nil
 }
@@ -115,7 +143,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	c.mergeEnv()
-
+	
 	// merge credentials from netrc
 	c.mergeNetrc()
 

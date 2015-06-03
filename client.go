@@ -10,7 +10,8 @@ import (
 )
 
 type ConjurClient struct {
-	ApplianceUrl string
+	AuthnUrl     string
+	CoreUrl      string
 	Username     string
 	APIKey       string
 	SSLCertPath  string
@@ -32,7 +33,8 @@ func NewConjurClient() (*ConjurClient, error) {
 	}
 
 	return &ConjurClient{
-		ApplianceUrl: config.ApplianceUrl,
+		AuthnUrl:     config.AuthnUrl(),
+		CoreUrl:      config.CoreUrl(),
 		Username:     config.Username,
 		APIKey:       config.APIKey,
 		SSLCertPath:  config.SSLCertPath,
@@ -42,7 +44,7 @@ func NewConjurClient() (*ConjurClient, error) {
 
 func (c *ConjurClient) getAuthToken() (string, error) {
 	resp, err := c.httpClient.Post(
-		fmt.Sprintf("%s/authn/users/%s/authenticate", c.ApplianceUrl, c.Username),
+		fmt.Sprintf("%s/users/%s/authenticate", c.AuthnUrl, c.Username),
 		"text/plain",
 		strings.NewReader(c.APIKey),
 	)
@@ -64,7 +66,7 @@ func (c *ConjurClient) getAuthToken() (string, error) {
 
 func (c *ConjurClient) RetrieveVariable(path string) (string, error) {
 	variable := url.QueryEscape(path)
-	variableUrl := fmt.Sprintf("%v/variables/%v/value", c.ApplianceUrl, variable)
+	variableUrl := fmt.Sprintf("%v/variables/%v/value", c.CoreUrl, variable)
 
 	token, err := c.getAuthToken()
 	if err != nil {
