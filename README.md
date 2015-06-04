@@ -1,6 +1,8 @@
 # cauldron-conjur
 
-Cauldron implementation with Conjur backend
+Conjur provider for [Cauldron](https://conjurinc.github.io/cauldron/).
+
+**Note** Use the [cauldron-conjurcli](https://github.com/conjurinc/cauldron-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
 
 ## Usage
 
