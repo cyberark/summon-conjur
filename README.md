@@ -1,26 +1,26 @@
-# cauldron-conjur
+# summon-conjur
 
-Conjur provider for [Cauldron](https://conjurinc.github.io/cauldron/).
+Conjur provider for [Summon](https://conjurinc.github.io/summon/).
 
-**Note** Use the [cauldron-conjurcli](https://github.com/conjurinc/cauldron-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
+**Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
 
 ## Usage
 
-Give cauldron-conjur a variable name and it will fetch it for you and print
+Give summon-conjur a variable name and it will fetch it for you and print
 the value to stdout.
 
 ```sh-session
-$ cauldron-conjur prod/aws/iam/user/robot/access_key_id
+$ summon-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
 
 ## Configuration
 
 This provider uses the same configuration pattern as the [Conjur CLI
-Client](https://github.com/conjurinc/api-ruby#configuration) to connect to Conjur.  
+Client](https://github.com/conjurinc/api-ruby#configuration) to connect to Conjur.
 Specifically, it loads configuration from:
 
- * `.conjurrc` files, located in the home and current directories, or at the 
+ * `.conjurrc` files, located in the home and current directories, or at the
     path specified by the `CONJURRC` environment variable.
  * Read `/etc/conjur.conf` as a `.conjurrc` file.
  * Environment variables:
