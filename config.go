@@ -55,7 +55,7 @@ func (c *Config) merge(o *Config) {
 	c.SSLCertPath = mergeValue(c.SSLCertPath, o.SSLCertPath)
 	c.APIKey = mergeValue(c.APIKey, o.APIKey)
 	c.AltAuthnUrl = mergeValue(c.AltAuthnUrl, o.AltAuthnUrl)
-	c.AltCoreUrl  = mergeValue(c.AltCoreUrl, o.AltCoreUrl)
+	c.AltCoreUrl = mergeValue(c.AltCoreUrl, o.AltCoreUrl)
 }
 
 func (c *Config) mergeYAML(filename string) {
@@ -81,7 +81,7 @@ func (c *Config) mergeEnv() {
 		ApplianceUrl: os.Getenv("CONJUR_APPLIANCE_URL"),
 		Username:     os.Getenv("CONJUR_AUTHN_LOGIN"),
 		SSLCertPath:  os.Getenv("CONJUR_CERT_FILE"),
-		APIKey:       os.Getenv("CONJUR_API_KEY"),
+		APIKey:       os.Getenv("CONJUR_AUTHN_API_KEY"),
 		AltCoreUrl:   os.Getenv("CONJUR_CORE_URL"),
 		AltAuthnUrl:  os.Getenv("CONJUR_AUTHN_URL"),
 	}
@@ -106,9 +106,9 @@ func (c *Config) mergeNetrc() {
 func (c *Config) validate() error {
 	// check urls, a bit more complex than the other stuff
 	if (c.AltCoreUrl == "" || c.AltAuthnUrl == "") && c.ApplianceUrl == "" {
-		return fmt.Errorf("Must specify either authn and core urls or an appliance url in %v", c);
+		return fmt.Errorf("Must specify either authn and core urls or an appliance url in %v", c)
 	}
-	
+
 	if c.Username == "" || c.APIKey == "" || c.SSLCertPath == "" {
 		return fmt.Errorf("Missing config info in %v", c)
 	}
@@ -143,7 +143,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	c.mergeEnv()
-	
+
 	// merge credentials from netrc
 	c.mergeNetrc()
 

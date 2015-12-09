@@ -48,7 +48,7 @@ func TestLoadConfig(t *testing.T) {
 			Username:     "env-username",
 		}
 
-		os.Setenv("CONJUR_API_KEY", expected.APIKey)
+		os.Setenv("CONJUR_AUTHN_API_KEY", expected.APIKey)
 		os.Setenv("CONJUR_APPLIANCE_URL", expected.ApplianceUrl)
 		os.Setenv("CONJUR_CERT_FILE", expected.SSLCertPath)
 		os.Setenv("CONJUR_AUTHN_LOGIN", expected.Username)
@@ -63,8 +63,8 @@ func TestLoadConfig(t *testing.T) {
 		})
 	})
 
-	Convey("When I specify an core and authn urls they override appliance url", t, func(){
-		Convey("When all urls are present", func(){
+	Convey("When I specify an core and authn urls they override appliance url", t, func() {
+		Convey("When all urls are present", func() {
 			e := clearEnv()
 			defer e.restoreEnv()
 
@@ -72,39 +72,42 @@ func TestLoadConfig(t *testing.T) {
 			os.Setenv("CONJUR_CORE_URL", "core-url")
 			os.Setenv("CONJUR_APPLIANCE_URL", "appliance-url")
 			os.Setenv("CONJUR_AUTHN_LOGIN", "login")
-			os.Setenv("CONJUR_API_KEY", "api-key")
+			os.Setenv("CONJUR_AUTHN_API_KEY", "api-key")
 			os.Setenv("CONJUR_CERT_FILE", "cert-path")
 
 			c, err := LoadConfig()
 
-			if err != nil { panic(err) }
+			if err != nil {
+				panic(err)
+			}
 
-			Convey("Core and authn urls should be overriden", func(){
+			Convey("Core and authn urls should be overriden", func() {
 				So(c.CoreUrl(), ShouldEqual, "core-url")
 				So(c.AuthnUrl(), ShouldEqual, "authn-url")
 			})
-			
+
 		})
 
-		Convey("When only appliance url is present", func(){
+		Convey("When only appliance url is present", func() {
 			e := clearEnv()
 			defer e.restoreEnv()
 			os.Setenv("CONJUR_APPLIANCE_URL", "appliance-url")
 			os.Setenv("CONJUR_AUTHN_LOGIN", "login")
-			os.Setenv("CONJUR_API_KEY", "api-key")
+			os.Setenv("CONJUR_AUTHN_API_KEY", "api-key")
 			os.Setenv("CONJUR_CERT_FILE", "cert-path")
 
 			c, err := LoadConfig()
 
-			if err != nil { panic(err) }
+			if err != nil {
+				panic(err)
+			}
 
-			Convey("Core and authn urls should be derived from the appliance url", func(){
+			Convey("Core and authn urls should be derived from the appliance url", func() {
 				So(c.CoreUrl(), ShouldEqual, "appliance-url")
 				So(c.AuthnUrl(), ShouldEqual, "appliance-url/authn")
 			})
 		})
-		
-			
+
 	})
 
 	Convey("When I write a conjurrc to a tempfile and set CONJURRC to its path", t, func() {
@@ -121,7 +124,7 @@ ignore_me: please`)
 		os.Setenv("CONJURRC", rcFile.Name())
 		// also set these so that the config will validate
 		os.Setenv("CONJUR_AUTHN_LOGIN", "dummy")
-		os.Setenv("CONJUR_API_KEY", "dummy")
+		os.Setenv("CONJUR_AUTHN_API_KEY", "dummy")
 		Convey("And I load the config", func() {
 			c, err := LoadConfig()
 			Convey("It should succeed", func() {
