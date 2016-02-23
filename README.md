@@ -23,6 +23,7 @@ Specifically, it loads configuration from:
  * `.conjurrc` files, located in the home and current directories, or at the
     path specified by the `CONJURRC` environment variable.
  * Read `/etc/conjur.conf` as a `.conjurrc` file.
+ * Read `/etc/conjur.identity` as a `netrc` file. Note that the user running must either be in the group `conjur` or root to read the identity file.
  * Environment variables:
     * `CONJUR_AUTHN_LOGIN`
     * `CONJUR_API_KEY`
