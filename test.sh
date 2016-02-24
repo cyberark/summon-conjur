@@ -1,14 +1,12 @@
 #!/bin/bash
 
-docker build -t summon/build .
-
-projectpath="/goroot/src/github.com/conjurinc/summon-conjur"
+APP="summon-conjur"
+WORKDIR="/go/src/github.com/conjurinc/${APP}"
 
 docker run --rm \
--v "$(pwd)":"${projectpath}" \
--w "${projectpath}" \
-summon/build \
-bash -ceo pipefail "xargs -L1 go get <Godeps && \
-go build ./... && \
-go test -v ./... | tee test.tmp \
+-v "$PWD":$WORKDIR \
+-w $WORKDIR \
+golang:1.6 \
+bash -ceo pipefail "go get -u github.com/jstemmer/go-junit-report && \
+go test $(go list ./... | grep -v /vendor/) | tee test.tmp \
 && cat test.tmp | go-junit-report > junit.xml && rm test.tmp"
