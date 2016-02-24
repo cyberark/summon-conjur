@@ -23,6 +23,10 @@ type Config struct {
 
 	// Your conjur API key (aka password)
 	APIKey string
+
+	// Conjur identity file, may be present
+	NetRCPath string `yaml:"netrc_path"`
+
 	// Path to the certificate for your Conjur appliance
 	SSLCertPath string `yaml:"cert_file"`
 }
@@ -56,6 +60,7 @@ func (c *Config) merge(o *Config) {
 	c.APIKey = mergeValue(c.APIKey, o.APIKey)
 	c.AltAuthnUrl = mergeValue(c.AltAuthnUrl, o.AltAuthnUrl)
 	c.AltCoreUrl = mergeValue(c.AltCoreUrl, o.AltCoreUrl)
+	c.NetRCPath = mergeValue(c.NetRCPath, o.NetRCPath)
 }
 
 func (c *Config) mergeYAML(filename string) {
@@ -90,8 +95,13 @@ func (c *Config) mergeEnv() {
 }
 
 func (c *Config) mergeNetrc() {
-	rc, err := netrc.ParseFile(os.ExpandEnv("$HOME/.netrc"))
+	if c.NetRCPath == "" {
+		c.NetRCPath = os.ExpandEnv("$HOME/.netrc")
+	}
+
+	rc, err := netrc.ParseFile(c.NetRCPath)
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
 

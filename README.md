@@ -35,7 +35,7 @@ Specifically, it loads configuration from:
     `conjur authn login`
 
 In general, you can ignore the `CONJUR_CORE_URL` and `CONJUR_AUTHN_URL` unless
-you need to specify, for example, and authn proxy.
+you need to specify, for example, an authn proxy.
 
 The provider will fail unless all of the following values are provided:
 
