@@ -1,5 +1,8 @@
 # unreleased
 
+# v0.1.4
+* A friendly error is now returned when no argument is given [GH-2](https://github.com/conjurinc/summon-conjur/issues/2)
+
 # v0.1.3
 * Config now looks at `netrc_path` in conjurrc to find identity.file
 
