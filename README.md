@@ -4,6 +4,10 @@ Conjur provider for [Summon](https://conjurinc.github.io/summon/).
 
 **Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
 
+## Install
+
+Download the [latest release](https://github.com/conjurinc/summon-conjur/releases) and extract it to the directory `/usr/local/lib/summon`.
+
 ## Usage
 
 Give summon-conjur a variable name and it will fetch it for you and print
