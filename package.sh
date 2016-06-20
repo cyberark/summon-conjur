@@ -10,8 +10,8 @@ app="summon-conjur"
 
 # Zip and copy to the dist dir
 echo "==> Packaging..."
-rm -rf ./pkg/dist
-mkdir -p ./pkg/dist
+rm -rf pkg/dist/*
+mkdir -p pkg/dist
 
 for PLATFORM in $(find ./pkg -mindepth 1 -maxdepth 1 -type d); do
     OSARCH=$(basename ${PLATFORM})
@@ -22,7 +22,7 @@ for PLATFORM in $(find ./pkg -mindepth 1 -maxdepth 1 -type d); do
 
     echo "--> ${OSARCH}"
     pushd $PLATFORM >/dev/null 2>&1
-    zip ../dist/${app}_${VERSION}_${OSARCH}.zip ./*
+    tar -cvzf ../dist/${app}_${VERSION}_${OSARCH}.tar.gz ./*
     popd >/dev/null 2>&1
 done
 
@@ -31,3 +31,5 @@ echo "==> Checksumming..."
 pushd ./pkg/dist >/dev/null 2>&1
 shasum -a256 * > ./${app}_${VERSION}_SHA256SUMS
 popd >/dev/null 2>&1
+
+ls pkg/dist/*
