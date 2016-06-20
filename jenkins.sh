@@ -3,5 +3,5 @@
 ./test.sh
 ./build.sh
 
-chmod -R 777 pkg/
+sudo chmod -R 777 pkg/
 ./package.sh
