@@ -31,6 +31,7 @@ Specifically, it loads configuration from:
  * Environment variables:
     * `CONJUR_AUTHN_LOGIN`
     * `CONJUR_API_KEY`
+    * `CONJUR_SSL_CERTIFICATE`
     * `CONJUR_CERT_FILE`
     * `CONJUR_APPLIANCE_URL`
     * `CONJUR_CORE_URL`
@@ -45,6 +46,6 @@ The provider will fail unless all of the following values are provided:
 
  * The appliance url
  * A username and api key
- * A path to the appliance's SSL certificate
+ * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
 
 
