@@ -36,7 +36,8 @@ Specifically, it loads configuration from:
     * `CONJUR_CORE_URL`
     * `CONJUR_AUTHN_URL`
  * A username and api key can be read from `~/.netrc` if stored there by
-    `conjur authn login`
+    `conjur authn login`. If so, `CONJUR_AUTHN_LOGIN` and `CONJUR_API_KEY` are
+    not required.
 
 In general, you can ignore the `CONJUR_CORE_URL` and `CONJUR_AUTHN_URL` unless
 you need to specify, for example, an authn proxy.

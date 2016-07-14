@@ -46,7 +46,7 @@ func TestLoadConfig(t *testing.T) {
 			ApplianceUrl: "env-app-url",
 			SSLCertPath:  "env-cert-file",
 			Username:     "env-username",
-			NetRCPath:    "/.netrc",
+			NetRCPath:    "",
 		}
 
 		os.Setenv("CONJUR_AUTHN_API_KEY", expected.APIKey)
