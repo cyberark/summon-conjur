@@ -14,6 +14,7 @@ type ConjurClient struct {
 	CoreUrl     string
 	Username    string
 	APIKey      string
+	SSLCert     string
 	SSLCertPath string
 	httpClient  *http.Client
 }
@@ -26,7 +27,12 @@ func NewConjurClient() (*ConjurClient, error) {
 		return nil, err
 	}
 
-	httpClient, err := NewConjurHTTPClient(config.SSLCertPath)
+	cert, err := config.ReadSSLCert()
+	if err != nil {
+		return nil, err
+	}
+
+	httpClient, err := NewConjurHTTPClient(cert)
 
 	if err != nil {
 		return nil, err
@@ -37,6 +43,7 @@ func NewConjurClient() (*ConjurClient, error) {
 		CoreUrl:     config.CoreUrl(),
 		Username:    config.Username,
 		APIKey:      config.APIKey,
+		SSLCert:     config.SSLCert,
 		SSLCertPath: config.SSLCertPath,
 		httpClient:  httpClient,
 	}, nil

@@ -27,6 +27,9 @@ type Config struct {
 	// Conjur identity file, may be present
 	NetRCPath string `yaml:"netrc_path"`
 
+	// Content of the certificate for your Conjur appliance
+	SSLCert string
+
 	// Path to the certificate for your Conjur appliance
 	SSLCertPath string `yaml:"cert_file"`
 }
@@ -46,6 +49,13 @@ func (c *Config) CoreUrl() string {
 	return c.ApplianceUrl
 }
 
+func (c *Config) ReadSSLCert() ([]byte, error) {
+	if c.SSLCert != "" {
+		return []byte(c.SSLCert), nil
+	}
+	return ioutil.ReadFile(c.SSLCertPath)
+}
+
 func mergeValue(a, b string) string {
 	if len(a) != 0 {
 		return a
@@ -56,6 +66,7 @@ func mergeValue(a, b string) string {
 func (c *Config) merge(o *Config) {
 	c.ApplianceUrl = mergeValue(c.ApplianceUrl, o.ApplianceUrl)
 	c.Username = mergeValue(c.Username, o.Username)
+	c.SSLCert = mergeValue(c.SSLCert, o.SSLCert)
 	c.SSLCertPath = mergeValue(c.SSLCertPath, o.SSLCertPath)
 	c.APIKey = mergeValue(c.APIKey, o.APIKey)
 	c.AltAuthnUrl = mergeValue(c.AltAuthnUrl, o.AltAuthnUrl)
@@ -85,6 +96,7 @@ func (c *Config) mergeEnv() {
 	env := Config{
 		ApplianceUrl: os.Getenv("CONJUR_APPLIANCE_URL"),
 		Username:     os.Getenv("CONJUR_AUTHN_LOGIN"),
+		SSLCert:      os.Getenv("CONJUR_SSL_CERTIFICATE"),
 		SSLCertPath:  os.Getenv("CONJUR_CERT_FILE"),
 		APIKey:       os.Getenv("CONJUR_AUTHN_API_KEY"),
 		AltCoreUrl:   os.Getenv("CONJUR_CORE_URL"),
@@ -116,11 +128,15 @@ func (c *Config) mergeNetrc() {
 func (c *Config) validate() error {
 	// check urls, a bit more complex than the other stuff
 	if (c.AltCoreUrl == "" || c.AltAuthnUrl == "") && c.ApplianceUrl == "" {
-		return fmt.Errorf("Must specify either authn and core urls or an appliance url in %v", c)
+		return fmt.Errorf("Must specify either an appliance url or authn and core urls in %v", c)
 	}
 
-	if c.Username == "" || c.APIKey == "" || c.SSLCertPath == "" {
-		return fmt.Errorf("Missing config info in %v", c)
+	if c.Username == "" || c.APIKey == "" {
+		return fmt.Errorf("Missing username and/or API key: %v", c)
+	}
+
+	if c.SSLCertPath == "" && c.SSLCert == "" {
+		return fmt.Errorf("Missing SSL certificate: %v", c)
 	}
 	return nil
 }
@@ -130,7 +146,7 @@ func (c *Config) validate() error {
 //  * If $CONJURRC is set, load configuration from that file
 //  * Otherwise, read ~/.conjurrc and ./.conjurrc
 //  * Load credentials from the environment if they are present
-//  * Load them from ~/.netrc if it exists and the values are found
+//  * Load them from ~/.netrc if it exists, the values are found and username/API key haven't been provided
 //  * Fail if no credentials are found.
 func LoadConfig() (*Config, error) {
 	c := Config{}

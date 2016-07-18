@@ -180,4 +180,52 @@ ignore_me: please`)
 
 		})
 	})
+
+	Convey("SSL cert can be passed directly or as a file", t, func() {
+		Convey("When I set the variable CONJUR_SSL_CERTIFICATE", func() {
+			env := clearEnv()
+			defer env.restoreEnv()
+			certContent := "-----BEGIN CERTIFICATE-----...abcdef"
+
+			os.Setenv("CONJUR_APPLIANCE_URL", "https://foo.bar.com/api")
+			os.Setenv("CONJUR_SSL_CERTIFICATE", certContent)
+			os.Setenv("CONJUR_AUTHN_LOGIN", "dummy")
+			os.Setenv("CONJUR_AUTHN_API_KEY", "dummy")
+			Convey("When I load the config", func() {
+				c, err := LoadConfig()
+
+				Convey("It should succeed", func() {
+					So(err, ShouldBeNil)
+				})
+
+				Convey("And the cert is loaded from environment", func() {
+					cert, err := c.ReadSSLCert()
+					So(err, ShouldBeNil)
+					So(string(cert), ShouldEqual, certContent)
+				})
+			})
+		})
+		Convey("When I set the variable CONJUR_CERT_FILE", func() {
+			env := clearEnv()
+			defer env.restoreEnv()
+
+			os.Setenv("CONJUR_APPLIANCE_URL", "https://foo.bar.com/api")
+			os.Setenv("CONJUR_CERT_FILE", "test/files/conjur.pem")
+			os.Setenv("CONJUR_AUTHN_LOGIN", "dummy")
+			os.Setenv("CONJUR_AUTHN_API_KEY", "dummy")
+			Convey("When I load the config", func() {
+				c, err := LoadConfig()
+
+				Convey("It should succeed", func() {
+					So(err, ShouldBeNil)
+				})
+
+				Convey("And the cert is loaded from file", func() {
+					cert, err := c.ReadSSLCert()
+					So(err, ShouldBeNil)
+					So(string(cert), ShouldEqual, "cert for testing")
+				})
+			})
+		})
+	})
 }

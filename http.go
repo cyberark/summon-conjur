@@ -4,19 +4,14 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 )
 
-func NewConjurHTTPClient(certPath string) (*http.Client, error) {
-	pem, err := ioutil.ReadFile(certPath)
-	if err != nil {
-		return nil, err
-	}
+func NewConjurHTTPClient(cert []byte) (*http.Client, error) {
 	pool := x509.NewCertPool()
-	ok := pool.AppendCertsFromPEM(pem)
+	ok := pool.AppendCertsFromPEM(cert)
 	if !ok {
-		return nil, fmt.Errorf("Can't append cert %s", certPath)
+		return nil, fmt.Errorf("Can't append Conjur SSL cert")
 	}
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{RootCAs: pool},
