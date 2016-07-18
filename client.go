@@ -10,13 +10,12 @@ import (
 )
 
 type ConjurClient struct {
-	AuthnUrl    string
-	CoreUrl     string
-	Username    string
-	APIKey      string
-	SSLCert     string
-	SSLCertPath string
-	httpClient  *http.Client
+	AuthnUrl   string
+	CoreUrl    string
+	Username   string
+	APIKey     string
+	AuthToken  string
+	httpClient *http.Client
 }
 
 func NewConjurClient() (*ConjurClient, error) {
@@ -39,17 +38,19 @@ func NewConjurClient() (*ConjurClient, error) {
 	}
 
 	return &ConjurClient{
-		AuthnUrl:    config.AuthnUrl(),
-		CoreUrl:     config.CoreUrl(),
-		Username:    config.Username,
-		APIKey:      config.APIKey,
-		SSLCert:     config.SSLCert,
-		SSLCertPath: config.SSLCertPath,
-		httpClient:  httpClient,
+		AuthnUrl:   config.AuthnUrl(),
+		CoreUrl:    config.CoreUrl(),
+		Username:   config.Username,
+		APIKey:     config.APIKey,
+		AuthToken:  config.AuthToken,
+		httpClient: httpClient,
 	}, nil
 }
 
 func (c *ConjurClient) getAuthToken() (string, error) {
+	if c.AuthToken != "" {
+		return c.AuthToken, nil
+	}
 	escapedUsername := url.QueryEscape(c.Username)
 	resp, err := c.httpClient.Post(
 		fmt.Sprintf("%s/users/%s/authenticate", c.AuthnUrl, escapedUsername),
@@ -69,7 +70,7 @@ func (c *ConjurClient) getAuthToken() (string, error) {
 		}
 	}
 
-	return string(token), err
+	return base64.StdEncoding.EncodeToString(token), err
 }
 
 func (c *ConjurClient) RetrieveVariable(path string) (string, error) {
@@ -80,7 +81,7 @@ func (c *ConjurClient) RetrieveVariable(path string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	tokenHeader := fmt.Sprintf("Token token=\"%s\"", base64.StdEncoding.EncodeToString([]byte(token)))
+	tokenHeader := fmt.Sprintf("Token token=\"%s\"", token)
 
 	req, err := http.NewRequest("GET", variableUrl, nil)
 	if err != nil {

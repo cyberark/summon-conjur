@@ -17,7 +17,7 @@ type envSnapshot struct {
 	env []string
 }
 
-func clearEnv() *envSnapshot {
+func ClearEnv() *envSnapshot {
 	e := os.Environ()
 
 	for _, s := range e {
@@ -27,8 +27,8 @@ func clearEnv() *envSnapshot {
 	return &envSnapshot{env: e}
 }
 
-func (e *envSnapshot) restoreEnv() {
-	clearEnv()
+func (e *envSnapshot) RestoreEnv() {
+	ClearEnv()
 	for _, s := range e.env {
 		k, v := splitEq(s)
 		os.Setenv(k, v)
@@ -38,8 +38,8 @@ func (e *envSnapshot) restoreEnv() {
 func TestLoadConfig(t *testing.T) {
 	Convey("Given an environment with conjur config vars only", t, func() {
 
-		e := clearEnv()
-		defer e.restoreEnv()
+		e := ClearEnv()
+		defer e.RestoreEnv()
 
 		expected := &Config{
 			APIKey:       "env-api-key",
@@ -66,8 +66,8 @@ func TestLoadConfig(t *testing.T) {
 
 	Convey("When I specify an core and authn urls they override appliance url", t, func() {
 		Convey("When all urls are present", func() {
-			e := clearEnv()
-			defer e.restoreEnv()
+			e := ClearEnv()
+			defer e.RestoreEnv()
 
 			os.Setenv("CONJUR_AUTHN_URL", "authn-url")
 			os.Setenv("CONJUR_CORE_URL", "core-url")
@@ -90,8 +90,8 @@ func TestLoadConfig(t *testing.T) {
 		})
 
 		Convey("When only appliance url is present", func() {
-			e := clearEnv()
-			defer e.restoreEnv()
+			e := ClearEnv()
+			defer e.RestoreEnv()
 			os.Setenv("CONJUR_APPLIANCE_URL", "appliance-url")
 			os.Setenv("CONJUR_AUTHN_LOGIN", "login")
 			os.Setenv("CONJUR_AUTHN_API_KEY", "api-key")
@@ -112,8 +112,8 @@ func TestLoadConfig(t *testing.T) {
 	})
 
 	Convey("When I write a conjurrc to a tempfile and set CONJURRC to its path", t, func() {
-		e := clearEnv()
-		defer e.restoreEnv()
+		e := ClearEnv()
+		defer e.RestoreEnv()
 		rcFile, err := ioutil.TempFile("", "conjurrc-test")
 		if err != nil {
 			panic(err)
@@ -140,8 +140,8 @@ ignore_me: please`)
 	})
 
 	Convey("When I use a fake home dir with a netrc in it", t, func() {
-		env := clearEnv()
-		defer env.restoreEnv()
+		env := ClearEnv()
+		defer env.RestoreEnv()
 
 		fakeHome, err := ioutil.TempDir("", "test-netrc")
 		if err != nil {
@@ -183,8 +183,8 @@ ignore_me: please`)
 
 	Convey("SSL cert can be passed directly or as a file", t, func() {
 		Convey("When I set the variable CONJUR_SSL_CERTIFICATE", func() {
-			env := clearEnv()
-			defer env.restoreEnv()
+			env := ClearEnv()
+			defer env.RestoreEnv()
 			certContent := "-----BEGIN CERTIFICATE-----...abcdef"
 
 			os.Setenv("CONJUR_APPLIANCE_URL", "https://foo.bar.com/api")
@@ -206,11 +206,11 @@ ignore_me: please`)
 			})
 		})
 		Convey("When I set the variable CONJUR_CERT_FILE", func() {
-			env := clearEnv()
-			defer env.restoreEnv()
+			env := ClearEnv()
+			defer env.RestoreEnv()
 
 			os.Setenv("CONJUR_APPLIANCE_URL", "https://foo.bar.com/api")
-			os.Setenv("CONJUR_CERT_FILE", "test/files/conjur.pem")
+			os.Setenv("CONJUR_CERT_FILE", "test/files/fake.pem")
 			os.Setenv("CONJUR_AUTHN_LOGIN", "dummy")
 			os.Setenv("CONJUR_AUTHN_API_KEY", "dummy")
 			Convey("When I load the config", func() {
