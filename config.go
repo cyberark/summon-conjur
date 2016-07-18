@@ -170,8 +170,9 @@ func LoadConfig() (*Config, error) {
 
 	c.mergeEnv()
 
-	// merge credentials from netrc
-	c.mergeNetrc()
+	if c.Username == "" || c.APIKey == "" {
+		c.mergeNetrc()
+	}
 
 	err := c.validate()
 
