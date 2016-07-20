@@ -29,14 +29,19 @@ Specifically, it loads configuration from:
  * Read `/etc/conjur.conf` as a `.conjurrc` file.
  * Read `/etc/conjur.identity` as a `netrc` file. Note that the user running must either be in the group `conjur` or root to read the identity file.
  * Environment variables:
-    * `CONJUR_AUTHN_LOGIN`
-    * `CONJUR_API_KEY`
-    * `CONJUR_SSL_CERTIFICATE`
-    * `CONJUR_CERT_FILE`
-    * `CONJUR_APPLIANCE_URL`
-    * `CONJUR_CORE_URL`
-    * `CONJUR_AUTHN_URL`
- * If `CONJUR_AUTHN_LOGIN` and `CONJUR_API_KEY` are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
+   * Appliance URLs
+     * `CONJUR_APPLIANCE_URL`
+     * `CONJUR_CORE_URL`
+     * `CONJUR_AUTHN_URL`
+   * SSL certificate
+     * `CONJUR_CERT_FILE`
+     * `CONJUR_SSL_CERTIFICATE`
+   * Authentication
+     * `CONJUR_AUTHN_LOGIN`
+     * `CONJUR_AUTHN_API_KEY`
+     * `CONJUR_AUTHN_TOKEN`
+
+If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
 
 In general, you can ignore the `CONJUR_CORE_URL` and `CONJUR_AUTHN_URL` unless
 you need to specify, for example, an authn proxy.
@@ -44,7 +49,6 @@ you need to specify, for example, an authn proxy.
 The provider will fail unless all of the following values are provided:
 
  * The appliance url
- * A username and api key
- * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
-
-
+ * A username and api key, or Conjur authn token
+ * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's
+ public SSL certificate

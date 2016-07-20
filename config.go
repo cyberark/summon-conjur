@@ -24,6 +24,9 @@ type Config struct {
 	// Your conjur API key (aka password)
 	APIKey string
 
+	// Conjur auth token, optionally passed as env var CONJUR_AUTHN_TOKEN
+	AuthToken string
+
 	// Conjur identity file, may be present
 	NetRCPath string `yaml:"netrc_path"`
 
@@ -69,6 +72,7 @@ func (c *Config) merge(o *Config) {
 	c.SSLCert = mergeValue(c.SSLCert, o.SSLCert)
 	c.SSLCertPath = mergeValue(c.SSLCertPath, o.SSLCertPath)
 	c.APIKey = mergeValue(c.APIKey, o.APIKey)
+	c.AuthToken = mergeValue(c.AuthToken, o.AuthToken)
 	c.AltAuthnUrl = mergeValue(c.AltAuthnUrl, o.AltAuthnUrl)
 	c.AltCoreUrl = mergeValue(c.AltCoreUrl, o.AltCoreUrl)
 	c.NetRCPath = mergeValue(c.NetRCPath, o.NetRCPath)
@@ -99,6 +103,7 @@ func (c *Config) mergeEnv() {
 		SSLCert:      os.Getenv("CONJUR_SSL_CERTIFICATE"),
 		SSLCertPath:  os.Getenv("CONJUR_CERT_FILE"),
 		APIKey:       os.Getenv("CONJUR_AUTHN_API_KEY"),
+		AuthToken:    os.Getenv("CONJUR_AUTHN_TOKEN"),
 		AltCoreUrl:   os.Getenv("CONJUR_CORE_URL"),
 		AltAuthnUrl:  os.Getenv("CONJUR_AUTHN_URL"),
 	}
@@ -131,7 +136,7 @@ func (c *Config) validate() error {
 		return fmt.Errorf("Must specify either an appliance url or authn and core urls in %v", c)
 	}
 
-	if c.Username == "" || c.APIKey == "" {
+	if (c.Username == "" || c.APIKey == "") && c.AuthToken == "" {
 		return fmt.Errorf("Missing username and/or API key: %v", c)
 	}
 
@@ -170,7 +175,7 @@ func LoadConfig() (*Config, error) {
 
 	c.mergeEnv()
 
-	if c.Username == "" || c.APIKey == "" {
+	if (c.Username == "" || c.APIKey == "") && c.AuthToken == "" {
 		c.mergeNetrc()
 	}
 
