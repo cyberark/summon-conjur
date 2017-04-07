@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"github.com/conjurinc/api-go"
 )
 
 func main() {
@@ -12,7 +13,7 @@ func main() {
 	}
 	variableName := os.Args[1]
 
-	conjur, err := NewConjurClient()
+	conjur, err := conjur_api.NewConjurClient()
 	if err != nil {
 		printAndExit(err)
 	}
