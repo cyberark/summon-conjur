@@ -1,9 +1,9 @@
 #!/bin/bash -ex
 
-#function finish {
-#  docker-compose down -v
-#}
-#trap finish EXIT
+function finish {
+  docker-compose down -v
+}
+trap finish EXIT
 
 echo "Running tests"
 
@@ -12,8 +12,8 @@ rm -rf output
 mkdir -p output
 
 # Build test container & start the cluster
-#docker-compose pull postgres possum
-#docker-compose build --pull
+docker-compose pull postgres possum
+docker-compose build --pull
 docker-compose up -d
 
 # Delay to allow time for Possum to come up

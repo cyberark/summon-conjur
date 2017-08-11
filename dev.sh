@@ -5,7 +5,7 @@ function finish {
 }
 trap finish EXIT
 
-#docker-compose pull postgres possum
+docker-compose pull postgres possum
 docker-compose build --pull
 docker-compose up -d
 docker-compose run --rm test ./wait_for_server.sh
