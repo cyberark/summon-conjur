@@ -1,0 +1,25 @@
+version: '2.1'
+services:
+  postgres:
+    image: postgres:9.3
+
+  possum:
+    image: registry2.itci.conjur.net/possum:0.1.0-stable
+    command: server -a cucumber
+    environment:
+      DATABASE_URL: postgres://postgres@postgres/postgres
+      CONJUR_DATA_KEY: 'WMfApcDBtocRWV+ZSUP3Tjr5XNU+Z2FdBb6BEezejIs='
+    depends_on:
+      - postgres
+
+  test:
+    build: .
+    ports:
+        - "8080:8080"
+    depends_on:
+      - possum
+    volumes:
+      - .:/go/src/github.com/conjurinc/summon-conjur
+    environment:
+      CONJUR_APPLIANCE_URL: http://possum
+      CONJUR_ACCOUNT: cucumber

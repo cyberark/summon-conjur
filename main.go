@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"github.com/conjurinc/api-go/conjurapi"
 )
 
 func main() {
@@ -12,12 +13,16 @@ func main() {
 	}
 	variableName := os.Args[1]
 
-	conjur, err := NewConjurClient()
-	if err != nil {
-		printAndExit(err)
+	config := conjurapi.Config{
+		ApplianceUrl: os.Getenv("CONJUR_APPLIANCE_URL"),
+		Account: os.Getenv("CONJUR_ACCOUNT"),
+		Username: os.Getenv("CONJUR_AUTHN_LOGIN"),
+		APIKey: os.Getenv("CONJUR_AUTHN_API_KEY"),
 	}
 
-	value, err := conjur.RetrieveVariable(variableName)
+	conjur := conjurapi.NewClient(config)
+
+	value, err := conjur.RetrieveSecret(variableName)
 	if err != nil {
 		printAndExit(err)
 	}
@@ -26,6 +31,6 @@ func main() {
 }
 
 func printAndExit(err error) {
-	os.Stderr.Write([]byte(err.Error()))
+	fmt.Println(err.Error())
 	os.Exit(1)
 }
