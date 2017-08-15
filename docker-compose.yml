@@ -1,10 +1,21 @@
-version: '2.1'
+version: '2'
 services:
+  builder:
+    build: .
+    image: summon-conjur-builder
+    entrypoint: /usr/local/go/bin/go
+    command: build -v
+    volumes:
+      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+    environment:
+      GOOS:
+      GOARCH:
+
   postgres:
     image: postgres:9.3
 
-  possum:
-    image: registry2.itci.conjur.net/possum:0.1.0-stable
+  conjur:
+    image: registry.tld/possum:0.1.0-stable
     command: server -a cucumber
     environment:
       DATABASE_URL: postgres://postgres@postgres/postgres
@@ -12,14 +23,19 @@ services:
     depends_on:
       - postgres
 
-  test:
+  tester:
     build: .
+    image: summon-conjur-tester
     ports:
         - "8080:8080"
     depends_on:
-      - possum
+      - conjur
+    entrypoint: /bin/bash
+    command: './test-entrypoint.sh'
     volumes:
-      - .:/go/src/github.com/conjurinc/summon-conjur
+      - ./output:/go/src/github.com/cyberark/summon-conjur/output
     environment:
-      CONJUR_APPLIANCE_URL: http://possum
+      CONJUR_APPLIANCE_URL: http://conjur
       CONJUR_ACCOUNT: cucumber
+      CONJUR_API_KEY:
+      TEST_PACKAGE: 'TRUE'
