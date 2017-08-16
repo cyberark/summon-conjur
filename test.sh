@@ -28,7 +28,7 @@ function runTests() {
   local api_key=$(docker-compose exec -T conjur rails r "print Credentials['cucumber:user:admin'].api_key")
 
   docker-compose run --rm \
-    -e CONJUR_API_KEY="$api_key" \
+    -e CONJUR_AUTHN_API_KEY="$api_key" \
     tester
 }
 

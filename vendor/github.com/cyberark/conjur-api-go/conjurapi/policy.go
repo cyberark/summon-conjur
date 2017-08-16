@@ -8,7 +8,7 @@ import (
 )
 
 func (c *Client) LoadPolicy(policyIdentifier string, policy io.Reader) (string, error) {
-	policyUrl := fmt.Sprintf("%s/policies/%s/policy/%s", c.config.ApplianceUrl, c.config.Account, policyIdentifier)
+	policyUrl := fmt.Sprintf("%s/policies/%s/policy/%s", c.config.ApplianceURL, c.config.Account, policyIdentifier)
 	req, err := http.NewRequest(
 		"PUT",
 		policyUrl,
@@ -23,7 +23,7 @@ func (c *Client) LoadPolicy(policyIdentifier string, policy io.Reader) (string, 
 		return "", err
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.httpclient.Do(req)
 	if err != nil {
 		return "", err
 	}

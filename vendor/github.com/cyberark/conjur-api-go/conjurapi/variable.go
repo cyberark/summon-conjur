@@ -10,7 +10,7 @@ import (
 
 func (c *Client) generateVariableUrl(varId string) string {
 	escapedVarId := url.QueryEscape(varId)
-	return fmt.Sprintf("%s/secrets/%s/variable/%s", c.config.ApplianceUrl, c.config.Account, escapedVarId)
+	return fmt.Sprintf("%s/secrets/%s/variable/%s", c.config.ApplianceURL, c.config.Account, escapedVarId)
 }
 
 func (c *Client) RetrieveSecret(variableIdentifier string) (string, error) {
@@ -29,7 +29,7 @@ func (c *Client) RetrieveSecret(variableIdentifier string) (string, error) {
 		return "", err
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.httpclient.Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -67,7 +67,7 @@ func (c *Client) AddSecret(variableIdentifier string, secretValue string) (error
 		return err
 	}
 
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.httpclient.Do(req)
 	if err != nil {
 		return err
 	}

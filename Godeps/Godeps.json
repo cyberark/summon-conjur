@@ -1,15 +1,11 @@
 {
-	"ImportPath": "github.com/conjurinc/summon-conjur",
+	"ImportPath": "github.com/cyberark/summon-conjur",
 	"GoVersion": "go1.8",
 	"GodepVersion": "v79",
 	"Deps": [
 		{
-			"ImportPath": "github.com/bgentry/go-netrc/netrc",
-			"Rev": "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
-		},
-		{
-			"ImportPath": "github.com/conjurinc/api-go/conjurapi",
-			"Rev": "8355fbd32efd3c83f0b3cf08e0d2094677aa4a13"
+			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi",
+			"Rev": "e7bec82d5173eadb273e9f4c2b7a6117c0f70f7d"
 		},
 		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
@@ -53,10 +49,6 @@
 		{
 			"ImportPath": "github.com/smartystreets/logging",
 			"Rev": "ac3a674540761aa0b4382094ba4795f917e85c7f"
-		},
-		{
-			"ImportPath": "gopkg.in/yaml.v1",
-			"Rev": "9f9df34309c04878acc86042b16630b0f696e1de"
 		}
 	]
 }
