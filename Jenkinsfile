@@ -19,6 +19,7 @@ pipeline {
       steps {
         sh './test.sh'
         junit 'output/junit.xml'
+        sh 'sudo chown -R jenkins:jenkins .'  // bad docker mount creates unreadable files TODO fix this
       }
     }
 
