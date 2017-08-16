@@ -12,25 +12,29 @@ pipeline {
     stage('Build Go binaries') {
       steps {
         sh './build.sh'
+        archiveArtifacts artifacts: 'output/*', fingerprint: true
       }
     }
     stage('Run unit tests') {
       steps {
         sh './test.sh'
-        junit 'junit.xml'
+        junit 'output/junit.xml'
+        sh 'sudo chown -R jenkins:jenkins .'  // bad docker mount creates unreadable files TODO fix this
       }
     }
 
     stage('Package distribution tarballs') {
       steps {
-        sh 'sudo chmod -R 777 pkg/'  // TODO: remove need to sudo here
         sh './package.sh'
-        archiveArtifacts artifacts: 'pkg/**/*', fingerprint: true
+        archiveArtifacts artifacts: 'output/dist/*', fingerprint: true
       }
     }
   }
 
   post {
+    always {
+      sh 'docker run -i --rm -v $PWD:/src -w /src alpine/git clean -fxd'
+    }
     failure {
       slackSend(color: 'danger', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} FAILURE (<${env.BUILD_URL}|Open>)")
     }

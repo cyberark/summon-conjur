@@ -1,0 +1,42 @@
+version: '2'
+services:
+  builder:
+    build: .
+    image: summon-conjur-builder
+    entrypoint: /usr/local/go/bin/go
+    command: build -v
+    volumes:
+      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+    environment:
+      GOOS:
+      GOARCH:
+
+  postgres:
+    image: postgres:9.3
+
+  conjur:
+    image: registry.tld/possum:0.1.0-stable
+    command: server -a cucumber
+    environment:
+      DATABASE_URL: postgres://postgres@postgres/postgres
+      CONJUR_DATA_KEY: 'WMfApcDBtocRWV+ZSUP3Tjr5XNU+Z2FdBb6BEezejIs='
+    depends_on:
+      - postgres
+
+  tester:
+    build: .
+    image: summon-conjur-tester
+    ports:
+        - "8080:8080"
+    depends_on:
+      - conjur
+    entrypoint: /bin/bash
+    command: './test-entrypoint.sh'
+    volumes:
+      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+    environment:
+      CONJUR_APPLIANCE_URL: http://conjur
+      CONJUR_ACCOUNT: cucumber
+      CONJUR_AUTHN_API_KEY:
+      CONJUR_AUTHN_LOGIN: admin
+      TEST_PACKAGE: 'TRUE'

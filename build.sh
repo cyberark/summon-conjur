@@ -1,12 +1,34 @@
 #!/bin/bash
 
-APP="summon-conjur"
-WORKDIR="/go/src/github.com/conjurinc/${APP}"
+# Platforms to build: https://golang.org/doc/install/source#environment
+PLATFORMS=(
+  'darwin:amd64'     # MacOS
+  # 'dragonfly:amd64'  # Dragonfly https://www.dragonflybsd.org/
+  'freebsd:amd64'
+  # 'linux:386'
+  'linux:amd64'
+  # 'linux:arm'
+  # 'linux:arm64'
+  'netbsd:amd64'
+  'openbsd:amd64'
+  'solaris:amd64'
+  # 'windows:386'
+  'windows:amd64'
+)
 
-rm -rf pkg
+echo "Creating summon-conjur binaries in output/"
+docker-compose build --pull builder
 
-docker run --rm \
--v "$PWD":$WORKDIR \
--w $WORKDIR \
-golang:1.6 \
-./compile.sh $APP
+for platform in "${PLATFORMS[@]}"; do
+  GOOS=${platform%%:*}
+  GOARCH=${platform#*:}
+
+  echo "-----"
+  echo "GOOS=$GOOS, GOARCH=$GOARCH"
+  echo "....."
+
+  docker-compose run --rm \
+    -e GOOS=$GOOS -e GOARCH=$GOARCH \
+    builder \
+      build -v -o output/summon-conjur-$GOOS-$GOARCH
+done

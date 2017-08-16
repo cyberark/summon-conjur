@@ -3,10 +3,10 @@ package assertions
 const ( // equality
 	shouldHaveBeenEqual             = "Expected: '%v'\nActual:   '%v'\n(Should be equal)"
 	shouldNotHaveBeenEqual          = "Expected     '%v'\nto NOT equal '%v'\n(but it did)!"
+	shouldHaveBeenEqualTypeMismatch = "Expected: '%v' (%T)\nActual:   '%v' (%T)\n(Should be equal, type mismatch)"
 	shouldHaveBeenAlmostEqual       = "Expected '%v' to almost equal '%v' (but it didn't)!"
 	shouldHaveNotBeenAlmostEqual    = "Expected '%v' to NOT almost equal '%v' (but it did)!"
-	shouldHaveResembled             = "Expected: '%#v'\nActual:   '%#v'\n(Should resemble)!"
-	shouldHaveResembledTypeMismatch = "Expected: '%#v'\nActual:   '%#v'\n(Type mismatch: '%T' vs '%T')!"
+	shouldHaveResembled             = "Expected: '%s'\nActual:   '%s'\n(Should resemble)!"
 	shouldNotHaveResembled          = "Expected        '%#v'\nto NOT resemble '%#v'\n(but it did)!"
 	shouldBePointers                = "Both arguments should be pointers "
 	shouldHaveBeenNonNilPointer     = shouldBePointers + "(the %s was %s)!"
@@ -34,11 +34,17 @@ const ( // quantity comparisons
 const ( // collections
 	shouldHaveContained            = "Expected the container (%v) to contain: '%v' (but it didn't)!"
 	shouldNotHaveContained         = "Expected the container (%v) NOT to contain: '%v' (but it did)!"
-	shouldHaveBeenIn               = "Expected '%v' to be in the container (%v, but it wasn't)!"
-	shouldNotHaveBeenIn            = "Expected '%v' NOT to be in the container (%v, but it was)!"
+	shouldHaveContainedKey         = "Expected the %v to contain the key: %v (but it didn't)!"
+	shouldNotHaveContainedKey      = "Expected the %v NOT to contain the key: %v (but it did)!"
+	shouldHaveBeenIn               = "Expected '%v' to be in the container (%v), but it wasn't!"
+	shouldNotHaveBeenIn            = "Expected '%v' NOT to be in the container (%v), but it was!"
 	shouldHaveBeenAValidCollection = "You must provide a valid container (was %v)!"
+	shouldHaveBeenAValidMap        = "You must provide a valid map type (was %v)!"
 	shouldHaveBeenEmpty            = "Expected %+v to be empty (but it wasn't)!"
 	shouldNotHaveBeenEmpty         = "Expected %+v to NOT be empty (but it was)!"
+	shouldHaveBeenAValidInteger    = "You must provide a valid integer (was %v)!"
+	shouldHaveBeenAValidLength     = "You must provide a valid positive integer (was %v)!"
+	shouldHaveHadLength            = "Expected %+v (length: %v) to have length equal to '%v', but it wasn't!"
 )
 
 const ( // strings
@@ -46,6 +52,7 @@ const ( // strings
 	shouldNotHaveStartedWith        = "Expected          '%v'\nNOT to start with '%v'\n(but it did)!"
 	shouldHaveEndedWith             = "Expected    '%v'\nto end with '%v'\n(but it didn't)!"
 	shouldNotHaveEndedWith          = "Expected        '%v'\nNOT to end with '%v'\n(but it did)!"
+	shouldAllBeStrings              = "All arguments to this assertion must be strings (you provided: %v)."
 	shouldBothBeStrings             = "Both arguments to this assertion must be strings (you provided %v and %v)."
 	shouldBeString                  = "The argument to this assertion must be a string (you provided %v)."
 	shouldHaveContainedSubstring    = "Expected '%s' to contain substring '%s' (but it didn't)!"
@@ -70,6 +77,9 @@ const ( // type checking
 	shouldNotHaveImplemented          = "Expected         '%v'\nto NOT implement '%v'\n(but it did)!"
 	shouldCompareWithInterfacePointer = "The expected value must be a pointer to an interface type (eg. *fmt.Stringer)"
 	shouldNotBeNilActual              = "The actual value was 'nil' and should be a value or a pointer to a value!"
+
+	shouldBeError                       = "Expected an error value (but was '%v' instead)!"
+	shouldBeErrorInvalidComparisonValue = "The final argument to this assertion must be a string or an error value (you provided: '%v')."
 )
 
 const ( // time comparisons
