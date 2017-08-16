@@ -1,3 +1,7 @@
+# v0.3.0 (pending)
+
+* Provider updated to use [cyberark/conjur-api-go](https://github.com/cyberark/conjur-api-go). This provides compatibility with [cyberark/conjur](https://github.com/cyberark/conjur), Conjur 5 CE. PR [#13](https://github.com/cyberark/summon-conjur/pull/13).
+
 # v0.2.0
 * `CONJUR_SSL_CERTIFICATE` can now be passed (content of cert file) [#3](https://github.com/conjurinc/summon-conjur/issues/3)
 * netrc file is now only read if required [#4](https://github.com/conjurinc/summon-conjur/issues/4)

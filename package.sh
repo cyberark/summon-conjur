@@ -11,9 +11,9 @@ pushd output
 for binary_name in $GLOB; do
   pushd dist
 
-  cp ../$binary_name summon && \
-  tar -cvzf $binary_name.tar.gz summon && \
-  rm -f summon
+  cp ../$binary_name summon-conjur && \
+  tar -cvzf $binary_name.tar.gz summon-conjur && \
+  rm -f summon-conjur
 
   popd
 done
