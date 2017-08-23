@@ -1,6 +1,6 @@
 # summon-conjur
 
-Conjur provider for [Summon](https://cyberark.github.io/summon/).
+Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 **Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
 
@@ -21,7 +21,7 @@ $ summon-conjur prod/aws/iam/user/robot/access_key_id
 
 ## Usage as a provider for Summon
 
-[Summon](https://cyberark.github.io/summon/) is a command-line tool that reads a file in secrets.yml format and injects secrets as environment variables into any process. Once the process exits, the secrets are gone.
+[Summon](https://github.com/cyberark/summon/) is a command-line tool that reads a file in secrets.yml format and injects secrets as environment variables into any process. Once the process exits, the secrets are gone.
 
 *Example*
 
