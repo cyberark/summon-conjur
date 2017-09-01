@@ -1,28 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"github.com/cyberark/conjur-api-go/conjurapi"
 )
 
 func RetrieveSecret(variableName string) {
-	config := &conjurapi.Config{}
-	conjurapi.LoadFromEnv(config)
+	config := conjurapi.LoadConfig()
 
-	var (
-		conjur *conjurapi.Client
-		err error
-	)
-
-	if TokenFile := os.Getenv("CONJUR_AUTHN_TOKEN_FILE"); TokenFile != "" {
-		conjur, err = conjurapi.NewClientFromTokenFile(*config, TokenFile)
-	} else if Login, APIKey := os.Getenv("CONJUR_AUTHN_LOGIN"), os.Getenv("CONJUR_AUTHN_API_KEY"); Login != "" && APIKey != "" {
-		conjur, err = conjurapi.NewClientFromKey(*config, Login, APIKey)
-	} else {
-		fmt.Println("Environment variables satisfying at least one authentication strategy must be provided!")
-		os.Exit(-1)
-	}
+	conjur, err := conjurapi.NewClientFromEnvironment(config)
 
 	if err != nil {
 		printAndExit(err)
@@ -33,12 +19,13 @@ func RetrieveSecret(variableName string) {
 		printAndExit(err)
 	}
 
-	fmt.Print(value)
+	os.Stdout.Write([]byte(value))
+
 }
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Println("A variable name must be given as the first and only argument!")
+		os.Stderr.Write([]byte("A variable name must be given as the first and only argument!"))
 		os.Exit(-1)
 	}
 	variableName := os.Args[1]
@@ -47,6 +34,6 @@ func main() {
 }
 
 func printAndExit(err error) {
-	fmt.Println(err.Error())
+	os.Stderr.Write([]byte(err.Error()))
 	os.Exit(1)
 }
