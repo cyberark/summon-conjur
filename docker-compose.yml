@@ -15,7 +15,7 @@ services:
     image: postgres:9.3
 
   conjur:
-    image: registry.tld/possum:0.1.0-stable
+    image: cyberark/conjur:0.1.0-stable
     command: server -a cucumber
     environment:
       DATABASE_URL: postgres://postgres@postgres/postgres
@@ -27,13 +27,13 @@ services:
     build: .
     image: summon-conjur-tester
     ports:
-        - "8080:8080"
+        - "8080"
     depends_on:
       - conjur
     entrypoint: /bin/bash
     command: './test-entrypoint.sh'
     volumes:
-      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+      - .:/go/src/github.com/cyberark/summon-conjur
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
       CONJUR_ACCOUNT: cucumber

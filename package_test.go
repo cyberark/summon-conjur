@@ -10,15 +10,26 @@ import (
 	"github.com/cyberark/conjur-api-go/conjurapi"
 	"math/rand"
 	"io/ioutil"
+	"bytes"
 )
+
+func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
+	cmd := exec.Command(name, arg...)
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+	err := cmd.Run()
+	return stdout, stderr, err
+}
 
 func WithoutArgs()  {
 	Convey("Given summon-conjur is run with no arguments", func() {
-		out, err := exec.Command(PackageName).Output()
+		_, stderr, err := RunCommand(PackageName)
 
 		Convey("Returns with error", func() {
 			So(err, ShouldNotBeNil)
-			So(string(out), ShouldEqual, "A variable name must be given as the first and only argument!\n")
+			So(stderr.String(), ShouldEqual, "A variable name must be given as the first and only argument!")
 		})
 	})
 }
@@ -70,7 +81,7 @@ func TestPackage(t *testing.T) {
 						ApplianceURL: ApplianceURL,
 						Account: Account,
 					}
-					conjur, _ := conjurapi.NewClientFromKey(config, Login, APIKey)
+					conjur, _ := conjurapi.NewClientFromKey(config, conjurapi.LoginPair{Login, APIKey})
 
 					conjur.LoadPolicy(
 						"root",
@@ -83,19 +94,19 @@ func TestPackage(t *testing.T) {
 
 					conjur.AddSecret(variableIdentifier, secretValue)
 
-					out, err := exec.Command(PackageName, variableIdentifier).Output()
+					stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldBeNil)
-					So(string(out), ShouldEqual, secretValue)
+					So(stdout.String(), ShouldEqual, secretValue)
 				})
 
 				Convey("Returns 404 on non-existent variable", func() {
 					variableIdentifier := "non-existent-variable"
 
-					out, err := exec.Command(PackageName, variableIdentifier).Output()
+					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldNotBeNil)
-					So(string(out), ShouldContainSubstring, "404")
+					So(stderr.String(), ShouldContainSubstring, "404")
 				})
 
 				Convey("Given a non-existent Login is set", func() {
@@ -104,10 +115,10 @@ func TestPackage(t *testing.T) {
 					Convey("Returns 401", func() {
 						variableIdentifier := "existent-or-non-existent-variable"
 
-						out, err := exec.Command(PackageName, variableIdentifier).Output()
+						_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 						So(err, ShouldNotBeNil)
-						So(string(out), ShouldContainSubstring, "401")
+						So(stderr.String(), ShouldContainSubstring, "401")
 					})
 				})
 			})
@@ -118,20 +129,21 @@ func TestPackage(t *testing.T) {
 token=$(curl --data "%s" "$CONJUR_APPLIANCE_URL/authn/$CONJUR_ACCOUNT/%s/authenticate")
 echo $token
 `, APIKey, Login)
-				out, err := exec.Command("bash", "-c", getToken).Output()
+				stdout, _, err := RunCommand("bash", "-c", getToken)
 
 				So(err, ShouldBeNil)
-				So(string(out), ShouldContainSubstring, "data")
+				So(stdout.String(), ShouldContainSubstring, "data")
 
-				tokenFile :=	"/tmp/existent-token-file"
-				tokenFileContents := string(out)
-				os.Remove(tokenFile)
+				tokenFile, _ := ioutil.TempFile("", "existent-token-file")
+				tokenFileName := tokenFile.Name()
+				tokenFileContents := stdout.String()
+				os.Remove(tokenFileName)
 				go func() {
-					ioutil.WriteFile(tokenFile, []byte(tokenFileContents), 0644)
+					ioutil.WriteFile(tokenFileName, []byte(tokenFileContents), 0600)
 				}()
-				defer os.Remove(tokenFile)
+				defer os.Remove(tokenFileName)
 
-				os.Setenv("CONJUR_AUTHN_TOKEN_FILE", tokenFile)
+				os.Setenv("CONJUR_AUTHN_TOKEN_FILE", tokenFileName)
 
 				WithoutArgs()
 
@@ -146,7 +158,7 @@ echo $token
 						ApplianceURL: ApplianceURL,
 						Account: Account,
 					}
-					conjur, _ := conjurapi.NewClientFromKey(config, Login, APIKey)
+					conjur, _ := conjurapi.NewClientFromKey(config, conjurapi.LoginPair{Login, APIKey})
 
 					conjur.LoadPolicy(
 						"root",
@@ -159,19 +171,19 @@ echo $token
 
 					conjur.AddSecret(variableIdentifier, secretValue)
 
-					out, err := exec.Command(PackageName, variableIdentifier).Output()
+					stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldBeNil)
-					So(string(out), ShouldEqual, secretValue)
+					So(stdout.String(), ShouldEqual, secretValue)
 				})
 
 				Convey("Returns 404 on non-existent variable", func() {
 					variableIdentifier := "non-existent-variable"
 
-					out, err := exec.Command(PackageName, variableIdentifier).Output()
+					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldNotBeNil)
-					So(string(out), ShouldContainSubstring, "404")
+					So(stderr.String(), ShouldContainSubstring, "404")
 				})
 
 				Convey("Given a non-existent TokenFile is set", func() {
@@ -180,10 +192,10 @@ echo $token
 					Convey("Returns with timed out error", func() {
 						variableIdentifier := "existent-or-non-existent-variable"
 
-						out, err := exec.Command(PackageName, variableIdentifier).Output()
+						_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 						So(err, ShouldNotBeNil)
-						So(string(out), ShouldContainSubstring, "timed out")
+						So(stderr.String(), ShouldContainSubstring, "timed out")
 					})
 				})
 			})
@@ -195,10 +207,10 @@ echo $token
 				Convey("Returns with on non-existent variable", func() {
 					variableIdentifier := "existent-or-non-existent-variable"
 
-					out, err := exec.Command(PackageName, variableIdentifier).Output()
+					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldNotBeNil)
-					So(string(out), ShouldContainSubstring, "at least one authentication strategy")
+					So(stderr.String(), ShouldContainSubstring, "at least one authentication strategy")
 				})
 			})
 		})
