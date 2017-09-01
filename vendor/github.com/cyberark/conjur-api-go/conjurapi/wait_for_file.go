@@ -20,7 +20,7 @@ func waitForTextFile(fileName string, timeout <-chan time.Time) ([]byte, error) 
 			break waiting_loop
 		default:
 			if _, err := os.Stat(fileName); os.IsNotExist(err) {
-				time.Sleep(1 * time.Second)
+				time.Sleep(100 * time.Millisecond)
 			} else {
 				fileBytes, err = ioutil.ReadFile(fileName)
 				break waiting_loop

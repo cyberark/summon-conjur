@@ -10,7 +10,7 @@ import (
 
 func (c *Client) generateVariableUrl(varId string) string {
 	escapedVarId := url.QueryEscape(varId)
-	return fmt.Sprintf("%s/secrets/%s/variable/%s", c.config.ApplianceURL, c.config.Account, escapedVarId)
+	return fmt.Sprintf("%s/secrets/%s/variable/%s", c.config.BaseURL(), c.config.Account, escapedVarId)
 }
 
 func (c *Client) RetrieveSecret(variableIdentifier string) (string, error) {
@@ -29,16 +29,16 @@ func (c *Client) RetrieveSecret(variableIdentifier string) (string, error) {
 		return "", err
 	}
 
-	resp, err := c.httpclient.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return "", err
 	}
 
 	switch resp.StatusCode {
 	case 404:
-		return "", fmt.Errorf("%v: Variable '%s' not found\n", resp.StatusCode, variableIdentifier)
+		return "", fmt.Errorf("%v: Variable '%s' not found", resp.StatusCode, variableIdentifier)
 	case 403:
-		return "", fmt.Errorf("%v: Invalid permissions on '%s'\n", resp.StatusCode, variableIdentifier)
+		return "", fmt.Errorf("%v: Invalid permissions on '%s'", resp.StatusCode, variableIdentifier)
 	case 200:
 		body, err := ioutil.ReadAll(resp.Body)
 		defer resp.Body.Close()
@@ -47,7 +47,7 @@ func (c *Client) RetrieveSecret(variableIdentifier string) (string, error) {
 		}
 		return string(body), nil
 	default:
-		return "", fmt.Errorf("%v: %s\n", resp.StatusCode, resp.Status)
+		return "", fmt.Errorf("%v: %s", resp.StatusCode, resp.Status)
 	}
 }
 
@@ -67,19 +67,19 @@ func (c *Client) AddSecret(variableIdentifier string, secretValue string) (error
 		return err
 	}
 
-	resp, err := c.httpclient.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return err
 	}
 
 	switch resp.StatusCode {
 	case 404:
-		return fmt.Errorf("%v: Variable '%s' not found\n", resp.StatusCode, variableIdentifier)
+		return fmt.Errorf("%v: Variable '%s' not found", resp.StatusCode, variableIdentifier)
 	case 403:
-		return fmt.Errorf("%v: Invalid permissions on '%s'\n", resp.StatusCode, variableIdentifier)
+		return fmt.Errorf("%v: Invalid permissions on '%s'", resp.StatusCode, variableIdentifier)
 	case 201:
 		return nil
 	default:
-		return fmt.Errorf("%v: %s\n", resp.StatusCode, resp.Status)
+		return fmt.Errorf("%v: %s", resp.StatusCode, resp.Status)
 	}
 }
