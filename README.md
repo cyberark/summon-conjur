@@ -47,7 +47,7 @@ AWS_SECRET_ACCESS_KEY=A23MSKSKSJASHDIWM
 ```
 
 `summon` resolves the entries in secrets.yml with the conjur provider and makes the secret values available to the environment of the command `env`.
- 
+
 ## Configuration
 
 This provider uses the same configuration pattern as the [Conjur CLI
