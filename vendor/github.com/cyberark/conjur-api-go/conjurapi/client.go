@@ -40,7 +40,7 @@ func NewClientFromTokenFile(config Config, tokenFile string) (*Client, error) {
 		config,
 		&authn.TokenFileAuthenticator{
 			TokenFile: tokenFile,
-			MaxWaitTime: time.Second*10,
+			MaxWaitTime: -1,
 		},
 	)
 }

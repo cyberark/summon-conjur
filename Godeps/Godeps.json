@@ -9,19 +9,19 @@
 		},
 		{
 			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi",
-			"Rev": "a2ef28ee3dd42a75f97553fe7479f2d8386a5151"
+			"Rev": "f932533bab1fad1ffeab0abfd066ab1e4d169fdc"
 		},
 		{
 			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi/authn",
-			"Rev": "a2ef28ee3dd42a75f97553fe7479f2d8386a5151"
+			"Rev": "f932533bab1fad1ffeab0abfd066ab1e4d169fdc"
 		},
 		{
 			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi/wrapper",
-			"Rev": "a2ef28ee3dd42a75f97553fe7479f2d8386a5151"
+			"Rev": "f932533bab1fad1ffeab0abfd066ab1e4d169fdc"
 		},
 		{
 			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi/wrapper_v4",
-			"Rev": "a2ef28ee3dd42a75f97553fe7479f2d8386a5151"
+			"Rev": "f932533bab1fad1ffeab0abfd066ab1e4d169fdc"
 		},
 		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",

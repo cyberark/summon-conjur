@@ -12,6 +12,7 @@ import (
 	"math/rand"
 	"io/ioutil"
 	"bytes"
+	"time"
 )
 
 func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
@@ -188,15 +189,24 @@ echo $token
 				})
 
 				Convey("Given a non-existent TokenFile is set", func() {
-					os.Setenv("CONJUR_AUTHN_TOKEN_FILE", "non-existent-user")
+					os.Setenv("CONJUR_AUTHN_TOKEN_FILE", "non-existent-token-file")
 
-					Convey("Returns with timed out error", func() {
-						variableIdentifier := "existent-or-non-existent-variable"
+					Convey("Waits for longer than a second", func() {
+						timeout := time.After(1 * time.Second)
+						unexpected_response := make(chan int)
 
-						_, stderr, err := RunCommand(PackageName, variableIdentifier)
+						go func() {
+							variableIdentifier := "existent-or-non-existent-variable"
+							RunCommand(PackageName, variableIdentifier)
+							unexpected_response <- 1
+						}()
 
-						So(err, ShouldNotBeNil)
-						So(stderr.String(), ShouldContainSubstring, "timed out")
+						select {
+						case <- unexpected_response:
+							So("receive unexpected response", ShouldEqual, "not receive unexpected response")
+						case <- timeout:
+							So(true, ShouldEqual, true)
+						}
 					})
 				})
 			})
@@ -205,7 +215,7 @@ echo $token
 
 				WithoutArgs()
 
-				Convey("Returns with on non-existent variable", func() {
+				Convey("Returns with error on non-existent variable", func() {
 					variableIdentifier := "existent-or-non-existent-variable"
 
 					_, stderr, err := RunCommand(PackageName, variableIdentifier)

@@ -13,10 +13,14 @@ type TokenFileAuthenticator struct {
 
 func (a *TokenFileAuthenticator) RefreshToken() ([]byte, error) {
 	maxWaitTime := a.MaxWaitTime
-	if maxWaitTime == 0 {
-		maxWaitTime = 10 * time.Millisecond
+	var timeout <- chan time.Time
+	if maxWaitTime == -1 {
+		timeout = nil
+	} else {
+		timeout = time.After(a.MaxWaitTime)
 	}
-	bytes, err := waitForTextFile(a.TokenFile, time.After(a.MaxWaitTime))
+
+	bytes, err := waitForTextFile(a.TokenFile, timeout)
 	if err == nil {
 		fi, _ := os.Stat(a.TokenFile)
 		a.mTime = fi.ModTime()
