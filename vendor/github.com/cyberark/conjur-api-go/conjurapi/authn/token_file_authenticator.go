@@ -1,4 +1,4 @@
-package conjurapi
+package authn
 
 import (
 	"time"

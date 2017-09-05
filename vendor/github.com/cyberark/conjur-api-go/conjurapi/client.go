@@ -8,6 +8,7 @@ import (
 	"crypto/tls"
 	"os"
 	"github.com/bgentry/go-netrc/netrc"
+	"github.com/cyberark/conjur-api-go/conjurapi/authn"
 )
 
 type Authenticator interface {
@@ -17,13 +18,13 @@ type Authenticator interface {
 
 type Client struct {
 	config        Config
-	authToken     AuthnToken
+	authToken     authn.AuthnToken
 	httpClient    *http.Client
 	authenticator Authenticator
 }
 
-func NewClientFromKey(config Config, loginPair LoginPair) (*Client, error) {
-	authenticator := &APIKeyAuthenticator{
+func NewClientFromKey(config Config, loginPair authn.LoginPair) (*Client, error) {
+	authenticator := &authn.APIKeyAuthenticator{
 		LoginPair: loginPair,
 	}
 	client, err := newClientWithAuthenticator(
@@ -37,21 +38,21 @@ func NewClientFromKey(config Config, loginPair LoginPair) (*Client, error) {
 func NewClientFromTokenFile(config Config, tokenFile string) (*Client, error) {
 	return newClientWithAuthenticator(
 		config,
-		&TokenFileAuthenticator{
+		&authn.TokenFileAuthenticator{
 			TokenFile: tokenFile,
 			MaxWaitTime: time.Second*10,
 		},
 	)
 }
 
-func LoginPairFromEnv() (*LoginPair, error) {
-	return &LoginPair{
+func LoginPairFromEnv() (*authn.LoginPair, error) {
+	return &authn.LoginPair{
 		Login: os.Getenv("CONJUR_AUTHN_LOGIN"),
 		APIKey: os.Getenv("CONJUR_AUTHN_API_KEY"),
 	}, nil
 }
 
-func LoginPairFromNetRC(config Config) (*LoginPair, error) {
+func LoginPairFromNetRC(config Config) (*authn.LoginPair, error) {
 	if config.NetRCPath == "" {
 		config.NetRCPath = os.ExpandEnv("$HOME/.netrc")
 	}
@@ -67,7 +68,7 @@ func LoginPairFromNetRC(config Config) (*LoginPair, error) {
 		return nil, fmt.Errorf("No credentials found in NetRCPath")
 	}
 
-	return &LoginPair{Login: m.Login, APIKey: m.Password}, nil
+	return &authn.LoginPair{Login: m.Login, APIKey: m.Password}, nil
 }
 
 func NewClientFromEnvironment(config Config) (*Client, error) {

@@ -1,18 +1,17 @@
 package conjurapi
 
 import (
-	"fmt"
 	"net/http"
 	"encoding/json"
 	"time"
-	"net/url"
-	"strings"
-	"io/ioutil"
+	"github.com/cyberark/conjur-api-go/conjurapi/authn"
+	"github.com/cyberark/conjur-api-go/conjurapi/wrapper"
+	"github.com/cyberark/conjur-api-go/conjurapi/wrapper_v4"
 )
 
 func (c *Client) RefreshToken() (error) {
 	var (
-		token AuthnToken
+		token authn.AuthnToken
 		err error
 	)
 
@@ -38,36 +37,32 @@ func (c *Client) createAuthRequest(req *http.Request) (error) {
 		return err
 	}
 
-	req.Header.Set(
-		"Authorization",
-		fmt.Sprintf("Token token=\"%s\"", c.authToken.Base64encoded),
-	)
+	wrapper.SetRequestAuthorization(req, c.authToken.Base64encoded)
 
 	return nil
 }
 
-func (c *Client) Authenticate(loginPair LoginPair) ([]byte, error) {
-	resp, err := c.httpClient.Post(
-		fmt.Sprintf("%s/authn/%s/%s/authenticate", c.config.BaseURL(), c.config.Account, url.QueryEscape(loginPair.Login)),
-		"text/plain",
-		strings.NewReader(loginPair.APIKey),
-	)
+func (c *Client) Authenticate(loginPair authn.LoginPair) ([]byte, error) {
+	req, err := wrapper.AuthenticateRequest(c.config.ApplianceURL, c.config.Account, loginPair)
+	if c.config.V4 {
+		req, err = wrapper_v4.AuthenticateRequest(c.config.ApplianceURL, loginPair)
+	} else {
+		req, err = wrapper.AuthenticateRequest(c.config.ApplianceURL, c.config.Account, loginPair)
+	}
+
 	if err != nil {
 		return nil, err
 	}
 
-	switch resp.StatusCode {
-	case 200:
-		defer resp.Body.Close()
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
 
-		var tokenPayload []byte
-		tokenPayload, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return nil, err
-		}
 
-		return tokenPayload, err
-	default:
-		return nil, fmt.Errorf("%v: %s", resp.StatusCode, resp.Status)
+	if c.config.V4 {
+		return wrapper_v4.AuthenticateResponse(resp)
+	} else {
+		return wrapper.AuthenticateResponse(resp)
 	}
 }

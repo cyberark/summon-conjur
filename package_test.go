@@ -8,6 +8,7 @@ import (
 	"strings"
 	"fmt"
 	"github.com/cyberark/conjur-api-go/conjurapi"
+	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
 	"math/rand"
 	"io/ioutil"
 	"bytes"
@@ -81,7 +82,7 @@ func TestPackage(t *testing.T) {
 						ApplianceURL: ApplianceURL,
 						Account: Account,
 					}
-					conjur, _ := conjurapi.NewClientFromKey(config, conjurapi.LoginPair{Login, APIKey})
+					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
 
 					conjur.LoadPolicy(
 						"root",
@@ -158,7 +159,7 @@ echo $token
 						ApplianceURL: ApplianceURL,
 						Account: Account,
 					}
-					conjur, _ := conjurapi.NewClientFromKey(config, conjurapi.LoginPair{Login, APIKey})
+					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
 
 					conjur.LoadPolicy(
 						"root",

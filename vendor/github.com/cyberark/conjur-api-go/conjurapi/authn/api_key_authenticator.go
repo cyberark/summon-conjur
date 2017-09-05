@@ -1,4 +1,4 @@
-package conjurapi
+package authn
 
 type APIKeyAuthenticator struct {
 	Authenticate func (loginPair LoginPair) ([]byte, error)
