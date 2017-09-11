@@ -37,12 +37,8 @@ func WithoutArgs()  {
 }
 
 const PackageName = "summon-conjur"
+
 func TestPackage(t *testing.T) {
-
-	if os.Getenv("TEST_PACKAGE") == "" {
-		return
-	}
-
 	Convey("Given a compiled summon-conjur package", t, func() {
 		ApplianceURL := os.Getenv("CONJUR_APPLIANCE_URL")
 		Account := os.Getenv("CONJUR_ACCOUNT")

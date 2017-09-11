@@ -39,4 +39,3 @@ services:
       CONJUR_ACCOUNT: cucumber
       CONJUR_AUTHN_API_KEY:
       CONJUR_AUTHN_LOGIN: admin
-      TEST_PACKAGE: 'TRUE'
