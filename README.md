@@ -16,7 +16,7 @@ Download the [latest release](https://github.com/cyberark/summon-conjur/releases
 Give summon-conjur a variable name and it will fetch it for you and print the value to stdout.
 
 ```sh-session
-$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 appliance 
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 
 $ summon-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
