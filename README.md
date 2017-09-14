@@ -3,7 +3,8 @@
 Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 **Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
-**Note** Set environment variable `CONJUR_MAJOR_VERSION=4` for this provider to work with Conjur v4.9.
+
+**Note** You **must** set environment variable `CONJUR_MAJOR_VERSION=4` for this provider to work with Conjur v4.9.
 
 ## Install
 
