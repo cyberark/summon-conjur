@@ -23,6 +23,14 @@ services:
     depends_on:
       - postgres
 
+  cuke-master:
+    container_name: summon-conjur-v4
+    image: registry.tld/conjur-appliance-cuke-master:4.9-stable
+    security_opt:
+      - seccomp:unconfined # --security-opt seccomp=unconfined
+    ports:
+      - 443
+
   tester:
     build: .
     image: summon-conjur-tester
@@ -37,5 +45,9 @@ services:
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
       CONJUR_ACCOUNT: cucumber
-      CONJUR_AUTHN_API_KEY:
       CONJUR_AUTHN_LOGIN: admin
+      CONJUR_AUTHN_API_KEY:
+      CONJUR_V4_APPLIANCE_URL: https://cuke-master/api
+      CONJUR_V4_HEALTH_URL: https://cuke-master/health
+      CONJUR_V4_ACCOUNT: cucumber
+      CONJUR_V4_AUTHN_LOGIN: admin
