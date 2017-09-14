@@ -3,6 +3,7 @@
 Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 **Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
+**Note** Set environment variable `CONJUR_MAJOR_VERSION=4` for this provider to work with Conjur v4.9.
 
 ## Install
 
@@ -15,6 +16,7 @@ Download the [latest release](https://github.com/cyberark/summon-conjur/releases
 Give summon-conjur a variable name and it will fetch it for you and print the value to stdout.
 
 ```sh-session
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 appliance 
 $ summon-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
@@ -39,6 +41,7 @@ By default, summon will look for `secrets.yml` in the directory it is called fro
 Wrap the `env` in summon:
 
 ```sh
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 
 $ summon --provider summon-conjur env
 ...
 AWS_ACCESS_KEY_ID=AKIAJS34242K1123J3K43
@@ -59,6 +62,8 @@ Specifically, it loads configuration from:
  * Read `/etc/conjur.conf` as a `.conjurrc` file.
  * Read `/etc/conjur.identity` as a `netrc` file. Note that the user running must either be in the group `conjur` or root to read the identity file.
  * Environment variables:
+   * Version
+    * `CONJUR_MAJOR_VERSION` - must be set to `4` in order for summon-conjur to work with Conjur v4.9.
    * Appliance URLs
      * `CONJUR_APPLIANCE_URL`
      * `CONJUR_CORE_URL`
@@ -81,6 +86,7 @@ you need to specify, for example, an authn proxy.
 
 The provider will fail unless all of the following values are provided:
 
+ * `CONJUR_MAJOR_VERSION=4` for Conjur v4.9
  * An appliance url
  * An organisation account
  * A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
