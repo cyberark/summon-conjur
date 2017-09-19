@@ -1,4 +1,4 @@
-package conjurapi
+package authn
 
 import (
 	"time"
@@ -8,10 +8,19 @@ import (
 type TokenFileAuthenticator struct {
 	TokenFile string `env:"CONJUR_AUTHN_TOKEN_FILE"`
 	mTime time.Time
+	MaxWaitTime time.Duration
 }
 
 func (a *TokenFileAuthenticator) RefreshToken() ([]byte, error) {
-	bytes, err := waitForTextFile(a.TokenFile, time.After(time.Second*10))
+	maxWaitTime := a.MaxWaitTime
+	var timeout <- chan time.Time
+	if maxWaitTime == -1 {
+		timeout = nil
+	} else {
+		timeout = time.After(a.MaxWaitTime)
+	}
+
+	bytes, err := waitForTextFile(a.TokenFile, timeout)
 	if err == nil {
 		fi, _ := os.Stat(a.TokenFile)
 		a.mTime = fi.ModTime()

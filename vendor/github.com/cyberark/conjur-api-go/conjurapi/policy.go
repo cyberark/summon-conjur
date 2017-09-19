@@ -1,45 +1,26 @@
 package conjurapi
 
 import (
-	"fmt"
-	"io/ioutil"
-	"net/http"
 	"io"
+	"github.com/cyberark/conjur-api-go/conjurapi/wrapper"
 )
 
-func (c *Client) LoadPolicy(policyIdentifier string, policy io.Reader) (string, error) {
-	policyUrl := fmt.Sprintf("%s/policies/%s/policy/%s", c.config.ApplianceURL, c.config.Account, policyIdentifier)
-	req, err := http.NewRequest(
-		"PUT",
-		policyUrl,
-		policy,
-	)
+func (c *Client) LoadPolicy(policyIdentifier string, policy io.Reader) ([]byte, error) {
+
+	req, err := wrapper.LoadPolicyRequest(c.config.ApplianceURL, c.config.Account, policyIdentifier, policy)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	err = c.createAuthRequest(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	resp, err := c.httpclient.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	switch resp.StatusCode {
-	case 201:
-		defer resp.Body.Close()
-
-		var responseText []byte
-		responseText, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return "", err
-		}
-
-		return string(responseText), err
-	default:
-		return "", fmt.Errorf("%v: %s\n", resp.StatusCode, resp.Status)
-	}
+	return wrapper.LoadPolicyResponse(resp)
 }

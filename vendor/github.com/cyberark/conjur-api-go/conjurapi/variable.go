@@ -1,85 +1,59 @@
 package conjurapi
 
 import (
-	"net/url"
-	"fmt"
+	"github.com/cyberark/conjur-api-go/conjurapi/wrapper"
 	"net/http"
-	"io/ioutil"
-	"strings"
+	"github.com/cyberark/conjur-api-go/conjurapi/wrapper_v4"
 )
 
-func (c *Client) generateVariableUrl(varId string) string {
-	escapedVarId := url.QueryEscape(varId)
-	return fmt.Sprintf("%s/secrets/%s/variable/%s", c.config.ApplianceURL, c.config.Account, escapedVarId)
-}
-
-func (c *Client) RetrieveSecret(variableIdentifier string) (string, error) {
-	variableUrl := c.generateVariableUrl(variableIdentifier)
-	req, err := http.NewRequest(
-		"GET",
-		variableUrl,
-		nil,
+func (c *Client) RetrieveSecret(variableIdentifier string) ([]byte, error) {
+	var (
+		req *http.Request
+		err error
 	)
+
+	if c.config.V4 {
+		req, err = wrapper_v4.RetrieveSecretRequest(c.config.ApplianceURL, variableIdentifier)
+	} else {
+		req, err = wrapper.RetrieveSecretRequest(c.config.ApplianceURL, c.config.Account, variableIdentifier)
+	}
+
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	err = c.createAuthRequest(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	resp, err := c.httpclient.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	switch resp.StatusCode {
-	case 404:
-		return "", fmt.Errorf("%v: Variable '%s' not found\n", resp.StatusCode, variableIdentifier)
-	case 403:
-		return "", fmt.Errorf("%v: Invalid permissions on '%s'\n", resp.StatusCode, variableIdentifier)
-	case 200:
-		body, err := ioutil.ReadAll(resp.Body)
-		defer resp.Body.Close()
-		if err != nil {
-			return "", err
-		}
-		return string(body), nil
-	default:
-		return "", fmt.Errorf("%v: %s\n", resp.StatusCode, resp.Status)
+	if c.config.V4 {
+		return wrapper_v4.RetrieveSecretResponse(variableIdentifier, resp)
+	} else {
+		return wrapper.RetrieveSecretResponse(variableIdentifier, resp)
 	}
 }
 
-func (c *Client) AddSecret(variableIdentifier string, secretValue string) (error) {
-	variableUrl := c.generateVariableUrl(variableIdentifier)
-	req, err := http.NewRequest(
-		"POST",
-		variableUrl,
-		strings.NewReader(secretValue),
-	)
+func (c *Client) AddSecret(variableIdentifier string, secretValue string) ([]byte, error) {
+	req, err := wrapper.AddSecretRequest(c.config.ApplianceURL, c.config.Account, variableIdentifier, secretValue)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = c.createAuthRequest(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	resp, err := c.httpclient.Do(req)
+	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	switch resp.StatusCode {
-	case 404:
-		return fmt.Errorf("%v: Variable '%s' not found\n", resp.StatusCode, variableIdentifier)
-	case 403:
-		return fmt.Errorf("%v: Invalid permissions on '%s'\n", resp.StatusCode, variableIdentifier)
-	case 201:
-		return nil
-	default:
-		return fmt.Errorf("%v: %s\n", resp.StatusCode, resp.Status)
-	}
+	return wrapper.AddSecretResponse(variableIdentifier, resp)
 }

@@ -4,6 +4,8 @@ Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 **Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
 
+**Note** You **must** set environment variable `CONJUR_MAJOR_VERSION=4` for this provider to work with Conjur v4.9.
+
 ## Install
 
 **Note** Check the release notes and select an appropriate release to ensure support for your version of Conjur.
@@ -15,6 +17,7 @@ Download the [latest release](https://github.com/cyberark/summon-conjur/releases
 Give summon-conjur a variable name and it will fetch it for you and print the value to stdout.
 
 ```sh-session
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 
 $ summon-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
@@ -39,10 +42,11 @@ By default, summon will look for `secrets.yml` in the directory it is called fro
 Wrap the `env` in summon:
 
 ```sh
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 
 $ summon --provider summon-conjur env
 ...
-AWS_ACCESS_KEY_ID=xxxxxxxxxxxxxxxxxxx
-AWS_SECRET_ACCESS_KEY=yyyyyyyyyyyyyyyy
+AWS_ACCESS_KEY_ID=AKIAJS34242K1123J3K43
+AWS_SECRET_ACCESS_KEY=A23MSKSKSJASHDIWM
 ...
 ```
 
@@ -50,51 +54,41 @@ AWS_SECRET_ACCESS_KEY=yyyyyyyyyyyyyyyy
 
 ## Configuration
 
-This provider uses a similar configuration pattern as the [Conjur CLI
+This provider uses the same configuration pattern as the [Conjur CLI
 Client](https://github.com/conjurinc/api-ruby#configuration) to connect to Conjur.
 Specifically, it loads configuration from:
 
+ * `.conjurrc` files, located in the home and current directories, or at the
+    path specified by the `CONJURRC` environment variable.
+ * Read `/etc/conjur.conf` as a `.conjurrc` file.
+ * Read `/etc/conjur.identity` as a `netrc` file. Note that the user running must either be in the group `conjur` or root to read the identity file.
  * Environment variables:
-   * Config
+   * Version
+    * `CONJUR_MAJOR_VERSION` - must be set to `4` in order for summon-conjur to work with Conjur v4.9.
+   * Appliance URLs
      * `CONJUR_APPLIANCE_URL`
-     * `CONJUR_ACCOUNT`
+     * `CONJUR_CORE_URL`
+     * `CONJUR_AUTHN_URL`
+   * SSL certificate
+     * `CONJUR_CERT_FILE`
+     * `CONJUR_SSL_CERTIFICATE`
    * Authentication
-     * `CONJUR_AUTHN_LOGIN`
-     * `CONJUR_AUTHN_API_KEY`
-     * `CONJUR_AUTHN_TOKEN_FILE`
+     * Login
+       * `CONJUR_AUTHN_LOGIN`
+       * `CONJUR_AUTHN_API_KEY`
+     * Token
+       * `CONJUR_AUTHN_TOKEN`
+       * `CONJUR_AUTHN_TOKEN_FILE`
+
+If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE` are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
+
+In general, you can ignore the `CONJUR_CORE_URL` and `CONJUR_AUTHN_URL` unless
+you need to specify, for example, an authn proxy.
 
 The provider will fail unless all of the following values are provided:
 
+ * `CONJUR_MAJOR_VERSION=4` for Conjur v4.9
  * An appliance url
  * An organisation account
- * A username and api key, or Conjur authn token file
- 
-### Extract environment variables from machine identity files
- 
-Previous versions of summon-conjur support loading configuration from [machine identity files](https://developer.conjur.net/key_concepts/machine_identity.html#storage-files). While that support is not available in this release, it is relatively straight-forward to extract the relevant environment variables from the machine identity files.
- 
-```bash
-CONJUR_IDENTITY_PATH=/etc/conjur.conf
-export CONJUR_ACCOUNT=$(awk '/account:/ {print $2}' $CONJUR_IDENTITY_PATH)
-export CONJUR_APPLIANCE_URL=$(awk '/appliance_url:/ {print $2}' $CONJUR_IDENTITY_PATH)
-CONJUR_NETRC_PATH=$(awk '/netrc_path:/ {print $2}' $CONJUR_IDENTITY_PATH)
-: ${CONJUR_NETRC_PATH:="/etc/conjur.identity"}
-```
-#### Extract Login Strategy Credentials
-```bash
-export CONJUR_AUTHN_LOGIN=$(awk -v CONJUR_APPLIANCE_URL=$CONJUR_APPLIANCE_URL '$0 ~ CONJUR_APPLIANCE_URL {f=1} f && /login/ {print $2;f=0}' $CONJUR_NETRC_PATH)
-export CONJUR_AUTHN_API_KEY=$(awk -v CONJUR_APPLIANCE_URL=$CONJUR_APPLIANCE_URL '$0 ~ CONJUR_APPLIANCE_URL {f=1} f && /password/ {print $2;f=0}' $CONJUR_NETRC_PATH)
-```
-
-#### Extract Token File Strategy Credentials
-```bash
-function finish {
-    echo "Cleaning up..."
-    kill $CONJUR_AUTHN_TOKEN_FILE_PID
-    echo "All done."
-}
-trap finish EXIT
-while true; do echo $(conjur authn authenticate) > /tmp/CONJUR_AUTHN_TOKEN_FILE ; sleep 2; done &
-export CONJUR_AUTHN_TOKEN_FILE_PID=$!
-export CONJUR_AUTHN_TOKEN_FILE=/tmp/CONJUR_AUTHN_TOKEN_FILE
-```
+ * A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
+ * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate

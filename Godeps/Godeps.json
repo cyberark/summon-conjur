@@ -4,12 +4,28 @@
 	"GodepVersion": "v79",
 	"Deps": [
 		{
+			"ImportPath": "github.com/bgentry/go-netrc/netrc",
+			"Rev": "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
+		},
+		{
 			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi",
-			"Rev": "e7bec82d5173eadb273e9f4c2b7a6117c0f70f7d"
+			"Rev": "7bce508a924d514743cb1bf62e8521252e328aef"
+		},
+		{
+			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi/authn",
+			"Rev": "7bce508a924d514743cb1bf62e8521252e328aef"
+		},
+		{
+			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi/wrapper",
+			"Rev": "7bce508a924d514743cb1bf62e8521252e328aef"
+		},
+		{
+			"ImportPath": "github.com/cyberark/conjur-api-go/conjurapi/wrapper_v4",
+			"Rev": "7bce508a924d514743cb1bf62e8521252e328aef"
 		},
 		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
-			"Rev": "2b1d432c8a82c9bff0b0baffaeb3ec6e92974112"
+			"Rev": "f7c56533adfac99e12ccdccfec04a466d2a778da"
 		},
 		{
 			"ImportPath": "github.com/jtolds/gls",
@@ -18,37 +34,37 @@
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions",
-			"Comment": "1.6.0-36-g1540c14",
-			"Rev": "1540c14c9f1bd1abeba90f29762a4c6e50582303"
+			"Comment": "1.7.0",
+			"Rev": "9c0ea8acbc1d8ad689f9e6fe0c1fa5838e0cabc2"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions/internal/go-render/render",
-			"Comment": "1.6.0-36-g1540c14",
-			"Rev": "1540c14c9f1bd1abeba90f29762a4c6e50582303"
+			"Comment": "1.7.0",
+			"Rev": "9c0ea8acbc1d8ad689f9e6fe0c1fa5838e0cabc2"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions/internal/oglematchers",
-			"Comment": "1.6.0-36-g1540c14",
-			"Rev": "1540c14c9f1bd1abeba90f29762a4c6e50582303"
+			"Comment": "1.7.0",
+			"Rev": "9c0ea8acbc1d8ad689f9e6fe0c1fa5838e0cabc2"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey",
-			"Comment": "1.6.2-21-g9e8dc3f",
-			"Rev": "9e8dc3f972df6c8fcc0375ef492c24d0bb204857"
+			"Comment": "1.6.3-2-ge5b2b7c",
+			"Rev": "e5b2b7c9111590d019a696c7800593f666e1a7f4"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey/gotest",
-			"Comment": "1.6.2-21-g9e8dc3f",
-			"Rev": "9e8dc3f972df6c8fcc0375ef492c24d0bb204857"
+			"Comment": "1.6.3-2-ge5b2b7c",
+			"Rev": "e5b2b7c9111590d019a696c7800593f666e1a7f4"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey/reporting",
-			"Comment": "1.6.2-21-g9e8dc3f",
-			"Rev": "9e8dc3f972df6c8fcc0375ef492c24d0bb204857"
+			"Comment": "1.6.3-2-ge5b2b7c",
+			"Rev": "e5b2b7c9111590d019a696c7800593f666e1a7f4"
 		},
 		{
-			"ImportPath": "github.com/smartystreets/logging",
-			"Rev": "ac3a674540761aa0b4382094ba4795f917e85c7f"
+			"ImportPath": "gopkg.in/yaml.v1",
+			"Rev": "9f9df34309c04878acc86042b16630b0f696e1de"
 		}
 	]
 }
