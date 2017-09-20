@@ -30,4 +30,3 @@ _testmain.go
 *.exe
 *.test
 *.prof
-install.sh

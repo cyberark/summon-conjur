@@ -10,7 +10,14 @@ Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 **Note** Check the release notes and select an appropriate release to ensure support for your version of Conjur.
 
-Download the [latest release](https://github.com/cyberark/summon-conjur/releases) and extract it to the directory `/usr/local/lib/summon`.
+Use the auto-install script. This will install the latest version of summon-conjur.
+The script requires sudo to place summon-conjur in `/usr/local/lib/summon`.
+
+```
+curl -sSL https://raw.githubusercontent.com/cyberark/summon-conjur/master/install.sh | bash
+```
+
+Otherwise, download the [latest release](https://github.com/cyberark/summon-conjur/releases) and extract it to the directory `/usr/local/lib/summon`.
 
 ## Usage in isolation
 
