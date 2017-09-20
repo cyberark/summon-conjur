@@ -45,10 +45,10 @@ URL=${BASEURL}"${LATEST_VERSION}/summon-conjur-${DISTRO}-amd64.tar.gz"
 ZIP_PATH="${tmp_dir}/summon-conjur.tar.gz"
 do_download ${URL} ${ZIP_PATH}
 
-echo "Installing summon v${LATEST_VERSION} into /usr/local/lib/summon"
+echo "Installing summon-conjur ${LATEST_VERSION} into /usr/local/lib/summon"
 
-mkdir -p /usr/local/lib/summon
-tar -C /usr/local/lib/summon -zxvf ${ZIP_PATH}
+sudo mkdir -p /usr/local/lib/summon
+sudo tar -C /usr/local/lib/summon -zxvf ${ZIP_PATH}
 
 echo "Success!"
 echo "Run /usr/local/lib/summon/summon-conjur for usage"
