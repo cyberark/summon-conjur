@@ -137,7 +137,7 @@ echo $token
 				stdout, _, err := RunCommand("bash", "-c", getToken)
 
 				So(err, ShouldBeNil)
-				So(stdout.String(), ShouldContainSubstring, "data")
+				So(stdout.String(), ShouldContainSubstring, "signature")
 
 				tokenFile, _ := ioutil.TempFile("", "existent-token-file")
 				tokenFileName := tokenFile.Name()

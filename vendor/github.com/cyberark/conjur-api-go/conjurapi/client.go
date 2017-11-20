@@ -35,6 +35,13 @@ func NewClientFromKey(config Config, loginPair authn.LoginPair) (*Client, error)
 	return client, err
 }
 
+func NewClientFromToken(config Config, token string) (*Client, error) {
+	return newClientWithAuthenticator(
+		config,
+		&authn.TokenAuthenticator{token},
+	)
+}
+
 func NewClientFromTokenFile(config Config, tokenFile string) (*Client, error) {
 	return newClientWithAuthenticator(
 		config,
@@ -94,6 +101,20 @@ func NewClientFromEnvironment(config Config) (*Client, error) {
 	}
 
 	return nil, fmt.Errorf("Environment variables and machine identity files satisfying at least one authentication strategy must be present!")
+}
+
+func (c *Client) SubmitRequest(req *http.Request) (resp *http.Response, err error) {
+	err = c.createAuthRequest(req)
+	if err != nil {
+		return
+	}
+
+	resp, err = c.httpClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	return
 }
 
 func newClientWithAuthenticator(config Config, authenticator Authenticator) (*Client, error) {
