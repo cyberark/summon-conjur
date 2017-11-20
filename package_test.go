@@ -31,7 +31,7 @@ func WithoutArgs()  {
 
 		Convey("Returns with error", func() {
 			So(err, ShouldNotBeNil)
-			So(stderr.String(), ShouldEqual, "A variable name must be given as the first and only argument!")
+			So(stderr.String(), ShouldEqual, "A variable name or version flag must be given as the first and only argument!")
 		})
 	})
 }
