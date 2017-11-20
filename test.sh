@@ -6,7 +6,6 @@ function finish {
   docker-compose down -v
 }
 trap finish EXIT
-finish
 
 function main() {
   startConjur
