@@ -1,3 +1,7 @@
+# v0.5.0
+
+- Support new v5 token format and summon-conjur version flag [pr #23](https://github.com/cyberark/summon-conjur/pull/23).
+
 # v0.4.0
 
 - Support v4, https and configuration from machine identity files, [pr #20](https://github.com/cyberark/summon-conjur/pull/20).
