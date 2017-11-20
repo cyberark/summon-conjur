@@ -29,6 +29,12 @@ $ summon-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
 
+### Flags
+
+`summon-conjur` supports a single flag.
+
+* `-v, --version` Output version number and quit
+
 ## Usage as a provider for Summon
 
 [Summon](https://github.com/cyberark/summon/) is a command-line tool that reads a file in secrets.yml format and injects secrets as environment variables into any process. Once the process exits, the secrets are gone.
