@@ -31,7 +31,7 @@ func WithoutArgs()  {
 
 		Convey("Returns with error", func() {
 			So(err, ShouldNotBeNil)
-			So(stderr.String(), ShouldEqual, "A variable name must be given as the first and only argument!")
+			So(stderr.String(), ShouldEqual, "A variable name or version flag must be given as the first and only argument!")
 		})
 	})
 }
@@ -137,7 +137,7 @@ echo $token
 				stdout, _, err := RunCommand("bash", "-c", getToken)
 
 				So(err, ShouldBeNil)
-				So(stdout.String(), ShouldContainSubstring, "data")
+				So(stdout.String(), ShouldContainSubstring, "signature")
 
 				tokenFile, _ := ioutil.TempFile("", "existent-token-file")
 				tokenFileName := tokenFile.Name()

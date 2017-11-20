@@ -22,12 +22,7 @@ func (c *Client) RetrieveSecret(variableIdentifier string) ([]byte, error) {
 		return nil, err
 	}
 
-	err = c.createAuthRequest(req)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := c.httpClient.Do(req)
+	resp, err := c.SubmitRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -39,20 +34,15 @@ func (c *Client) RetrieveSecret(variableIdentifier string) ([]byte, error) {
 	}
 }
 
-func (c *Client) AddSecret(variableIdentifier string, secretValue string) ([]byte, error) {
+func (c *Client) AddSecret(variableIdentifier string, secretValue string) error {
 	req, err := wrapper.AddSecretRequest(c.config.ApplianceURL, c.config.Account, variableIdentifier, secretValue)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	err = c.createAuthRequest(req)
+	resp, err := c.SubmitRequest(req)
 	if err != nil {
-		return nil, err
-	}
-
-	resp, err := c.httpClient.Do(req)
-	if err != nil {
-		return nil, err
+		return err
 	}
 
 	return wrapper.AddSecretResponse(variableIdentifier, resp)

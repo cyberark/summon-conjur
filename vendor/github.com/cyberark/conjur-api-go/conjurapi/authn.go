@@ -2,34 +2,35 @@ package conjurapi
 
 import (
 	"net/http"
-	"encoding/json"
-	"time"
+	"encoding/base64"
 	"github.com/cyberark/conjur-api-go/conjurapi/authn"
 	"github.com/cyberark/conjur-api-go/conjurapi/wrapper"
 	"github.com/cyberark/conjur-api-go/conjurapi/wrapper_v4"
 )
 
-func (c *Client) RefreshToken() (error) {
-	var (
-		token authn.AuthnToken
-		err error
-	)
+func (c *Client) RefreshToken() (err error) {
+	var token authn.AuthnToken
 
 	if c.NeedsTokenRefresh() {
 		var tokenBytes []byte
 		tokenBytes, err = c.authenticator.RefreshToken()
 		if err == nil {
-			if err = json.Unmarshal(tokenBytes, &token); err == nil && token.Key != "" {
-				c.authToken = token
+			token, err = authn.NewToken(tokenBytes)
+			if err != nil {
+				return
 			}
+			token.FromJSON(tokenBytes)
+			c.authToken = token
 		}
 	}
 
-	return err
+	return
 }
 
 func (c *Client) NeedsTokenRefresh() bool {
-	return &c.authToken == nil || !c.authToken.ValidAtTime(time.Now()) || c.authenticator.NeedsTokenRefresh()
+	return c.authToken == nil ||
+		c.authToken.ShouldRefresh() || 
+		c.authenticator.NeedsTokenRefresh()
 }
 
 func (c *Client) createAuthRequest(req *http.Request) (error) {
@@ -37,7 +38,7 @@ func (c *Client) createAuthRequest(req *http.Request) (error) {
 		return err
 	}
 
-	wrapper.SetRequestAuthorization(req, c.authToken.Base64encoded)
+	wrapper.SetRequestAuthorization(req, base64.StdEncoding.EncodeToString(c.authToken.Raw()))
 
 	return nil
 }
