@@ -25,12 +25,17 @@ func RetrieveSecret(variableName string) {
 
 func main() {
 	if len(os.Args) != 2 {
-		os.Stderr.Write([]byte("A variable name must be given as the first and only argument!"))
+		os.Stderr.Write([]byte("A variable name or version flag must be given as the first and only argument!"))
 		os.Exit(-1)
 	}
-	variableName := os.Args[1]
 
-	RetrieveSecret(variableName)
+	singleArgument := os.Args[1]
+	switch singleArgument {
+	case "-v","--version":
+		os.Stdout.Write([]byte(VERSION))
+	default:
+		RetrieveSecret(singleArgument)
+	}
 }
 
 func printAndExit(err error) {
