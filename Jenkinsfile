@@ -22,8 +22,6 @@ def updateGithubCommitStatus(build) {
     try {
         step([
                 $class: 'GitHubCommitStatusSetter',
-                reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/cyberark/summon-conjur"],
-                commitShaSource: [$class: "ManuallyEnteredShaSource", sha: commitSha],
                 errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
                 statusResultSource: [
                         $class: 'ConditionalStatusResultSource',
