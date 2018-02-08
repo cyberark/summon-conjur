@@ -105,3 +105,5 @@ The provider will fail unless all of the following values are provided:
  * An organisation account
  * A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
  * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
+ 
+ 
