@@ -48,7 +48,11 @@ do_download ${URL} ${ZIP_PATH}
 echo "Installing summon-conjur ${LATEST_VERSION} into /usr/local/lib/summon"
 
 sudo mkdir -p /usr/local/lib/summon
-sudo tar -C /usr/local/lib/summon -zxvf ${ZIP_PATH}
+if sudo 2>/dev/null; then
+  sudo tar -C /usr/local/lib/summon -zxvf ${ZIP_PATH}
+else
+  tar -C /usr/local/lib/summon -zxvf ${ZIP_PATH}
+fi
 
 echo "Success!"
 echo "Run /usr/local/lib/summon/summon-conjur for usage"
