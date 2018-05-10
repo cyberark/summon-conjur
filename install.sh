@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -e
+#!/bin/bash -e
 
 set -e
 
@@ -47,7 +47,7 @@ do_download ${URL} ${ZIP_PATH}
 
 echo "Installing summon-conjur ${LATEST_VERSION} into /usr/local/lib/summon"
 
-if sudo 2>/dev/null; then
+if sudo -h >/dev/null 2>&1; then
   sudo mkdir -p /usr/local/lib/summon
   sudo tar -C /usr/local/lib/summon -zxvf ${ZIP_PATH}
 else
