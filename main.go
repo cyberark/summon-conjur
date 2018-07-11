@@ -1,8 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"os"
+
 	"github.com/cyberark/conjur-api-go/conjurapi"
+	"github.com/karrick/golf"
+	log "github.com/sirupsen/logrus"
 )
 
 func RetrieveSecret(variableName string) {
@@ -24,17 +28,27 @@ func RetrieveSecret(variableName string) {
 }
 
 func main() {
-	if len(os.Args) != 2 {
-		os.Stderr.Write([]byte("A variable name or version flag must be given as the first and only argument!"))
-		os.Exit(-1)
+	var help = golf.BoolP('h', "help", false, "show help")
+	var version = golf.BoolP('V', "version", false, "show version")
+	var verbose = golf.BoolP('v', "verbose", false, "be verbose")
+
+	golf.Parse()
+
+	args := golf.Args()
+	if len(args) == 0 || *help {
+		golf.Usage()
+		os.Exit(1)
 	}
 
-	singleArgument := os.Args[1]
-	switch singleArgument {
-	case "-v","--version":
-		os.Stdout.Write([]byte(VERSION))
-	default:
-		RetrieveSecret(singleArgument)
+	if *verbose {
+		log.SetFormatter(&log.TextFormatter{})
+		log.SetLevel(log.DebugLevel)
+	}
+
+	if !*version {
+		RetrieveSecret(args[0])
+	} else {
+		fmt.Println(VERSION)
 	}
 }
 

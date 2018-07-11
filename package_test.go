@@ -1,18 +1,19 @@
 package main
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"math/rand"
 	"os"
-	"testing"
 	"os/exec"
 	"strings"
-	"fmt"
+	"testing"
+	"time"
+
 	"github.com/cyberark/conjur-api-go/conjurapi"
 	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
-	"math/rand"
-	"io/ioutil"
-	"bytes"
-	"time"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
@@ -25,7 +26,7 @@ func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) 
 	return stdout, stderr, err
 }
 
-func WithoutArgs()  {
+func WithoutArgs() {
 	Convey("Given summon-conjur is run with no arguments", func() {
 		_, stderr, err := RunCommand(PackageName)
 
@@ -84,7 +85,7 @@ func TestPackage(t *testing.T) {
 
 					config := conjurapi.Config{
 						ApplianceURL: ApplianceURL,
-						Account: Account,
+						Account:      Account,
 					}
 					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
 
@@ -161,7 +162,7 @@ echo $token
 
 					config := conjurapi.Config{
 						ApplianceURL: ApplianceURL,
-						Account: Account,
+						Account:      Account,
 					}
 					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
 
@@ -205,9 +206,9 @@ echo $token
 						}()
 
 						select {
-						case <- unexpected_response:
+						case <-unexpected_response:
 							So("receive unexpected response", ShouldEqual, "not receive unexpected response")
-						case <- timeout:
+						case <-timeout:
 							So(true, ShouldEqual, true)
 						}
 					})
