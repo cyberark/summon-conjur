@@ -31,7 +31,7 @@ services:
     ports:
       - 443
 
-  tester:
+  test:
     build: .
     image: summon-conjur-tester
     ports:
@@ -44,10 +44,29 @@ services:
       - .:/go/src/github.com/cyberark/summon-conjur
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
-      CONJUR_ACCOUNT: cucumber
-      CONJUR_AUTHN_LOGIN: admin
+      CONJUR_ACCOUNT:
+      CONJUR_AUTHN_LOGIN:
       CONJUR_AUTHN_API_KEY:
       CONJUR_V4_APPLIANCE_URL: https://cuke-master/api
       CONJUR_V4_HEALTH_URL: https://cuke-master/health
-      CONJUR_V4_ACCOUNT: cucumber
-      CONJUR_V4_AUTHN_LOGIN: admin
+
+  dev:
+    build: .
+    image: summon-conjur-dev
+    ports:
+        - "8080"
+    depends_on:
+      - conjur
+    entrypoint: /bin/bash
+    command: './test-entrypoint.sh'
+    volumes:
+      - .:/go/src/github.com/cyberark/summon-conjur
+      - ../conjur-api-go:/go/src/github.com/cyberark/conjur-api:ro
+      
+    environment:
+      CONJUR_APPLIANCE_URL: http://conjur
+      CONJUR_ACCOUNT:
+      CONJUR_AUTHN_LOGIN:
+      CONJUR_AUTHN_API_KEY:
+      CONJUR_V4_APPLIANCE_URL: https://cuke-master/api
+      CONJUR_V4_HEALTH_URL: https://cuke-master/health

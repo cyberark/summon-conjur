@@ -47,7 +47,6 @@ func TestPackage(t *testing.T) {
 
 	ApplianceURL_V4 := os.Getenv("CONJUR_V4_APPLIANCE_URL")
 	SSLCert_V4 := os.Getenv("CONJUR_V4_SSL_CERTIFICATE")
-	Account_V4 := os.Getenv("CONJUR_V4_ACCOUNT")
 	Login_V4 := os.Getenv("CONJUR_V4_AUTHN_LOGIN")
 	APIKey_V4 := os.Getenv("CONJUR_V4_AUTHN_API_KEY")
 
@@ -238,7 +237,7 @@ echo $token
 
 				os.Setenv("CONJUR_MAJOR_VERSION", "4")
 				os.Setenv("CONJUR_APPLIANCE_URL", ApplianceURL_V4)
-				os.Setenv("CONJUR_ACCOUNT", Account_V4)
+				os.Setenv("CONJUR_ACCOUNT", Account)
 				os.Setenv("CONJUR_SSL_CERTIFICATE", SSLCert_V4)
 
 				Convey("Given valid APIKey credentials", func() {
