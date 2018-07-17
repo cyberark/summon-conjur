@@ -41,7 +41,7 @@ services:
     entrypoint: /bin/bash
     command: './test-entrypoint.sh'
     volumes:
-      - .:/go/src/github.com/cyberark/summon-conjur
+      - ./output:/go/src/github.com/cyberark/summon-conjur/output
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
       CONJUR_ACCOUNT:
