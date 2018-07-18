@@ -8,6 +8,9 @@ stages:
   - test
   - package
 
+before_script:
+  - apk add --no-cache bash
+
 build:
   stage: build
   script:
