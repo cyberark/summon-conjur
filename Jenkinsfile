@@ -12,7 +12,7 @@ pipeline {
     stage('Build Go binaries') {
       steps {
         sh './build.sh linux:amd64'
-        archiveArtifacts artifacts: 'output/summon-linux-amd64', fingerprint: true
+        archiveArtifacts artifacts: 'output/summon-conjur-linux-amd64', fingerprint: true
       }
     }
     stage('Run unit tests') {
