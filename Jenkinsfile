@@ -11,8 +11,8 @@ pipeline {
   stages {
     stage('Build Go binaries') {
       steps {
-        sh './build.sh'
-        archiveArtifacts artifacts: 'output/*', fingerprint: true
+        sh './build.sh linux:amd64'
+        archiveArtifacts artifacts: 'output/summon-linux-amd64', fingerprint: true
       }
     }
     stage('Run unit tests') {
@@ -25,6 +25,7 @@ pipeline {
 
     stage('Package distribution tarballs') {
       steps {
+        sh './build.sh'  // now build binaries for all distros
         sh './package.sh'
         archiveArtifacts artifacts: 'output/dist/*', fingerprint: true
       }
