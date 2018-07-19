@@ -2,6 +2,13 @@
 
 Conjur provider for [Summon](https://github.com/cyberark/summon).
 
+[![GitHub release](https://img.shields.io/github/release/cyberark/summon-conjur.svg)](https://github.com/cyberark/summon-conjur/releases/latest)
+[![pipeline status](https://gitlab.com/cyberark/summon-conjur/badges/master/pipeline.svg)](https://gitlab.com/cyberark/summon-conjur/commits/master)
+
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/cyberark/summon-conjur/latest.svg)](https://github.com/cyberark/summon-conjur/commits/master)
+
+---
+
 **Note** Use the [summon-conjurcli](https://github.com/conjurinc/summon-conjurcli) provider if you are on Conjur v4.4.0 or earlier.
 
 **Note** You **must** set environment variable `CONJUR_MAJOR_VERSION=4` for this provider to work with Conjur v4.9.
