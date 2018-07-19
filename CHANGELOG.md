@@ -1,3 +1,9 @@
+# v0.5.1
+
+- Update to the latest version of conjur-api-go.
+
+- Add some logging to help debug configuration [pr #31](https://github.com/cyberark/summon-conjur/pull/31).
+
 # v0.5.0
 
 - Support new v5 token format and summon-conjur version flag [pr #23](https://github.com/cyberark/summon-conjur/pull/23).
