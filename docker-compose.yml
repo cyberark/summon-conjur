@@ -23,13 +23,6 @@ services:
     depends_on:
       - postgres
 
-  cuke-master:
-    image: registry.tld/conjur-appliance-cuke-master:4.9-stable
-    security_opt:
-      - seccomp:unconfined # --security-opt seccomp=unconfined
-    ports:
-      - 443
-
   test:
     build: .
     image: summon-conjur-tester
@@ -46,8 +39,6 @@ services:
       CONJUR_ACCOUNT:
       CONJUR_AUTHN_LOGIN:
       CONJUR_AUTHN_API_KEY:
-      CONJUR_V4_APPLIANCE_URL: https://cuke-master/api
-      CONJUR_V4_HEALTH_URL: https://cuke-master/health
 
   dev:
     build: .
@@ -61,7 +52,7 @@ services:
     volumes:
       - .:/go/src/github.com/cyberark/summon-conjur
       - ../conjur-api-go:/go/src/github.com/cyberark/conjur-api:ro
-      
+
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
       CONJUR_ACCOUNT:

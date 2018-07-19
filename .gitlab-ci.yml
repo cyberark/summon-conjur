@@ -22,7 +22,7 @@ build:
 test-unit:
   stage: test
   script:
-    - ./test.sh
+    - ./test.sh oss
   artifacts:
     paths:
       - output/junit.xml
