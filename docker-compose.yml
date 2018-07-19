@@ -24,7 +24,6 @@ services:
       - postgres
 
   cuke-master:
-    container_name: summon-conjur-v4
     image: registry.tld/conjur-appliance-cuke-master:4.9-stable
     security_opt:
       - seccomp:unconfined # --security-opt seccomp=unconfined
