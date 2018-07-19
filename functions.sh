@@ -1,9 +1,11 @@
 #!/bin/bash
 function startConjur() {
   local conjurType="$1"
-  local services='conjur'
+  local services='conjur cuke-master'
 
-  if [[ "$conjurType" == "both" || "$conjurType" == "enterprise" ]]; then
+  if [[ "$conjurType" == "oss" ]]; then
+    services='conjur'
+  elif [[ "$conjurType" == "enterprise" ]]; then
     services='cuke-master'
   fi
 

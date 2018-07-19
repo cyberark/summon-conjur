@@ -2,7 +2,7 @@
 
 CONJUR_TYPE="${1:-all}"  # Type of Conjur to test against, 'all', 'oss' or 'enterprise'
 
-if [[ "$CONJUR_TYPE" != "both" ]]; then
+if [[ "$CONJUR_TYPE" != "all" ]]; then
   export GO_TEST_ARGS="-tags $CONJUR_TYPE"
 fi
 
