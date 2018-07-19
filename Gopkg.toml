@@ -39,7 +39,7 @@
 
 [[constraint]]
   name = "github.com/playscale/goconvey"
-  revision = "c5c320a616656d360369efb33bb790af2e9e50d0"
+  revision = "c5c320a616656d360369efb33bb790af2e9e50d0"  # https://github.com/smartystreets/goconvey/pull/458
 
 [prune]
   go-tests = true
