@@ -35,6 +35,15 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/playscale/goconvey"
+  packages = [
+    "convey",
+    "convey/gotest",
+    "convey/reporting"
+  ]
+  revision = "c5c320a616656d360369efb33bb790af2e9e50d0"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "5d60369ef3a5c165e66ece9cdebb2d4177729d84"
@@ -48,15 +57,6 @@
   ]
   revision = "0b37b35ec7434b77e77a4bb29b79677cced992ea"
   version = "1.8.1"
-
-[[projects]]
-  name = "github.com/smartystreets/goconvey"
-  packages = [
-    "convey",
-    "convey/gotest",
-    "convey/reporting"
-  ]
-  revision = "e5b2b7c9111590d019a696c7800593f666e1a7f4"
 
 [[projects]]
   branch = "master"
@@ -82,6 +82,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fb1b43acf2c6ed844064e1a5eb1602e73475f0070699dc209a31d0988f1d0723"
+  inputs-digest = "1089543891f76a15472474e4ffd15386a21f830b40272af196c3a51a7f463232"
   solver-name = "gps-cdcl"
   solver-version = 1

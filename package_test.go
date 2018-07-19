@@ -13,7 +13,7 @@ import (
 
 	"github.com/cyberark/conjur-api-go/conjurapi"
 	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
-	. "github.com/smartystreets/goconvey/convey"
+	. "github.com/playscale/goconvey/convey"
 )
 
 func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
