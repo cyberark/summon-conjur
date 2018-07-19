@@ -1,13 +1,16 @@
-FROM golang:1.8
+FROM golang:1.10
 MAINTAINER Conjur Inc
 
-RUN apt-get update && apt-get install jq
+RUN apt-get update && apt-get install -y jq less 
 RUN go get -u github.com/jstemmer/go-junit-report
-RUN go get github.com/tools/godep
+RUN go get -u github.com/golang/dep/cmd/dep
 RUN go get github.com/smartystreets/goconvey
 
 RUN mkdir -p /go/src/github.com/cyberark/summon-conjur/output
 WORKDIR /go/src/github.com/cyberark/summon-conjur
+
+COPY Gopkg.toml Gopkg.lock ./
+RUN dep ensure --vendor-only
 
 COPY . .
 

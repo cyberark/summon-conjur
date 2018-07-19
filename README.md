@@ -31,9 +31,15 @@ $ summon-conjur prod/aws/iam/user/robot/access_key_id
 
 ### Flags
 
-`summon-conjur` supports a single flag.
-
-* `-v, --version` Output version number and quit
+```
+Usage of summon-conjur:
+  -h, --help
+	show help (default: false)
+  -V, --version
+	show version (default: false)
+  -v, --verbose
+	be verbose (default: false)
+```
 
 ## Usage as a provider for Summon
 
@@ -105,3 +111,22 @@ The provider will fail unless all of the following values are provided:
  * An organisation account
  * A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
  * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
+ 
+## Development
+
+You can start a docker-compose development environment by running
+
+```sh
+$ ./dev.sh
+```
+
+### Dependency management With dep
+[dep](https://golang.github.io/dep/docs/introduction.html) is being used to manage dependencies.
+
+When you add a new package, or change the version of an existing package, run (in the `dev` container)
+
+```sh
+/go/src/github.com/cyberark/summon-conjur# dep ensure
+```
+
+to update `Gopkg.toml` and `Gopkg.lock`.

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"strings"
 	"os"
+	"strings"
 )
 
 func splitEq(s string) (string, string) {
@@ -31,4 +31,3 @@ func (e *envSnapshot) RestoreEnv() {
 		os.Setenv(k, v)
 	}
 }
-

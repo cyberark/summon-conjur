@@ -1,18 +1,19 @@
 package main
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
+	"bytes"
+	"fmt"
+	"io/ioutil"
+	"math/rand"
 	"os"
-	"testing"
 	"os/exec"
 	"strings"
-	"fmt"
+	"testing"
+	"time"
+
 	"github.com/cyberark/conjur-api-go/conjurapi"
 	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
-	"math/rand"
-	"io/ioutil"
-	"bytes"
-	"time"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
@@ -25,13 +26,20 @@ func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) 
 	return stdout, stderr, err
 }
 
-func WithoutArgs()  {
+func WithoutArgs() {
 	Convey("Given summon-conjur is run with no arguments", func() {
 		_, stderr, err := RunCommand(PackageName)
 
 		Convey("Returns with error", func() {
 			So(err, ShouldNotBeNil)
-			So(stderr.String(), ShouldEqual, "A variable name or version flag must be given as the first and only argument!")
+			So(stderr.String(), ShouldEqual, `Usage of summon-conjur:
+  -h, --help
+	show help (default: false)
+  -V, --version
+	show version (default: false)
+  -v, --verbose
+	be verbose (default: false)
+`)
 		})
 	})
 }
@@ -46,8 +54,6 @@ func TestPackage(t *testing.T) {
 
 	ApplianceURL_V4 := os.Getenv("CONJUR_V4_APPLIANCE_URL")
 	SSLCert_V4 := os.Getenv("CONJUR_V4_SSL_CERTIFICATE")
-	Account_V4 := os.Getenv("CONJUR_V4_ACCOUNT")
-	Login_V4 := os.Getenv("CONJUR_V4_AUTHN_LOGIN")
 	APIKey_V4 := os.Getenv("CONJUR_V4_AUTHN_API_KEY")
 
 	Path := os.Getenv("PATH")
@@ -75,7 +81,7 @@ func TestPackage(t *testing.T) {
 
 				WithoutArgs()
 
-				Convey("Retrieves existent variable's defined value", func() {
+				Convey("Retrieves existing variable's defined value", func() {
 					variableIdentifier := "db/password"
 					secretValue := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
 					policy := fmt.Sprintf(`
@@ -84,15 +90,17 @@ func TestPackage(t *testing.T) {
 
 					config := conjurapi.Config{
 						ApplianceURL: ApplianceURL,
-						Account: Account,
+						Account:      Account,
 					}
 					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
 
 					conjur.LoadPolicy(
+						conjurapi.PolicyModePost,
 						"root",
 						strings.NewReader(policy),
 					)
 					defer conjur.LoadPolicy(
+						conjurapi.PolicyModePut,
 						"root",
 						strings.NewReader(""),
 					)
@@ -105,13 +113,13 @@ func TestPackage(t *testing.T) {
 					So(stdout.String(), ShouldEqual, secretValue)
 				})
 
-				Convey("Returns 404 on non-existent variable", func() {
+				Convey("Returns error on non-existent variable", func() {
 					variableIdentifier := "non-existent-variable"
 
 					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldNotBeNil)
-					So(stderr.String(), ShouldContainSubstring, "404")
+					So(stderr.String(), ShouldContainSubstring, "not found")
 				})
 
 				Convey("Given a non-existent Login is set", func() {
@@ -161,15 +169,17 @@ echo $token
 
 					config := conjurapi.Config{
 						ApplianceURL: ApplianceURL,
-						Account: Account,
+						Account:      Account,
 					}
 					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
 
 					conjur.LoadPolicy(
+						conjurapi.PolicyModePost,
 						"root",
 						strings.NewReader(policy),
 					)
 					defer conjur.LoadPolicy(
+						conjurapi.PolicyModePut,
 						"root",
 						strings.NewReader(""),
 					)
@@ -182,13 +192,13 @@ echo $token
 					So(stdout.String(), ShouldEqual, secretValue)
 				})
 
-				Convey("Returns 404 on non-existent variable", func() {
+				Convey("Returns error on non-existent variable", func() {
 					variableIdentifier := "non-existent-variable"
 
 					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 					So(err, ShouldNotBeNil)
-					So(stderr.String(), ShouldContainSubstring, "404")
+					So(stderr.String(), ShouldContainSubstring, "not found in account")
 				})
 
 				Convey("Given a non-existent TokenFile is set", func() {
@@ -205,9 +215,9 @@ echo $token
 						}()
 
 						select {
-						case <- unexpected_response:
+						case <-unexpected_response:
 							So("receive unexpected response", ShouldEqual, "not receive unexpected response")
-						case <- timeout:
+						case <-timeout:
 							So(true, ShouldEqual, true)
 						}
 					})
@@ -237,16 +247,16 @@ echo $token
 
 				os.Setenv("CONJUR_MAJOR_VERSION", "4")
 				os.Setenv("CONJUR_APPLIANCE_URL", ApplianceURL_V4)
-				os.Setenv("CONJUR_ACCOUNT", Account_V4)
+				os.Setenv("CONJUR_ACCOUNT", Account)
+				os.Setenv("CONJUR_AUTHN_LOGIN", Login)
 				os.Setenv("CONJUR_SSL_CERTIFICATE", SSLCert_V4)
 
 				Convey("Given valid APIKey credentials", func() {
-					os.Setenv("CONJUR_AUTHN_LOGIN", Login_V4)
 					os.Setenv("CONJUR_AUTHN_API_KEY", APIKey_V4)
 
 					WithoutArgs()
 
-					Convey("Retrieves existent variable's defined value", func() {
+					Convey("Retrieves existing variable's defined value", func() {
 						variableIdentifier := "existent-variable-with-defined-value"
 						secretValue := "existent-variable-defined-value"
 
@@ -256,22 +266,22 @@ echo $token
 						So(stdout.String(), ShouldEqual, secretValue)
 					})
 
-					Convey("Returns 404 on existent-variable-undefined-value", func() {
+					Convey("Returns error on existent-variable-undefined-value", func() {
 						variableIdentifier := "existent-variable-with-undefined-value"
 
 						_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 						So(err, ShouldNotBeNil)
-						So(stderr.String(), ShouldContainSubstring, "404")
+						So(stderr.String(), ShouldContainSubstring, "Not Found")
 					})
 
-					Convey("Returns 404 on non-existent variable", func() {
+					Convey("Returns error on non-existent variable", func() {
 						variableIdentifier := "non-existent-variable"
 
 						_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 						So(err, ShouldNotBeNil)
-						So(stderr.String(), ShouldContainSubstring, "404")
+						So(stderr.String(), ShouldContainSubstring, "not found")
 					})
 
 				})
