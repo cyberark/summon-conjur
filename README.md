@@ -130,3 +130,10 @@ When you add a new package, or change the version of an existing package, run (i
 ```
 
 to update `Gopkg.toml` and `Gopkg.lock`.
+
+### Running tests
+
+See [Jenkinsfile](Jenkinsfile) for CI steps.
+
+Run `./test.sh oss` for OSS tests, `./test.sh enterprise` for Enterprise tests.
+This defaults to both.

@@ -2,9 +2,7 @@
 
 CONJUR_TYPE="${1:-all}"  # Type of Conjur to test against, 'all', 'oss' or 'enterprise'
 
-if [[ "$CONJUR_TYPE" != "all" ]]; then
-  export GO_TEST_ARGS="-tags $CONJUR_TYPE"
-fi
+export GO_TEST_ARGS="-tags $CONJUR_TYPE"  # default to run all tests
 
 if [[ "$CONJUR_TYPE" == "all" || "$CONJUR_TYPE" == "enterprise" ]]; then
   export COMPOSE_ARGS='-f docker-compose.yml -f docker-compose.enterprise.yml'

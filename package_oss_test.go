@@ -1,14 +1,12 @@
-// +build oss
+// +build all oss
 
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"os"
-	"os/exec"
 	"strings"
 	"testing"
 	"time"
@@ -17,36 +15,6 @@ import (
 	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
 	. "github.com/playscale/goconvey/convey"
 )
-
-func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
-	cmd := exec.Command(name, arg...)
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	return stdout, stderr, err
-}
-
-func WithoutArgs() {
-	Convey("Given summon-conjur is run with no arguments", func() {
-		_, stderr, err := RunCommand(PackageName)
-
-		Convey("Returns with error", func() {
-			So(err, ShouldNotBeNil)
-			So(stderr.String(), ShouldEqual, `Usage of summon-conjur:
-  -h, --help
-	show help (default: false)
-  -V, --version
-	show version (default: false)
-  -v, --verbose
-	be verbose (default: false)
-`)
-		})
-	})
-}
-
-const PackageName = "summon-conjur"
 
 func TestPackageOSS(t *testing.T) {
 	ApplianceURL := os.Getenv("CONJUR_APPLIANCE_URL")

@@ -1,45 +1,13 @@
-// +build enterprise
+// +build all enterprise
 
 package main
 
 import (
-	"bytes"
 	"os"
-	"os/exec"
 	"testing"
 
 	. "github.com/playscale/goconvey/convey"
 )
-
-func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) {
-	cmd := exec.Command(name, arg...)
-	var stdout bytes.Buffer
-	var stderr bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	err := cmd.Run()
-	return stdout, stderr, err
-}
-
-func WithoutArgs() {
-	Convey("Given summon-conjur is run with no arguments", func() {
-		_, stderr, err := RunCommand(PackageName)
-
-		Convey("Returns with error", func() {
-			So(err, ShouldNotBeNil)
-			So(stderr.String(), ShouldEqual, `Usage of summon-conjur:
-  -h, --help
-	show help (default: false)
-  -V, --version
-	show version (default: false)
-  -v, --verbose
-	be verbose (default: false)
-`)
-		})
-	})
-}
-
-const PackageName = "summon-conjur"
 
 func TestPackageEnterprise(t *testing.T) {
 	Account := os.Getenv("CONJUR_ACCOUNT")
