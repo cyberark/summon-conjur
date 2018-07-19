@@ -3,113 +3,85 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:37011b20a70e205b93ebea5287e1afa5618db54bf3998c36ff5a8e4b146a170a"
   name = "github.com/bgentry/go-netrc"
   packages = ["netrc"]
-  pruneopts = "UT"
   revision = "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
 
 [[projects]]
-  digest = "1:1953b3f5969a5c372fc81eb307d969249803cb1536aa999daa6ab4642f699683"
   name = "github.com/cyberark/conjur-api-go"
   packages = [
     "conjurapi",
     "conjurapi/authn",
-    "conjurapi/response",
+    "conjurapi/response"
   ]
-  pruneopts = "UT"
   revision = "d898aeb85c063297ac346411f91e6207a526e4e9"
   version = "v0.3.2"
 
 [[projects]]
-  digest = "1:f14d1b50e0075fb00177f12a96dd7addf93d1e2883c25befd17285b779549795"
   name = "github.com/gopherjs/gopherjs"
   packages = ["js"]
-  pruneopts = "UT"
   revision = "444abdf920945de5d4a977b572bcc6c674d1e4eb"
 
 [[projects]]
-  digest = "1:1e15f4e455f94aeaedfcf9c75b3e1c449b5acba1551c58446b4b45be507c707b"
   name = "github.com/jtolds/gls"
   packages = ["."]
-  pruneopts = "UT"
   revision = "77f18212c9c7edc9bd6a33d383a7b545ce62f064"
   version = "v4.2.1"
 
 [[projects]]
-  digest = "1:cafa565d084a49af3351e0a548b630d9f5662b1ac5746dcf63f157c740e1dc31"
   name = "github.com/karrick/golf"
   packages = ["."]
-  pruneopts = "UT"
   revision = "f70ea106ec905ac29a98cc83a7af084fccadf6d4"
   version = "v1.0.1"
 
 [[projects]]
-  digest = "1:d3376ccd37402d8da894e6e13dd622211ada38974bd27baf99f2d6d04eb2b6c6"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
-  pruneopts = "UT"
   revision = "5d60369ef3a5c165e66ece9cdebb2d4177729d84"
 
 [[projects]]
-  digest = "1:39195b70e6940a8345e672dbb650e5e340ee1b16652f7462a7f6c5654bc15688"
   name = "github.com/smartystreets/assertions"
   packages = [
     ".",
     "internal/go-render/render",
-    "internal/oglematchers",
+    "internal/oglematchers"
   ]
-  pruneopts = "UT"
   revision = "0b37b35ec7434b77e77a4bb29b79677cced992ea"
   version = "1.8.1"
 
 [[projects]]
-  digest = "1:52fe67b62ac538e99a684af3691946fffde2de8683f2a934cf239f53fb96e2c2"
   name = "github.com/smartystreets/goconvey"
   packages = [
     "convey",
     "convey/gotest",
-    "convey/reporting",
+    "convey/reporting"
   ]
-  pruneopts = "UT"
   revision = "e5b2b7c9111590d019a696c7800593f666e1a7f4"
 
 [[projects]]
   branch = "master"
-  digest = "1:3f3a05ae0b95893d90b9b3b5afdb79a9b3d96e4e36e099d841ae602e4aca0da8"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  pruneopts = "UT"
   revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
 
 [[projects]]
   branch = "master"
-  digest = "1:72d6244a51be9611f08994aca19677fcc31676b3e7b742c37e129e6ece4ad8fc"
   name = "golang.org/x/sys"
   packages = [
     "unix",
-    "windows",
+    "windows"
   ]
-  pruneopts = "UT"
   revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
 
 [[projects]]
   branch = "v1"
-  digest = "1:4384086c0f7f9e662c2ae8e900af35dc75ff262205b362597bb65af2fd8a21c9"
   name = "gopkg.in/yaml.v1"
   packages = ["."]
-  pruneopts = "UT"
   revision = "9f9df34309c04878acc86042b16630b0f696e1de"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = [
-    "github.com/cyberark/conjur-api-go/conjurapi",
-    "github.com/cyberark/conjur-api-go/conjurapi/authn",
-    "github.com/karrick/golf",
-    "github.com/sirupsen/logrus",
-    "github.com/smartystreets/goconvey/convey",
-  ]
+  inputs-digest = "fb1b43acf2c6ed844064e1a5eb1602e73475f0070699dc209a31d0988f1d0723"
   solver-name = "gps-cdcl"
   solver-version = 1
