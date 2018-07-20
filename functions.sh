@@ -1,4 +1,3 @@
-#!/bin/bash
 function startConjur() {
   local conjurType="$1"
   local services='conjur cuke-master'
