@@ -32,7 +32,7 @@ func TestPackageOSS(t *testing.T) {
 		WithoutArgs()
 	})
 
-	Convey("Given valid configuration", t, func() {
+	Convey("Given valid V5 OSS configuration", t, func() {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
