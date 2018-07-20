@@ -14,8 +14,8 @@ export CONJUR_AUTHN_LOGIN=admin
 source functions.sh
 
 function main() {
-  startConjur
-  initEnvironment
+  startConjur 'all'
+  initEnvironment 'all'
   runDevelopment
 }
 
@@ -29,7 +29,7 @@ function runDevelopment() {
   docker-compose up -d cli
 
   docker-compose build --pull dev
-  
+
   docker-compose run -d \
     --entrypoint 'bash -c ./convey.sh' \
     --service-ports \

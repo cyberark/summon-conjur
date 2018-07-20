@@ -1,0 +1,37 @@
+image: tmaier/docker-compose:18
+
+services:
+  - docker:dind
+
+stages:
+  - build
+  - test
+  - package
+
+before_script:
+  - apk add --no-cache bash
+
+build:
+  stage: build
+  script:
+    - "./build.sh linux:amd64"
+  artifacts:
+    paths:
+      - output/summon-conjur-linux-amd64
+
+test-unit:
+  stage: test
+  script:
+    - ./test.sh oss
+  artifacts:
+    paths:
+      - output/junit.xml
+
+package-tarballs:
+  stage: package
+  script:
+    - ./build.sh  # now build binaries for all distros
+    - ./package.sh
+  artifacts:
+    paths:
+      - output/dist/*

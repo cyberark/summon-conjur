@@ -37,6 +37,10 @@
   name = "github.com/sirupsen/logrus"
   revision = "5d60369ef3a5c165e66ece9cdebb2d4177729d84"
 
+[[constraint]]
+  name = "github.com/playscale/goconvey"
+  revision = "c5c320a616656d360369efb33bb790af2e9e50d0"  # https://github.com/smartystreets/goconvey/pull/458
+
 [prune]
   go-tests = true
   unused-packages = true
