@@ -18,7 +18,7 @@ PLATFORMS="${1:-${DEFAULT_PLATFORMS[@]}}"  # override this with a positional arg
 
 OUTPUT_DIR='output'
 
-echo "Creating summon binaries in $OUTPUT_DIR/"
+echo "Creating summon-conjur binaries in $OUTPUT_DIR/"
 docker-compose build --pull builder
 
 for platform in ${PLATFORMS}; do
