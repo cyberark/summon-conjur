@@ -19,7 +19,7 @@ func TestPackageEnterprise(t *testing.T) {
 
 	Path := os.Getenv("PATH")
 
-	Convey("Given valid V4 appliance configuration", func() {
+	Convey("Given valid V4 appliance configuration", t, func() {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)

@@ -24,7 +24,7 @@ func TestPackageOSS(t *testing.T) {
 
 	Path := os.Getenv("PATH")
 
-	Convey("Given no configuration and no authentication information", func() {
+	Convey("Given no configuration and no authentication information", t, func() {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
