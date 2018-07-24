@@ -3,7 +3,7 @@
 Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 [![GitHub release](https://img.shields.io/github/release/cyberark/summon-conjur.svg)](https://github.com/cyberark/summon-conjur/releases/latest)
-[![pipeline status](https://gitlab.com/cyberark/summon-conjur/badges/master/pipeline.svg)](https://gitlab.com/cyberark/summon-conjur/commits/master)
+[![pipeline status](https://gitlab.com/cyberark/summon-conjur/badges/master/pipeline.svg)](https://gitlab.com/cyberark/summon-conjur/pipelines)
 
 [![Github commits (since latest release)](https://img.shields.io/github/commits-since/cyberark/summon-conjur/latest.svg)](https://github.com/cyberark/summon-conjur/commits/master)
 
