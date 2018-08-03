@@ -1,5 +1,6 @@
 /vendor
 output/
+dist/
 pkg
 webapp1.json
 junit.xml
@@ -31,3 +32,4 @@ _testmain.go
 *.exe
 *.test
 *.prof
+.DS_Store

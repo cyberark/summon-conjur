@@ -9,25 +9,16 @@ pipeline {
   }
 
   stages {
-    stage('Build Go binaries') {
+    stage('Build artifacts') {
       steps {
-        sh './build.sh linux:amd64'
-        archiveArtifacts artifacts: 'output/summon-conjur-linux-amd64', fingerprint: true
+        sh './build.sh'
+        archiveArtifacts artifacts: "dist/*.tar.gz,dist/*.zip,dist/*.rb,dist/*.deb,dist/*.rpm,dist/*.txt", fingerprint: true
       }
     }
     stage('Run unit tests') {
       steps {
         sh './test.sh'
         junit 'output/junit.xml'
-        sh 'sudo chown -R jenkins:jenkins .'  // bad docker mount creates unreadable files TODO fix this
-      }
-    }
-
-    stage('Package distribution tarballs') {
-      steps {
-        sh './build.sh'  // now build binaries for all distros
-        sh './package.sh'
-        archiveArtifacts artifacts: 'output/dist/*', fingerprint: true
       }
     }
   }
