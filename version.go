@@ -1,3 +1,4 @@
 package main
 
-const VERSION = "0.5.1"
+// VERSION is the current version of summon-conjur
+const VERSION = "0.5.2"
