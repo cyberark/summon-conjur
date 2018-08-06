@@ -15,15 +15,34 @@ Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 ## Install
 
+Pre-built binaries and packages are available from GitHub releases
+[here](https://github.com/cyberark/summon-conjur/releases).
+
+### Homebrew
+
+```
+brew tap cyberark/tools
+brew install summon-conjur
+```
+
+### Linux (Debian and Red Hat flavors)
+
+`deb` and `rpm` files are attached to new releases.
+These can be installed with `dpkg -i summon-conjur.deb` and
+`rpm -ivh summon-conjur.rpm`, respectively.
+
+### Auto Install
+
 **Note** Check the release notes and select an appropriate release to ensure support for your version of Conjur.
 
 Use the auto-install script. This will install the latest version of summon-conjur.
-The script requires sudo to place summon-conjur in `/usr/local/lib/summon`.
+The script requires sudo to place summon-conjur in dir `/usr/local/lib/summon`.
 
 ```
 curl -sSL https://raw.githubusercontent.com/cyberark/summon-conjur/master/install.sh | bash
 ```
 
+### Manual Install
 Otherwise, download the [latest release](https://github.com/cyberark/summon-conjur/releases) and extract it to the directory `/usr/local/lib/summon`.
 
 ## Usage in isolation
@@ -31,7 +50,7 @@ Otherwise, download the [latest release](https://github.com/cyberark/summon-conj
 Give summon-conjur a variable name and it will fetch it for you and print the value to stdout.
 
 ```sh-session
-$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9
 $ summon-conjur prod/aws/iam/user/robot/access_key_id
 8h9psadf89sdahfp98
 ```
@@ -54,7 +73,7 @@ Usage of summon-conjur:
 
 *Example*
 
-As an example let's use the `env` command: 
+As an example let's use the `env` command:
 
 Following installation, define your keys in a `secrets.yml` file
 
@@ -68,7 +87,7 @@ By default, summon will look for `secrets.yml` in the directory it is called fro
 Wrap the `env` in summon:
 
 ```sh
-$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9 
+$ # export CONJUR_MAJOR_VERSION=4 for Conjur v4.9
 $ summon --provider summon-conjur env
 ...
 AWS_ACCESS_KEY_ID=AKIAJS34242K1123J3K43
@@ -113,12 +132,14 @@ you need to specify, for example, an authn proxy.
 
 The provider will fail unless all of the following values are provided:
 
- * `CONJUR_MAJOR_VERSION=4` for Conjur v4.9
- * An appliance url
- * An organisation account
- * A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
- * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
- 
+- `CONJUR_MAJOR_VERSION=4` for Conjur v4.9
+- An appliance url
+- An organisation account
+- A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
+- A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
+
+---
+
 ## Development
 
 You can start a docker-compose development environment by running
@@ -140,7 +161,9 @@ to update `Gopkg.toml` and `Gopkg.lock`.
 
 ### Running tests
 
-See [Jenkinsfile](Jenkinsfile) for CI steps.
+Automated CI pipelines:
+- [.gitlab.ci.yml](.gitlab.ci.yml)
+- [Jenkinsfile](Jenkinsfile)
 
 Run `./test.sh oss` for OSS tests, `./test.sh enterprise` for Enterprise tests.
 This defaults to both.
