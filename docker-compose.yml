@@ -51,9 +51,7 @@ services:
       CONJUR_V4_HEALTH_URL: https://cuke-master/health
 
   goreleaser:
-    build:
-      context: .
-      dockerfile: Dockerfile.goreleaser
+    image: cyberark/goreleaser
     volumes:
-      - .:/go/src/github.com/cyberark/summon-conjur
-    working_dir: /go/src/github.com/cyberark/summon-conjur
+      - .:/go/src/github.com/cyberark/summon
+    working_dir: /go/src/github.com/cyberark/summon
