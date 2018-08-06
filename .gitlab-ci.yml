@@ -9,15 +9,20 @@ stages:
   - package
 
 before_script:
-  - apk add --no-cache bash
+  - apk add --no-cache bash git
 
 build:
   stage: build
   script:
-    - "./build.sh linux:amd64"
+    - ./build.sh
   artifacts:
     paths:
-      - output/summon-conjur-linux-amd64
+      - dist/*.tar.gz
+      - dist/*.zip
+      - dist/*.rb
+      - dist/*.deb
+      - dist/*.rpm
+      - dist/*.txt
 
 test-unit:
   stage: test
@@ -27,11 +32,3 @@ test-unit:
     paths:
       - output/junit.xml
 
-package-tarballs:
-  stage: package
-  script:
-    - ./build.sh  # now build binaries for all distros
-    - ./package.sh
-  artifacts:
-    paths:
-      - output/dist/*

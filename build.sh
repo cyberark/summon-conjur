@@ -1,36 +1,9 @@
-#!/bin/bash
+#!/bin/bash -e
 
-# Platforms to build: https://golang.org/doc/install/source#environment
+git fetch --tags  # jenkins does not do this automatically yet
 
-DEFAULT_PLATFORMS=(
-  'darwin:amd64'     # MacOS
-  'freebsd:amd64'
-  'linux:amd64'
-  # 'linux:arm'
-  # 'linux:arm64'
-  'netbsd:amd64'
-  'openbsd:amd64'
-  'solaris:amd64'
-  # 'windows:386'
-  'windows:amd64'
-)
-PLATFORMS="${1:-${DEFAULT_PLATFORMS[@]}}"  # override this with a positional argument, like 'linux:amd64'
-
-OUTPUT_DIR='output'
-
-echo "Creating summon-conjur binaries in $OUTPUT_DIR/"
-docker-compose build --pull builder
-
-for platform in ${PLATFORMS}; do
-  GOOS=${platform%%:*}
-  GOARCH=${platform#*:}
-
-  echo "-----"
-  echo "GOOS=$GOOS, GOARCH=$GOARCH"
-  echo "....."
-
-  docker-compose run --rm \
-    -e GOOS=$GOOS -e GOARCH=$GOARCH \
-    builder \
-      build -v -o $OUTPUT_DIR/summon-conjur-$GOOS-$GOARCH
-done
+docker-compose build --pull goreleaser
+docker-compose run --rm -T --entrypoint sh goreleaser -es <<EOF
+dep ensure --vendor-only
+goreleaser release --rm-dist --skip-validate
+EOF
