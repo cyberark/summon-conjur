@@ -53,5 +53,5 @@ services:
   goreleaser:
     image: cyberark/goreleaser
     volumes:
-      - .:/go/src/github.com/cyberark/summon
-    working_dir: /go/src/github.com/cyberark/summon
+      - .:/go/src/github.com/cyberark/summon-conjur
+    working_dir: /go/src/github.com/cyberark/summon-conjur
