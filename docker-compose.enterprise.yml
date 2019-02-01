@@ -15,7 +15,7 @@ services:
     entrypoint: /bin/bash
     command: './test-entrypoint.sh'
     volumes:
-      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+      - ./output:/summon-conjur/output
     environment:
       CONJUR_ACCOUNT:
       CONJUR_AUTHN_LOGIN:

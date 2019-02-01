@@ -1,7 +1,7 @@
 version: '2'
 services:
   conjur:
-    image: cyberark/conjur:0.8.1-stable
+    image: cyberark/conjur:1.3
     command: server -a cucumber
     environment:
       DATABASE_URL: postgres://postgres@postgres/postgres
@@ -22,7 +22,7 @@ services:
     entrypoint: /bin/bash
     command: './test-entrypoint.sh'
     volumes:
-      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+      - ./output:/summon-conjur/output
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
       CONJUR_ACCOUNT:
@@ -39,8 +39,8 @@ services:
     entrypoint: /bin/bash
     command: './test-entrypoint.sh'
     volumes:
-      - .:/go/src/github.com/cyberark/summon-conjur
-      - ../conjur-api-go:/go/src/github.com/cyberark/conjur-api:ro
+      - .:/summon-conjur
+      - ../conjur-api-go:/cconjur-api-go:ro
 
     environment:
       CONJUR_APPLIANCE_URL: http://conjur
@@ -49,9 +49,3 @@ services:
       CONJUR_AUTHN_API_KEY:
       CONJUR_V4_APPLIANCE_URL: https://cuke-master/api
       CONJUR_V4_HEALTH_URL: https://cuke-master/health
-
-  goreleaser:
-    image: cyberark/goreleaser
-    volumes:
-      - .:/go/src/github.com/cyberark/summon-conjur
-    working_dir: /go/src/github.com/cyberark/summon-conjur

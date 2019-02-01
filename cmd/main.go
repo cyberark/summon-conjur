@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/cyberark/conjur-api-go/conjurapi"
+	"github.com/cyberark/summon-conjur/pkg/summon_conjur"
 	"github.com/karrick/golf"
 	log "github.com/sirupsen/logrus"
 )
@@ -41,7 +42,7 @@ func main() {
 	args := golf.Args()
 
 	if *version {
-		fmt.Println(VERSION)
+		fmt.Println(summon_conjur.VERSION)
 		os.Exit(0)
 	}
 	if *help {
