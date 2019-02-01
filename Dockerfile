@@ -1,16 +1,20 @@
-FROM golang:1.10
+FROM golang:1.12-rc-alpine
+
 MAINTAINER Conjur Inc
 
-RUN apt-get update && apt-get install -y jq less 
+RUN apk add --no-cache bash \
+                       build-base \
+                       git \
+                       jq \
+                       less
 RUN go get -u github.com/jstemmer/go-junit-report
-RUN go get -u github.com/golang/dep/cmd/dep
 RUN go get github.com/playscale/goconvey
 
-RUN mkdir -p /go/src/github.com/cyberark/summon-conjur/output
-WORKDIR /go/src/github.com/cyberark/summon-conjur
+RUN mkdir -p /summon-conjur/output
+WORKDIR /summon-conjur
 
-COPY Gopkg.toml Gopkg.lock ./
-RUN dep ensure --vendor-only
+COPY go.mod go.sum ./
+RUN go mod download
 
 COPY . .
 

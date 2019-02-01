@@ -1,8 +1,9 @@
-# all available options: https://goreleaser.com/customization/
+# All available options: https://goreleaser.com/customization/
 project_name: summon-conjur
 
 before:
-  hooks: []
+  hooks:
+  - go mod download
 
 builds:
 - binary: summon-conjur
@@ -36,7 +37,7 @@ brew:
     target.install "summon-conjur"
   test: |
     system lib/"summon"/"summon-conjur", "-V"
-  
+
   github:
     owner: cyberark
     name: homebrew-tools
@@ -46,7 +47,7 @@ nfpm:
   name_template: "{{.ProjectName}}"
   vendor: CyberArk
   homepage: https://github.com/cyberark/summon-conjur
-  maintainer: Dustin Collins <dustin.collins@cyberark.com>
+  maintainer: Conjur Maintainers <conj_maintainers@cyberark.com>
 
   description: Conjur provider for Summon
   recommends:

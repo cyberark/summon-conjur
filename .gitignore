@@ -1,7 +1,5 @@
-/vendor
 output/
 dist/
-pkg
 webapp1.json
 junit.xml
 summon-conjur
@@ -33,3 +31,6 @@ _testmain.go
 *.test
 *.prof
 .DS_Store
+
+# VIM swapfiles
+*.sw[po]
