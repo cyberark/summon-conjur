@@ -8,7 +8,7 @@ RUN apk add --no-cache bash \
                        jq \
                        less
 RUN go get -u github.com/jstemmer/go-junit-report
-RUN go get github.com/playscale/goconvey
+RUN go get github.com/smartystreets/goconvey
 
 RUN mkdir -p /summon-conjur/output
 WORKDIR /summon-conjur
