@@ -13,14 +13,16 @@ services:
     image: postgres:9.3
 
   test:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     image: summon-conjur-tester
     ports:
         - "8080"
     depends_on:
       - conjur
     entrypoint: /bin/bash
-    command: './test-entrypoint.sh'
+    command: './bin/test-entrypoint.sh'
     volumes:
       - ./output:/summon-conjur/output
     environment:
@@ -30,14 +32,16 @@ services:
       CONJUR_AUTHN_API_KEY:
 
   dev:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     image: summon-conjur-dev
     ports:
         - "8080"
     depends_on:
       - conjur
     entrypoint: /bin/bash
-    command: './test-entrypoint.sh'
+    command: './bin/test-entrypoint.sh'
     volumes:
       - .:/summon-conjur
       - ../conjur-api-go:/cconjur-api-go:ro

@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	. "github.com/playscale/goconvey/convey"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func splitEq(s string) (string, string) {

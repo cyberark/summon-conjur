@@ -1,6 +1,4 @@
-// +build all enterprise
-
-package main
+package test
 
 import (
 	"os"

@@ -11,7 +11,7 @@
 export CONJUR_ACCOUNT=cucumber
 export CONJUR_AUTHN_LOGIN=admin
 
-source functions.sh
+source $(dirname $0)/bin/functions.sh
 
 function main() {
   startConjur 'all'

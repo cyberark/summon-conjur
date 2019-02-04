@@ -1,6 +1,4 @@
-// +build all oss
-
-package main
+package test
 
 import (
 	"fmt"
