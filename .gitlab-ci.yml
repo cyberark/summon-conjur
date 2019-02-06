@@ -31,4 +31,3 @@ test-unit:
   artifacts:
     paths:
       - output/junit.xml
-

@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [v0.5.3](https://github.com/cyberark/summon-conjur/releases/tag/v0.5.3) - 2019-02-01
+### Changed
+- Go modules are now used for dependency management
+- Newer goreleaser syntax is used to build artifacts
+
 ## [v0.5.2](https://github.com/cyberark/summon-conjur/releases/tag/v0.5.2) - 2018-08-06
 ### Added
 - deb and rpm packages

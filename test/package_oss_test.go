@@ -1,6 +1,4 @@
-// +build all oss
-
-package main
+package test
 
 import (
 	"fmt"
@@ -13,7 +11,7 @@ import (
 
 	"github.com/cyberark/conjur-api-go/conjurapi"
 	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
-	. "github.com/playscale/goconvey/convey"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestPackageOSS(t *testing.T) {

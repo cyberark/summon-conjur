@@ -15,9 +15,10 @@ pipeline {
         archiveArtifacts artifacts: "dist/*.tar.gz,dist/*.zip,dist/*.rb,dist/*.deb,dist/*.rpm,dist/*.txt", fingerprint: true
       }
     }
+
     stage('Run unit tests') {
       steps {
-        sh './test.sh'
+        sh './bin/test.sh'
         junit 'output/junit.xml'
       }
     }

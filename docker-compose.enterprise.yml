@@ -8,14 +8,16 @@ services:
       - 443
 
   test:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.test
     image: summon-conjur-tester
     ports:
         - "8080"
     entrypoint: /bin/bash
-    command: './test-entrypoint.sh'
+    command: './bin/test-entrypoint.sh'
     volumes:
-      - ./output:/go/src/github.com/cyberark/summon-conjur/output
+      - ./output:/summon-conjur/output
     environment:
       CONJUR_ACCOUNT:
       CONJUR_AUTHN_LOGIN:

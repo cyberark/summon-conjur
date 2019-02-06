@@ -2,8 +2,6 @@
 
 CONJUR_TYPE="${1:-all}"  # Type of Conjur to test against, 'all', 'oss' or 'enterprise'
 
-export GO_TEST_ARGS="-tags $CONJUR_TYPE"  # default to run all tests
-
 if [[ "$CONJUR_TYPE" == "all" || "$CONJUR_TYPE" == "enterprise" ]]; then
   export COMPOSE_ARGS='-f docker-compose.yml -f docker-compose.enterprise.yml'
 fi
@@ -11,7 +9,7 @@ fi
 export CONJUR_ACCOUNT=cucumber
 export CONJUR_AUTHN_LOGIN=admin
 
-source functions.sh
+source ./bin/functions.sh
 
 function finish {
   echo 'Removing environment'

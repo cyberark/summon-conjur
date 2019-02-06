@@ -1,12 +1,10 @@
-// +build all enterprise
-
-package main
+package test
 
 import (
 	"os"
 	"testing"
 
-	. "github.com/playscale/goconvey/convey"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestPackageEnterprise(t *testing.T) {

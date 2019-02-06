@@ -1,7 +1,4 @@
 .git
-.godeps
-pkg/*
 summon-conjur
 junit.xml
-vendor/
 output/
