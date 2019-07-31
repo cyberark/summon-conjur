@@ -109,7 +109,7 @@ Specifically, it loads configuration from:
  * Read `/etc/conjur.identity` as a `netrc` file. Note that the user running must either be in the group `conjur` or root to read the identity file.
  * Environment variables:
    * Version
-    * `CONJUR_MAJOR_VERSION` - must be set to `4` in order for summon-conjur to work with Conjur v4.9.
+     * `CONJUR_MAJOR_VERSION` - must be set to `4` in order for summon-conjur to work with Conjur v4.9.
    * Appliance URLs
      * `CONJUR_APPLIANCE_URL`
      * `CONJUR_CORE_URL`
@@ -118,6 +118,8 @@ Specifically, it loads configuration from:
      * `CONJUR_CERT_FILE`
      * `CONJUR_SSL_CERTIFICATE`
    * Authentication
+     * Account
+       * `CONJUR_ACCOUNT`
      * Login
        * `CONJUR_AUTHN_LOGIN`
        * `CONJUR_AUTHN_API_KEY`
@@ -133,8 +135,8 @@ you need to specify, for example, an authn proxy.
 The provider will fail unless all of the following values are provided:
 
 - `CONJUR_MAJOR_VERSION=4` for Conjur v4.9
-- An appliance url
-- An organisation account
+- An appliance url (`CONJUR_APPLIANCE_URL`)
+- An organization account (`CONJUR_ACCOUNT`)
 - A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
 - A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
 
