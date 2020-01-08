@@ -18,46 +18,47 @@ builds:
   ldflags: []
   main: cmd/main.go
 
-archive:
-  name_template: "{{.ProjectName}}-{{.Os}}-{{.Arch}}"
-  format_overrides:
-  - goos: windows
-    format: zip
-  files:
-    - none*  # only package the binary - not defaults: readme, license, changelog
+archives:
+  - id: summon-conjur-release-archive
+    name_template: "{{.ProjectName}}-{{.Os}}-{{.Arch}}"
+    format_overrides:
+    - goos: windows
+      format: zip
+    files:
+      - none*  # only package the binary - not defaults: readme, license, changelog
 
 checksum:
   name_template: 'SHA256SUMS.txt'
 
-brew:
-  description: Conjur provider for Summon
-  homepage: https://github.com/cyberark/summon-conjur
-  url_template: https://github.com/cyberark/summon-conjur/releases/download/v{{.Version}}/summon-conjur-darwin-amd64.tar.gz
-  install: |
-    target = lib/"summon"
-    target.install "summon-conjur"
-  test: |
-    system lib/"summon"/"summon-conjur", "-V"
+brews:
+  - description: Conjur provider for Summon
+    homepage: https://github.com/cyberark/summon-conjur
+    url_template: https://github.com/cyberark/summon-conjur/releases/download/v{{.Version}}/summon-conjur-darwin-amd64.tar.gz
+    install: |
+      target = lib/"summon"
+      target.install "summon-conjur"
+    test: |
+      system lib/"summon"/"summon-conjur", "-V"
+  
+    github:
+      owner: cyberark
+      name: homebrew-tools
+    skip_upload: true
 
-  github:
-    owner: cyberark
-    name: homebrew-tools
-  skip_upload: true
+nfpms:
+  - name_template: "{{.ProjectName}}"
+    vendor: CyberArk
+    homepage: https://github.com/cyberark/summon-conjur
+    maintainer: Conjur Maintainers <conj_maintainers@cyberark.com>
 
-nfpm:
-  name_template: "{{.ProjectName}}"
-  vendor: CyberArk
-  homepage: https://github.com/cyberark/summon-conjur
-  maintainer: Conjur Maintainers <conj_maintainers@cyberark.com>
-
-  description: Conjur provider for Summon
-  recommends:
-    - summon
-  license: MIT
-  formats:
-  - deb
-  - rpm
-  bindir: /usr/local/lib/summon  # where the binary is placed, default summon provider dir
+    description: Conjur provider for Summon
+    recommends:
+      - summon
+    license: MIT
+    formats:
+    - deb
+    - rpm
+    bindir: /usr/local/lib/summon  # where the binary is placed, default summon provider dir
 
 release:
   disable: true
