@@ -142,30 +142,9 @@ The provider will fail unless all of the following values are provided:
 
 ---
 
-## Development
+## Contributing
 
-You can start a docker-compose development environment by running
+We welcome contributions of all kinds to this repository. For instructions on how to get started and descriptions of our development workflows, please see our [contributing
+guide][contrib].
 
-```sh
-$ ./dev.sh
-```
-
-### Dependency management With dep
-[dep](https://golang.github.io/dep/docs/introduction.html) is being used to manage dependencies.
-
-When you add a new package, or change the version of an existing package, run (in the `dev` container)
-
-```sh
-/go/src/github.com/cyberark/summon-conjur# dep ensure
-```
-
-to update `Gopkg.toml` and `Gopkg.lock`.
-
-### Running tests
-
-Automated CI pipelines:
-- [.gitlab.ci.yml](.gitlab.ci.yml)
-- [Jenkinsfile](Jenkinsfile)
-
-Run `./test.sh oss` for OSS tests, `./test.sh enterprise` for Enterprise tests.
-This defaults to both.
+[contrib]: CONTRIBUTING.md
