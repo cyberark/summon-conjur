@@ -39,14 +39,14 @@ brews:
       target.install "summon-conjur"
     test: |
       system lib/"summon"/"summon-conjur", "-V"
-  
+
     github:
       owner: cyberark
       name: homebrew-tools
     skip_upload: true
 
 nfpms:
-  - name_template: "{{.ProjectName}}"
+  - file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
     vendor: CyberArk
     homepage: https://github.com/cyberark/summon-conjur
     maintainer: Conjur Maintainers <conj_maintainers@cyberark.com>

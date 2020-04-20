@@ -28,8 +28,8 @@ brew install summon-conjur
 ### Linux (Debian and Red Hat flavors)
 
 `deb` and `rpm` files are attached to new releases.
-These can be installed with `dpkg -i summon-conjur.deb` and
-`rpm -ivh summon-conjur.rpm`, respectively.
+These can be installed with `dpkg -i summon-conjur_*.deb` and
+`rpm -ivh summon-conjur_*.rpm`, respectively.
 
 ### Auto Install
 
