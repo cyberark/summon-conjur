@@ -116,8 +116,7 @@ Specifically, it loads configuration from:
 
  * `.conjurrc` files, located in the home and current directories, or at the
     path specified by the `CONJURRC` environment variable.
- * Read `/etc/conjur.conf` as a `.conjurrc` file.
- * Read `/etc/conjur.identity` as a `netrc` file. Note that the user running must either be in the group `conjur` or root to read the identity file.
+ * Reads `/etc/conjur.conf` as a `.conjurrc` file.
  * Environment variables:
    * Version
      * `CONJUR_MAJOR_VERSION` - must be set to `4` in order for summon-conjur to work with Conjur v4.9.
@@ -138,7 +137,16 @@ Specifically, it loads configuration from:
        * `CONJUR_AUTHN_TOKEN`
        * `CONJUR_AUTHN_TOKEN_FILE`
 
-If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE` are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
+If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE`
+are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
+
+`$HOME/.netrc` is used as the default `.netrc` location but you can also specify its location
+in `.conjurrc`'s field `netrc_path`:
+```yaml
+...
+netrc_path: "/etc/conjur.identity"
+...
+```
 
 In general, you can ignore the `CONJUR_CORE_URL` and `CONJUR_AUTHN_URL` unless
 you need to specify, for example, an authn proxy.
