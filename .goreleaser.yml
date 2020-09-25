@@ -11,8 +11,9 @@ builds:
   - CGO_ENABLED=0
   goos:
   - darwin  # MacOS
-  - windows
   - linux
+  - solaris
+  - windows
   goarch:
   - amd64
   ldflags: []
