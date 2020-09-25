@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Preliminary support for building Solaris binaries.
+  [cyberark/summon-conjur#67](https://github.com/cyberark/summon-conjur/issues/67)
+
 ## [0.5.3] - 2019-02-06
 ### Changed
 - Go modules are now used for dependency management
