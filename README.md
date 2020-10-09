@@ -116,7 +116,7 @@ Specifically, it loads configuration from:
 
  * `.conjurrc` files, located in the home and current directories, or at the
     path specified by the `CONJURRC` environment variable.
- * Reads `/etc/conjur.conf` as a `.conjurrc` file.
+ * Reads the `.conjurrc` file from `/etc/conjur.conf` on Linux/macOS and `C:\Windows\conjur.conf` on Windows.
  * Environment variables:
    * Version
      * `CONJUR_MAJOR_VERSION` - must be set to `4` in order for summon-conjur to work with Conjur v4.9.
