@@ -41,7 +41,7 @@ brews:
     test: |
       system lib/"summon"/"summon-conjur", "-V"
 
-    github:
+    tap:
       owner: cyberark
       name: homebrew-tools
     skip_upload: true
