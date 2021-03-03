@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Preliminary support for building Solaris binaries.
   [cyberark/summon-conjur#67](https://github.com/cyberark/summon-conjur/issues/67)
 
+### Fixed
+- Verbose debug output with the -v flag, silently lost in v0.5.3 due to changes
+  to the logging interface in
+  [conjur-api-go](https://github.com/cyberark/conjur-api-go), is reintroduced.
+  [cyberark/summon-conjur#77](https://github.com/cyberark/summon-conjur/issues/77)
+
 ## [0.5.3] - 2019-02-06
 ### Changed
 - Go modules are now used for dependency management

@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/cyberark/conjur-api-go/conjurapi"
+	"github.com/cyberark/conjur-api-go/conjurapi/logging"
 	"github.com/cyberark/summon-conjur/pkg/summon_conjur"
 	"github.com/karrick/golf"
 	log "github.com/sirupsen/logrus"
@@ -57,6 +58,7 @@ func main() {
 	log.SetFormatter(&log.TextFormatter{DisableTimestamp: true, DisableLevelTruncation: true})
 	if *verbose {
 		log.SetLevel(log.DebugLevel)
+		logging.ApiLog.SetLevel(log.DebugLevel)
 	}
 
 	RetrieveSecret(args[0])
