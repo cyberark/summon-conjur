@@ -70,7 +70,3 @@ release:
     - glob: NOTICES.txt
     - glob: LICENSE
     - glob: CHANGELOG.md
-    - glob: dist/goreleaser/summon-conjur-linux-amd64
-    - glob: dist/goreleaser/summon-conjur-darwin-amd64
-    - glob: dist/goreleaser/summon-conjur-windows-amd64
-    - glob: dist/goreleaser/summon-conjur-solaris-amd64
