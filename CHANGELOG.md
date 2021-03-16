@@ -6,8 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.5.4] - 2021-03-15
+## [0.5.4] - 2021-03-16
 ### Added
+- Update conjur-api-go dependency to v0.7.1.
 - Preliminary support for building Solaris binaries.
   [cyberark/summon-conjur#67](https://github.com/cyberark/summon-conjur/issues/67)
 
