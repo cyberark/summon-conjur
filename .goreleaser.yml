@@ -47,7 +47,7 @@ brews:
     skip_upload: true
 
 nfpms:
-  - file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
+  - file_name_template: "{{ .ProjectName }}"
     vendor: CyberArk
     homepage: https://github.com/cyberark/summon-conjur
     maintainer: Conjur Maintainers <conj_maintainers@cyberark.com>
