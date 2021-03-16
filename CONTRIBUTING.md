@@ -100,9 +100,9 @@ should be officially marked as a `pre-release` (eg "non-production ready")
    - summon-conjur-darwin-amd64.tar.gz
    - summon-conjur-linux-amd64.tar.gz
    - summon-conjur-windows-amd64.zip
+   - summon-conjur-solaris-amd64.tar.gz
    - summon-conjur.deb
    - summon-conjur.rpm
-   - summon-conjur-solaris-amd64.tar.gz
    - SHA256SUMS.txt
 
 1. Copy the `summon-conjur.rb` homebrew formula output by goreleaser

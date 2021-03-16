@@ -21,13 +21,6 @@ pipeline {
       }
     }
 
-    stage('Build artifacts') {
-      steps {
-        sh './build.sh'
-        archiveArtifacts artifacts: "dist/*.tar.gz,dist/*.zip,dist/*.rb,dist/*.deb,dist/*.rpm,dist/*.txt", fingerprint: true
-      }
-    }
-
     stage('Run unit tests') {
       steps {
         sh './bin/test.sh'
@@ -37,6 +30,36 @@ pipeline {
         ccCoverage("gocov", "--prefix github.com/cyberark/summon-conjur")
       }
     }
+
+    stage('Build Release Artifacts') {
+      when {
+        not {
+          tag "v*"
+        }
+      }
+
+      steps {
+        sh './build.sh --snapshot'
+        archiveArtifacts 'dist/goreleaser/'
+      }
+    }
+
+    stage('Build Release Artifacts and Create Pre Release') {
+      // Only run this stage when triggered by a tag
+      when { tag "v*" }
+
+      steps {
+        dir('./pristine-checkout') {
+          // Go releaser requires a pristine checkout
+          checkout scm
+
+          // Create draft release
+          sh "summon --yaml 'GITHUB_TOKEN: !var github/users/conjur-jenkins/api-token' ./build.sh"
+          archiveArtifacts 'dist/goreleaser/'
+        }
+      }
+    }
+
   }
 
   post {
