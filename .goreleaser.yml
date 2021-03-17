@@ -34,7 +34,7 @@ checksum:
 brews:
   - description: Conjur provider for Summon
     homepage: https://github.com/cyberark/summon-conjur
-    url_template: https://github.com/cyberark/summon-conjur/releases/download/{{.Version}}/summon-conjur-darwin-amd64.tar.gz
+    url_template: https://github.com/cyberark/summon-conjur/releases/download/v{{.Version}}/summon-conjur-darwin-amd64.tar.gz
     install: |
       target = lib/"summon"
       target.install "summon-conjur"
