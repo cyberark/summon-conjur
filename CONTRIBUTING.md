@@ -68,17 +68,17 @@ This defaults to both.
    the last release have been captured. You may find it helpful to look at the
    list of commits since the last release - you can find this by visiting the
    [releases page](https://github.com/cyberark/summon-conjur/releases) and
-   clicking the "`N commits` to master since this release" link for the latest
+   clicking the "`N commits` to main since this release" link for the latest
    release.
 
    This is also a good time to make sure all entries conform to our
-   [changelog guidelines](https://github.com/cyberark/community/blob/master/Conjur/CONTRIBUTING.md#changelog-guidelines).
+   [changelog guidelines](https://github.com/cyberark/community/blob/main/Conjur/CONTRIBUTING.md#changelog-guidelines).
 1. Commit these changes - `Bump version to x.y.z` is an acceptable commit message - and open a PR
    for review. Your PR should include updates to `pkg/summon_conjur/version.go`,
    `CHANGELOG.md`, and if there are any license updates, to `NOTICES.txt`.
 
 ### Add a git tag
-1. Once your changes have been reviewed and merged into master, tag the version
+1. Once your changes have been reviewed and merged into main, tag the version
    using `git tag -s v0.1.1`. Note this requires you to be  able to sign releases.
    Consult the [github documentation on signing commits](https://help.github.com/articles/signing-commits-with-gpg/)
    on how to set this up. `vx.y.z` is an acceptable tag message.
@@ -106,5 +106,5 @@ should be officially marked as a `pre-release` (eg "non-production ready")
    - SHA256SUMS.txt
 
 1. Copy the `summon-conjur.rb` homebrew formula output by goreleaser
-   to the [homebrew formula for Summon-Conjur](https://github.com/cyberark/homebrew-tools/blob/master/summon-conjur.rb)
+   to the [homebrew formula for Summon-Conjur](https://github.com/cyberark/homebrew-tools/blob/main/summon-conjur.rb)
    and submit a PR to update the version of Summon-Conjur available in brew.

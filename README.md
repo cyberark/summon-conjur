@@ -4,7 +4,7 @@ Conjur provider for [Summon](https://github.com/cyberark/summon).
 
 [![GitHub release](https://img.shields.io/github/release/cyberark/summon-conjur.svg)](https://github.com/cyberark/summon-conjur/releases/latest)
 
-[![Github commits (since latest release)](https://img.shields.io/github/commits-since/cyberark/summon-conjur/latest.svg)](https://github.com/cyberark/summon-conjur/commits/master)
+[![Github commits (since latest release)](https://img.shields.io/github/commits-since/cyberark/summon-conjur/latest.svg)](https://github.com/cyberark/summon-conjur/commits/main)
 
 ---
 
@@ -49,7 +49,7 @@ Use the auto-install script. This will install the latest version of summon-conj
 The script requires sudo to place summon-conjur in dir `/usr/local/lib/summon`.
 
 ```
-curl -sSL https://raw.githubusercontent.com/cyberark/summon-conjur/master/install.sh | bash
+curl -sSL https://raw.githubusercontent.com/cyberark/summon-conjur/main/install.sh | bash
 ```
 
 ### Manual Install
