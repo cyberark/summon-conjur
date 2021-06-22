@@ -17,9 +17,9 @@ Conjur provider for [Summon](https://github.com/cyberark/summon).
 Pre-built binaries and packages are available from GitHub releases
 [here](https://github.com/cyberark/summon-conjur/releases).
 
-### Using summon-conjur with Conjur OSS 
+### Using summon-conjur with Conjur Open Source 
 
-Are you using this project with [Conjur OSS](https://github.com/cyberark/conjur)? Then we 
+Are you using this project with [Conjur Open Source](https://github.com/cyberark/conjur)? Then we 
 **strongly** recommend choosing the version of this project to use from the latest [Conjur OSS 
 suite release](https://docs.conjur.org/Latest/en/Content/Overview/Conjur-OSS-Suite-Overview.html). 
 Conjur maintainers perform additional testing on the suite release versions to ensure 
