@@ -19,6 +19,18 @@ builds:
   ldflags: []
   main: cmd/main.go
 
+# Apple silicon support
+- id: summon-conjur-arm
+  binary: summon-conjur
+  env:
+  - CGO_ENABLED=0
+  goos:
+  - darwin  # MacOS
+  goarch:
+  - arm64
+  ldflags: []
+  main: ./cmd/main.go
+
 archives:
   - id: summon-conjur-release-archive
     name_template: "{{.ProjectName}}-{{.Os}}-{{.Arch}}"

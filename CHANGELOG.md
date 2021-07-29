@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Build for Apple M1 silicon.
+  [cyberark/summon-conjur#88](https://github.com/cyberark/summon-conjur/issues/88)
+
 ## [0.5.5] - 2021-06-01
 ### Security
 - Update golang.org/x/crypto to address CVE-2020-29652.

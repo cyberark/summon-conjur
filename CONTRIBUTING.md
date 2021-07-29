@@ -98,6 +98,7 @@ should be officially marked as a `pre-release` (eg "non-production ready")
    - NOTICES.txt
    - LICENSE
    - summon-conjur-darwin-amd64.tar.gz
+   - summon-conjur-darwin-arm64.tar.gz
    - summon-conjur-linux-amd64.tar.gz
    - summon-conjur-windows-amd64.zip
    - summon-conjur-solaris-amd64.tar.gz
