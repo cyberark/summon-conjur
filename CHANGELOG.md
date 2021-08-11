@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.6.0] - 2021-08-11
 ### Added
 - Build for Apple M1 silicon.
   [cyberark/summon-conjur#88](https://github.com/cyberark/summon-conjur/issues/88)
@@ -87,7 +88,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.5.5...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/cyberark/summon-conjur/compare/v0.5.5...v0.6.0
 [0.5.5]: https://github.com/cyberark/summon-conjur/compare/v0.5.4...v0.5.5
 [0.5.4]: https://github.com/cyberark/summon-conjur/compare/v0.5.3...v0.5.4
 [0.5.3]: https://github.com/cyberark/summon-conjur/compare/v0.5.2...v0.5.3

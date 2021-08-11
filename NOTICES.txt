@@ -7,27 +7,27 @@ of the license associated with each component.
 
 
 Section 1: Apache License 2.0
->>> https://github.com/cyberark/conjur-api-go/tree/v0.7.1 
+>>> https://github.com/cyberark/conjur-api-go/tree/v0.7.1
 
 Section 2: MIT License
 >>> https://github.com/sirupsen/logrus/tree/v1.3.0
->>> https://github.com/smartystreets/goconvey/tree/v1.6.4 
+>>> https://github.com/smartystreets/goconvey/tree/v1.6.4
 
 Section 3: BSD 3-clause "New" or "Revised" License
->>> https://github.com/karrick/golf/tree/v1.1.0 
+>>> https://github.com/karrick/golf/tree/v1.1.0
 
 
 APPENDIX: Standard License Files and Templates
 
 >>> Apache License 2.0
->>> MIT License 
+>>> MIT License
 >>> BSD 3-clause "New" or "Revised" License
 
 --------------- SECTION 1: Apache License 2.0 ----------
 
 Apache License 2.0 is applicable to the following component(s).
 
->>> https://github.com/cyberark/conjur-api-go/tree/v0.7.1 
+>>> https://github.com/cyberark/conjur-api-go/tree/v0.7.1
 
 Copyright (c) 2020 CyberArk Software Ltd. All rights reserved.
 
