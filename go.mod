@@ -1,6 +1,6 @@
 module github.com/cyberark/summon-conjur
 
-go 1.15
+go 1.16
 
 require (
 	github.com/cyberark/conjur-api-go v0.7.1
