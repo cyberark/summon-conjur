@@ -5,8 +5,9 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 )
 
 func splitEq(s string) (string, string) {
@@ -46,13 +47,13 @@ func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) 
 	return stdout, stderr, err
 }
 
-func WithoutArgs() {
-	Convey("Given summon-conjur is run with no arguments", func() {
+func WithoutArgs(t *testing.T) {
+	t.Run("Given summon-conjur is run with no arguments", func(t *testing.T) {
 		_, stderr, err := RunCommand(PackageName)
 
-		Convey("Returns with error", func() {
-			So(err, ShouldNotBeNil)
-			So(stderr.String(), ShouldEqual, `Usage of summon-conjur:
+		t.Run("Returns with error", func(t *testing.T) {
+			assert.Error(t, err)
+			assert.Equal(t, stderr.String(), `Usage of summon-conjur:
   -h, --help
 	show help (default: false)
   -V, --version
