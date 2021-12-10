@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPackageEnterprise(t *testing.T) {
@@ -17,7 +17,7 @@ func TestPackageEnterprise(t *testing.T) {
 
 	Path := os.Getenv("PATH")
 
-	Convey("Given valid V4 appliance configuration", t, func() {
+	t.Run("Given valid V4 appliance configuration", func(t *testing.T) {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
@@ -28,37 +28,37 @@ func TestPackageEnterprise(t *testing.T) {
 		os.Setenv("CONJUR_AUTHN_LOGIN", Login)
 		os.Setenv("CONJUR_SSL_CERTIFICATE", SSLCert_V4)
 
-		Convey("Given valid APIKey credentials", func() {
+		t.Run("Given valid APIKey credentials", func(t *testing.T) {
 			os.Setenv("CONJUR_AUTHN_API_KEY", APIKey_V4)
 
-			WithoutArgs()
+			WithoutArgs(t)
 
-			Convey("Retrieves existing variable's defined value", func() {
+			t.Run("Retrieves existing variable's defined value", func(t *testing.T) {
 				variableIdentifier := "existent-variable-with-defined-value"
 				secretValue := "existent-variable-defined-value"
 
 				stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldBeNil)
-				So(stdout.String(), ShouldEqual, secretValue)
+				assert.NoError(t, err)
+				assert.Equal(t, stdout.String(), secretValue)
 			})
 
-			Convey("Returns error on existent-variable-undefined-value", func() {
+			t.Run("Returns error on existent-variable-undefined-value", func(t *testing.T) {
 				variableIdentifier := "existent-variable-with-undefined-value"
 
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldNotBeNil)
-				So(stderr.String(), ShouldContainSubstring, "Not Found")
+				assert.Error(t, err)
+				assert.Contains(t, stderr.String(), "Not Found")
 			})
 
-			Convey("Returns error on non-existent variable", func() {
+			t.Run("Returns error on non-existent variable", func(t *testing.T) {
 				variableIdentifier := "non-existent-variable"
 
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldNotBeNil)
-				So(stderr.String(), ShouldContainSubstring, "not found")
+				assert.Error(t, err)
+				assert.Contains(t, stderr.String(), "not found")
 			})
 		})
 	})

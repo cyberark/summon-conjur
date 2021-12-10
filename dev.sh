@@ -31,7 +31,6 @@ function runDevelopment() {
   docker-compose build --pull dev
 
   docker-compose run -d \
-    --entrypoint 'bash -c ./convey.sh' \
     --service-ports \
     -e CONJUR_V4_AUTHN_API_KEY="$api_key_v4" \
     -e CONJUR_V4_SSL_CERTIFICATE="$ssl_cert_v4" \

@@ -11,7 +11,7 @@ import (
 
 	"github.com/cyberark/conjur-api-go/conjurapi"
 	conjur_authn "github.com/cyberark/conjur-api-go/conjurapi/authn"
-	. "github.com/smartystreets/goconvey/convey"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPackageOSS(t *testing.T) {
@@ -22,15 +22,15 @@ func TestPackageOSS(t *testing.T) {
 
 	Path := os.Getenv("PATH")
 
-	Convey("Given no configuration and no authentication information", t, func() {
+	t.Run("Given no configuration and no authentication information", func(t *testing.T) {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
 
-		WithoutArgs()
+		WithoutArgs(t)
 	})
 
-	Convey("Given valid V5 OSS configuration", t, func() {
+	t.Run("Given valid V5 OSS configuration", func(t *testing.T) {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
@@ -38,13 +38,13 @@ func TestPackageOSS(t *testing.T) {
 		os.Setenv("CONJUR_APPLIANCE_URL", ApplianceURL)
 		os.Setenv("CONJUR_ACCOUNT", Account)
 
-		Convey("Given valid APIKey credentials", func() {
+		t.Run("Given valid APIKey credentials", func(t *testing.T) {
 			os.Setenv("CONJUR_AUTHN_LOGIN", Login)
 			os.Setenv("CONJUR_AUTHN_API_KEY", APIKey)
 
-			WithoutArgs()
+			WithoutArgs(t)
 
-			Convey("Retrieves existing variable's defined value", func() {
+			t.Run("Retrieves existing variable's defined value", func(t *testing.T) {
 				variableIdentifier := "db/password"
 				secretValue := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
 				policy := fmt.Sprintf(`
@@ -72,34 +72,38 @@ func TestPackageOSS(t *testing.T) {
 
 				stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldBeNil)
-				So(stdout.String(), ShouldEqual, secretValue)
+				assert.NoError(t, err)
+				assert.Equal(t, stdout.String(), secretValue)
 			})
 
-			Convey("Returns error on non-existent variable", func() {
+			t.Run("Returns error on non-existent variable", func(t *testing.T) {
 				variableIdentifier := "non-existent-variable"
 
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldNotBeNil)
-				So(stderr.String(), ShouldContainSubstring, "not found")
+				assert.Error(t, err)
+				assert.Contains(t, stderr.String(), "not found")
 			})
 
-			Convey("Given a non-existent Login is set", func() {
+			t.Run("Given a non-existent Login is set", func(t *testing.T) {
 				os.Setenv("CONJUR_AUTHN_LOGIN", "non-existent-user")
 
-				Convey("Returns 401", func() {
+				t.Run("Returns 401", func(t *testing.T) {
 					variableIdentifier := "existent-or-non-existent-variable"
 
 					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-					So(err, ShouldNotBeNil)
-					So(stderr.String(), ShouldContainSubstring, "401")
+					assert.Error(t, err)
+					assert.Contains(t, stderr.String(), "401")
 				})
 			})
+
+			// Cleanup
+			os.Unsetenv("CONJUR_AUTHN_LOGIN")
+			os.Unsetenv("CONJUR_AUTHN_API_KEY")
 		})
 
-		Convey("Given valid TokenFile credentials", func() {
+		t.Run("Given valid TokenFile credentials", func(t *testing.T) {
 
 			getToken := fmt.Sprintf(`
 token=$(curl --data "%s" "$CONJUR_APPLIANCE_URL/authn/$CONJUR_ACCOUNT/%s/authenticate")
@@ -107,8 +111,8 @@ echo $token
 `, APIKey, Login)
 			stdout, _, err := RunCommand("bash", "-c", getToken)
 
-			So(err, ShouldBeNil)
-			So(stdout.String(), ShouldContainSubstring, "signature")
+			assert.NoError(t, err)
+			assert.Contains(t, stdout.String(), "signature")
 
 			tokenFile, _ := ioutil.TempFile("", "existent-token-file")
 			tokenFileName := tokenFile.Name()
@@ -121,9 +125,9 @@ echo $token
 
 			os.Setenv("CONJUR_AUTHN_TOKEN_FILE", tokenFileName)
 
-			WithoutArgs()
+			WithoutArgs(t)
 
-			Convey("Retrieves existent variable's defined value", func() {
+			t.Run("Retrieves existent variable's defined value", func(t *testing.T) {
 				variableIdentifier := "db/password"
 				secretValue := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
 				policy := fmt.Sprintf(`
@@ -151,53 +155,55 @@ echo $token
 
 				stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldBeNil)
-				So(stdout.String(), ShouldEqual, secretValue)
+				assert.NoError(t, err)
+				assert.Equal(t, stdout.String(), secretValue)
 			})
 
-			Convey("Returns error on non-existent variable", func() {
+			t.Run("Returns error on non-existent variable", func(t *testing.T) {
 				variableIdentifier := "non-existent-variable"
 
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldNotBeNil)
-				So(stderr.String(), ShouldContainSubstring, "not found in account")
+				assert.Error(t, err)
+				assert.Contains(t, stderr.String(), "not found in account")
 			})
 
-			Convey("Given a non-existent TokenFile is set", func() {
+			t.Run("Given a non-existent TokenFile is set", func(t *testing.T) {
 				os.Setenv("CONJUR_AUTHN_TOKEN_FILE", "non-existent-token-file")
 
-				Convey("Waits for longer than a second", func() {
+				t.Run("Waits for longer than a second", func(t *testing.T) {
 					timeout := time.After(1 * time.Second)
-					unexpected_response := make(chan int)
+					unexpectedResponse := make(chan struct{})
 
 					go func() {
 						variableIdentifier := "existent-or-non-existent-variable"
 						RunCommand(PackageName, variableIdentifier)
-						unexpected_response <- 1
+						unexpectedResponse <- struct{}{}
 					}()
 
 					select {
-					case <-unexpected_response:
-						So("receive unexpected response", ShouldEqual, "not receive unexpected response")
+					case <-unexpectedResponse:
+						assert.Fail(t, "unexpected response")
 					case <-timeout:
-						So(true, ShouldEqual, true)
+						assert.True(t, true)
 					}
 				})
+
+				// Cleanup
+				os.Unsetenv("CONJUR_AUTHN_TOKEN_FILE")
 			})
 		})
 
-		Convey("Given no authentication credentials", func() {
+		t.Run("Given no authentication credentials", func(t *testing.T) {
+			WithoutArgs(t)
 
-			WithoutArgs()
-
-			Convey("Returns with error on non-existent variable", func() {
+			t.Run("Returns with error on non-existent variable", func(t *testing.T) {
 				variableIdentifier := "existent-or-non-existent-variable"
 
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-				So(err, ShouldNotBeNil)
-				So(stderr.String(), ShouldContainSubstring, "at least one authentication strategy")
+				assert.Error(t, err)
+				assert.Contains(t, stderr.String(), "at least one authentication strategy")
 			})
 		})
 	})
