@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - The project Golang version is updated from the end-of-life v1.15 to version v1.16.
   [cyberark/summon-conjur#93](https://github.com/cyberark/summon-conjur/pull/93/)
 
+### Security
+- Updated golang.org/x/net to v0.0.0-20211209124913-491a49abca63
+  [cyberark/summon-conjur#95](https://github.com/cyberark/summon-conjur/pull/95)
+
 ## [0.6.0] - 2021-08-11
 ### Added
 - Build for Apple M1 silicon.
