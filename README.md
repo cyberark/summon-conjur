@@ -135,9 +135,11 @@ Specifically, it loads configuration from:
      * Token
        * `CONJUR_AUTHN_TOKEN`
        * `CONJUR_AUTHN_TOKEN_FILE`
+     * JWT Token
+       * `CONJUR_AUTHN_JWT_SERVICE_ID`  (e.g. `kubernetes`) **NEW!**
+       * `JWT_TOKEN_PATH` (optional)  (default: `/var/run/secrets/kubernetes.io/serviceaccount/token`) **NEW!**
 
-If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE`
-are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
+If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE` or `CONJUR_AUTHN_JWT_SERVICE_ID` are not provided, the username and API key are read from `~/.netrc`, stored there by `conjur authn login`.
 
 `$HOME/.netrc` is used as the default `.netrc` location but you can also specify its location
 in `.conjurrc`'s field `netrc_path`:
