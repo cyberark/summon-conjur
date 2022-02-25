@@ -5,10 +5,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.6.2] - 2022-02-25
 ### Changed
 - Updated Conjur API to 0.9.0 to support authn-JWT
   [cyberark/summon-conjur#99](https://github.com/cyberark/summon-conjur/pull/99/)
-
 
 ## [0.6.1] - 2021-12-31
 ### Changed
@@ -97,7 +98,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.6.1...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.6.2...HEAD
+[0.6.2]: https://github.com/cyberark/summon-conjur/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/cyberark/summon-conjur/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/cyberark/summon-conjur/compare/v0.5.5...v0.6.0
 [0.5.5]: https://github.com/cyberark/summon-conjur/compare/v0.5.4...v0.5.5
