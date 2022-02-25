@@ -74,27 +74,14 @@ This defaults to both.
 1. Push the tag: `git push vx.y.z` (or `git push origin vx.y.z` if you are working
    from your local machine).
 
-### Create a GitHub pre-release
+### Make the release public
 **Note:** Until the stable quality exercises have completed, the GitHub release
 should be officially marked as a `pre-release` (eg "non-production ready")
 
-1. From the Jenkins pipeline for the tag, retrieve the archived `dist/goreleaser`
-   directory.
-1. Create a GitHub release from the tag, add a description by copying the CHANGELOG entries
-   from the version, and upload the release artifacts from `dist/goreleaser`
-   to the GitHub release. The following artifacts should be uploaded to the release:
-   - CHANGELOG.md
-   - NOTICES.txt
-   - LICENSE
-   - summon-conjur-darwin-amd64.tar.gz
-   - summon-conjur-darwin-arm64.tar.gz
-   - summon-conjur-linux-amd64.tar.gz
-   - summon-conjur-windows-amd64.zip
-   - summon-conjur-solaris-amd64.tar.gz
-   - summon-conjur.deb
-   - summon-conjur.rpm
-   - SHA256SUMS.txt
-
+1. The tagged commit should have caused a Draft release to be created in GitHub.
+   Replace the commits in the Draft release's description with the relevant entries
+   from the CHANGELOG.
+1. If everything else looks good, release the draft.
 1. Copy the `summon-conjur.rb` homebrew formula output by goreleaser
    to the [homebrew formula for Summon-Conjur](https://github.com/cyberark/homebrew-tools/blob/main/summon-conjur.rb)
    and submit a PR to update the version of Summon-Conjur available in brew.
