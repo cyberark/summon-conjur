@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+- Updated the Conjur API to 0.10.0 to support the new `CONJUR_AUTHN_JWT_HOST_ID` environment variable
+  [cyberark/summon-conjur#103](https://github.com/cyberark/summon-conjur/pull/103/)
+
 ### Security
 - Update test env Golang to 1.17 to fix CVE-2022-0778 and CVE-2022-1292.
   [cyberark/summon-conjur#102](https://github.com/cyberark/summon-conjur/pull/102/)
@@ -18,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.6.1] - 2021-12-31
 ### Changed
 - Updated Golang to 1.17 and the Conjur API to 0.8.1 
-  [cyberark/summon-#96](https://github.com/cyberark/summon-conjur/pull/96/)
+  [cyberark/summon-conjur#96](https://github.com/cyberark/summon-conjur/pull/96/)
 
 ## [0.6.0] - 2021-08-11
 ### Added

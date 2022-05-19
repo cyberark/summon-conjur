@@ -3,7 +3,7 @@ module github.com/cyberark/summon-conjur
 go 1.17
 
 require (
-	github.com/cyberark/conjur-api-go v0.9.0
+	github.com/cyberark/conjur-api-go v0.10.0
 	github.com/karrick/golf v1.1.0
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.7.0
