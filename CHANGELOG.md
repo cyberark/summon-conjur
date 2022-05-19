@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Security
+- Update test env Golang to 1.17 to fix CVE-2022-0778 and CVE-2022-1292.
+  [cyberark/summon-conjur#102](https://github.com/cyberark/summon-conjur/pull/102/)
+
 ## [0.6.2] - 2022-02-25
 ### Changed
 - Updated Conjur API to 0.9.0 to support authn-JWT
