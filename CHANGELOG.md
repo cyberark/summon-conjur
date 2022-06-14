@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Updated direct dependencies (github.com/cyberark/conjur-api-go -> v0.10.1,
+  github.com/stretchr/testify -> 1.7.2)
+  [cyberark/summon-conjur#106](https://github.com/cyberark/summon-conjur/pull/106)
 
 ## [0.6.3] - 2022-05-19
 
