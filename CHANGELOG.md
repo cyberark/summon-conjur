@@ -5,13 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.6.4] - 2022-07-06
 ### Changed
 - Updated direct dependencies (github.com/cyberark/conjur-api-go -> v0.10.1,
   github.com/stretchr/testify -> 1.7.2)
   [cyberark/summon-conjur#106](https://github.com/cyberark/summon-conjur/pull/106)
 
 ## [0.6.3] - 2022-05-19
-
 ### Changed
 - Updated the Conjur API to 0.10.0 to support the new `CONJUR_AUTHN_JWT_HOST_ID` environment variable
   [cyberark/summon-conjur#103](https://github.com/cyberark/summon-conjur/pull/103/)
@@ -112,7 +113,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.6.3...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.6.4...HEAD
+[0.6.4]: https://github.com/cyberark/summon-conjur/compare/v0.6.3...v0.6.4
 [0.6.3]: https://github.com/cyberark/summon-conjur/compare/v0.6.2...v0.6.3
 [0.6.2]: https://github.com/cyberark/summon-conjur/compare/v0.6.1...v0.6.2
 [0.6.1]: https://github.com/cyberark/summon-conjur/compare/v0.6.0...v0.6.1
