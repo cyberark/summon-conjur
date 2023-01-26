@@ -26,11 +26,9 @@ $ ./dev.sh
 ### Running tests
 
 Automated CI pipelines:
-- [.gitlab.ci.yml](.gitlab.ci.yml)
 - [Jenkinsfile](Jenkinsfile)
 
-Run `./bin/test.sh oss` for OSS tests, `./bin/test.sh enterprise` for Enterprise tests.
-This defaults to both.
+Run `./bin/test.sh`
 
 ## Releasing
 

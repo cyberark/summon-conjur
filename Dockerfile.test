@@ -1,7 +1,6 @@
-FROM golang:1.17-alpine
+FROM golang:1.19-alpine
 
 MAINTAINER Conjur Inc
-
 
 RUN apk add --no-cache bash \
                        build-base \
@@ -9,9 +8,9 @@ RUN apk add --no-cache bash \
                        git \
                        jq \
                        less && \
-    go get -u github.com/jstemmer/go-junit-report && \
-    go get -u github.com/axw/gocov/gocov && \
-    go get -u github.com/AlekSi/gocov-xml && \
+    go install github.com/jstemmer/go-junit-report@latest && \
+    go install github.com/axw/gocov/gocov@latest && \
+    go install github.com/AlekSi/gocov-xml@latest && \
     mkdir -p /summon-conjur/output
 
 WORKDIR /summon-conjur

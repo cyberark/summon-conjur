@@ -5,9 +5,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.7.0] - 2023-03-10
+### Added
+- Added support for Conjur's OIDC and LDAP authenticators
+  [cyberark/summon-conjur#108](https://github.com/cyberark/summon-conjur/pull/108)
+
+### Changed
+- Updated Golang to 1.19
+  [cyberark/summon-conjur#108](https://github.com/cyberark/summon-conjur/pull/108)
+
 ### Security
 - Update golang.org/x/sys to v0.1.0 for CVE-2022-29526 (not vulnerable)
   [cyberark/summon-conjur#110](https://github.com/cyberark/summon-conjur/pull/110)
+
+### Removed
+- Removed support for Conjur v4
+  [cyberark/summon-conjur#108](https://github.com/cyberark/summon-conjur/pull/108)
 
 ## [0.6.4] - 2022-07-06
 ### Changed
@@ -116,7 +130,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.6.4...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/cyberark/summon-conjur/compare/v0.6.4...v0.7.0
 [0.6.4]: https://github.com/cyberark/summon-conjur/compare/v0.6.3...v0.6.4
 [0.6.3]: https://github.com/cyberark/summon-conjur/compare/v0.6.2...v0.6.3
 [0.6.2]: https://github.com/cyberark/summon-conjur/compare/v0.6.1...v0.6.2
