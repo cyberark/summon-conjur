@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Security
+- Update golang.org/x/sys to v0.1.0 for CVE-2022-29526 (not vulnerable)
+  [cyberark/summon-conjur#110](https://github.com/cyberark/summon-conjur/pull/110)
 
 ## [0.6.4] - 2022-07-06
 ### Changed
