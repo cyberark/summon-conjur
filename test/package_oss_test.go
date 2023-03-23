@@ -30,7 +30,7 @@ func TestPackageOSS(t *testing.T) {
 		WithoutArgs(t)
 	})
 
-	t.Run("Given valid V5 OSS configuration", func(t *testing.T) {
+	t.Run("Given valid OSS configuration", func(t *testing.T) {
 		e := ClearEnv()
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
@@ -55,7 +55,7 @@ func TestPackageOSS(t *testing.T) {
 					ApplianceURL: ApplianceURL,
 					Account:      Account,
 				}
-				conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
+				conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login: Login, APIKey: APIKey})
 
 				conjur.LoadPolicy(
 					conjurapi.PolicyModePost,
@@ -138,7 +138,7 @@ echo $token
 					ApplianceURL: ApplianceURL,
 					Account:      Account,
 				}
-				conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login, APIKey})
+				conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login: Login, APIKey: APIKey})
 
 				conjur.LoadPolicy(
 					conjurapi.PolicyModePost,
@@ -165,7 +165,7 @@ echo $token
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 				assert.Error(t, err)
-				assert.Contains(t, stderr.String(), "not found in account")
+				assert.Contains(t, stderr.String(), "CONJ00076E Variable cucumber:variable:non-existent-variable is empty or not found")
 			})
 
 			t.Run("Given a non-existent TokenFile is set", func(t *testing.T) {
@@ -203,7 +203,7 @@ echo $token
 				_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
 				assert.Error(t, err)
-				assert.Contains(t, stderr.String(), "at least one authentication strategy")
+				assert.Contains(t, stderr.String(), "Failed creating a Conjur client")
 			})
 		})
 	})

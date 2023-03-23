@@ -7,7 +7,7 @@ of the license associated with each component.
 
 
 Section 1: Apache License 2.0
->>> https://github.com/cyberark/conjur-api-go/tree/v0.10.1
+>>> https://github.com/cyberark/conjur-api-go/tree/v0.11.0
 
 Section 2: MIT License
 >>> https://github.com/sirupsen/logrus/tree/v1.8.1
@@ -27,7 +27,7 @@ APPENDIX: Standard License Files and Templates
 
 Apache License 2.0 is applicable to the following component(s).
 
->>> https://github.com/cyberark/conjur-api-go/tree/v0.10.1
+>>> https://github.com/cyberark/conjur-api-go/tree/v0.11.0
 
 Copyright (c) 2020 CyberArk Software Ltd. All rights reserved.
 
