@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Security
+- Update golang.org/x/sys to v0.8.0, gopkg.in/yaml.v3 to v3.0.1, and Go to 1.20
+  in Dockerfile.text
+  [cyberark/summon-conjur#112](https://github.com/cyberark/summon-conjur/pull/112)
+
 ## [0.7.0] - 2023-03-10
 ### Added
 - Added support for Conjur's OIDC and LDAP authenticators
