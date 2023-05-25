@@ -19,8 +19,6 @@ services:
     image: summon-conjur-tester
     ports:
         - "8080"
-    depends_on:
-      - conjur
     entrypoint: /bin/bash
     command: './bin/test-entrypoint.sh'
     volumes:
