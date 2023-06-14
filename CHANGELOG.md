@@ -138,7 +138,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Initial release
 
 [Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.7.1...HEAD
-[0.7.0]: https://github.com/cyberark/summon-conjur/compare/v0.7.0...v0.7.1
+[0.7.1]: https://github.com/cyberark/summon-conjur/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/cyberark/summon-conjur/compare/v0.6.4...v0.7.0
 [0.6.4]: https://github.com/cyberark/summon-conjur/compare/v0.6.3...v0.6.4
 [0.6.3]: https://github.com/cyberark/summon-conjur/compare/v0.6.2...v0.6.3
