@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.7.1] - 2023-06-14
+
 ### Security
 - Update golang.org/x/sys to v0.8.0, gopkg.in/yaml.v3 to v3.0.1, and Go to 1.20
   in Dockerfile.text
@@ -135,7 +137,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/cyberark/summon-conjur/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/cyberark/summon-conjur/compare/v0.6.4...v0.7.0
 [0.6.4]: https://github.com/cyberark/summon-conjur/compare/v0.6.3...v0.6.4
 [0.6.3]: https://github.com/cyberark/summon-conjur/compare/v0.6.2...v0.6.3
