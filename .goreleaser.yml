@@ -1,10 +1,6 @@
 # All available options: https://goreleaser.com/customization/
 project_name: summon-conjur
 
-before:
-  hooks:
-  - go mod download
-
 builds:
 - binary: summon-conjur
   env:
