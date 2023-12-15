@@ -3,7 +3,7 @@
 # function finish {
 #   echo 'Removing environment'
 #   echo '-----'
-#   docker-compose down -v
+#   docker compose down -v
 # }
 # trap finish EXIT
 #
@@ -24,11 +24,11 @@ function runDevelopment() {
   local api_key=${keys[0]}
 
   export CONJUR_AUTHN_API_KEY="$api_key"
-  docker-compose up -d cli
+  docker compose up -d cli
 
-  docker-compose build --pull dev
+  docker compose build --pull dev
 
-  docker-compose run -d \
+  docker compose run -d \
     --service-ports \
     dev
 }
