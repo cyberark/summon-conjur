@@ -1,13 +1,13 @@
 function startConjur() {
   local services='conjur'
 
-  docker-compose $COMPOSE_ARGS pull $services
-  docker-compose $COMPOSE_ARGS up -d $services
+  docker compose $COMPOSE_ARGS pull $services
+  docker compose $COMPOSE_ARGS up -d $services
 }
 
 exec_on() {
   local container=$1; shift
-  docker exec $(docker-compose $COMPOSE_ARGS ps -q $container) "$@"
+  docker exec $(docker compose $COMPOSE_ARGS ps -q $container) "$@"
 }
 
 function initEnvironment() {

@@ -17,7 +17,7 @@ contributor!
 
 ## Development
 
-You can start a docker-compose development environment by running
+You can start a Docker Compose development environment by running
 
 ```sh
 $ ./dev.sh
