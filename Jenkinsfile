@@ -34,9 +34,7 @@ pipeline {
     stage('Get latest upstream dependencies') {
       steps {
         script {
-          withCredentials([usernamePassword(credentialsId: 'jenkins_ci_token', usernameVariable: 'GITHUB_USER', passwordVariable: 'TOKEN')]) {
-            sh './bin/updateGoDependencies.sh -g "${WORKSPACE}/go.mod"'
-          }
+          updatePrivateGoDependencies("${WORKSPACE}/go.mod")
           // Copy the vendor directory onto infrapool
           INFRAPOOL_EXECUTORV2_AGENT_0.agentPut from: "vendor", to: "${WORKSPACE}"
           INFRAPOOL_EXECUTORV2_AGENT_0.agentPut from: "go.*", to: "${WORKSPACE}"
