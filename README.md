@@ -104,9 +104,8 @@ AWS_SECRET_ACCESS_KEY=A23MSKSKSJASHDIWM
 
 ## Configuration
 
-This provider uses the same configuration pattern as the [Conjur CLI
-Client](https://github.com/conjurinc/api-ruby#configuration) to connect to Conjur.
-Specifically, it loads configuration from:
+This provider uses the same configuration pattern as the [Conjur CLI](https://github.com/cyberark/conjur-cli-go)
+to connect to Conjur. Specifically, it loads configuration from:
 
 * `.conjurrc` files, located in the home and current directories, or at the
     path specified by the `CONJURRC` environment variable.
