@@ -2,7 +2,6 @@ package test
 
 import (
 	"fmt"
-	"io/ioutil"
 	"math/rand"
 	"os"
 	"strings"
@@ -114,12 +113,12 @@ echo $token
 			assert.NoError(t, err)
 			assert.Contains(t, stdout.String(), "signature")
 
-			tokenFile, _ := ioutil.TempFile("", "existent-token-file")
+			tokenFile, _ := os.CreateTemp("", "existent-token-file")
 			tokenFileName := tokenFile.Name()
 			tokenFileContents := stdout.String()
 			os.Remove(tokenFileName)
 			go func() {
-				ioutil.WriteFile(tokenFileName, []byte(tokenFileContents), 0600)
+				os.WriteFile(tokenFileName, []byte(tokenFileContents), 0600)
 			}()
 			defer os.Remove(tokenFileName)
 
