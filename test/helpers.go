@@ -1,13 +1,13 @@
 package test
 
 import (
+	"bufio"
 	"bytes"
+	"encoding/base64"
+	"fmt"
 	"os"
 	"os/exec"
 	"strings"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func splitEq(s string) (string, string) {
@@ -47,22 +47,62 @@ func RunCommand(name string, arg ...string) (bytes.Buffer, bytes.Buffer, error) 
 	return stdout, stderr, err
 }
 
-func WithoutArgs(t *testing.T) {
-	t.Run("Given summon-conjur is run with no arguments", func(t *testing.T) {
-		_, stderr, err := RunCommand(PackageName)
+// RunCommandInteractively takes multiple paths to secrets and returns their values in Base64 and a last error that occurred
+func RunCommandInteractively(command string, values []string) ([][]byte, []byte) {
+	errChan := make(chan []byte, 1)
+	defer close(errChan)
+	doneChan := make(chan bool, 1)
+	cmd := exec.Command(command)
 
-		t.Run("Returns with error", func(t *testing.T) {
-			assert.Error(t, err)
-			assert.Equal(t, stderr.String(), `Usage of summon-conjur:
-  -h, --help
-	show help (default: false)
-  -V, --version
-	show version (default: false)
-  -v, --verbose
-	be verbose (default: false)
-`)
-		})
-	})
+	stdinPipe, _ := cmd.StdinPipe()
+	stdoutPipe, _ := cmd.StdoutPipe()
+	stderrPipe, _ := cmd.StderrPipe()
+
+	cmd.Start()
+
+	go func() {
+		defer stdinPipe.Close()
+		for _, value := range values {
+			fmt.Fprintln(stdinPipe, value)
+		}
+	}()
+
+	var output [][]byte
+	go func() {
+		defer close(doneChan)
+		defer stdoutPipe.Close()
+		scanner := bufio.NewScanner(stdoutPipe)
+		for scanner.Scan() {
+			line := scanner.Bytes()
+			output = append(output, line)
+		}
+	}()
+
+	go func() {
+		defer stderrPipe.Close()
+		scanner := bufio.NewScanner(stderrPipe)
+		for scanner.Scan() {
+			line := scanner.Bytes()
+			errChan <- line
+		}
+	}()
+
+	select {
+	case err := <-errChan:
+		_ = cmd.Process.Signal(os.Kill)
+		return output, err
+	case <-doneChan:
+		return output, nil
+	}
+}
+
+// EncodeStringToBase64 encodes a string into a Base64 byte array
+func EncodeStringToBase64(inputString string) []byte {
+	data := []byte(inputString)
+	encodedLen := base64.StdEncoding.EncodedLen(len(data))
+	encodedData := make([]byte, encodedLen)
+	base64.StdEncoding.Encode(encodedData, data)
+	return encodedData
 }
 
 const PackageName = "summon-conjur"

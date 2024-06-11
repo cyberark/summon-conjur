@@ -1,4 +1,6 @@
 # All available options: https://goreleaser.com/customization/
+version: 2
+
 project_name: summon-conjur
 
 builds:
@@ -49,7 +51,7 @@ brews:
     test: |
       system lib/"summon"/"summon-conjur", "-V"
 
-    tap:
+    repository:
       owner: cyberark
       name: homebrew-tools
     skip_upload: true

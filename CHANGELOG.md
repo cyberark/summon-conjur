@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.8.0] - 2024-06-06
+
+### Changed
+- Updated provider to stream secrets instead and leverage new Summon API (CNJR-4814)
+
 ## [0.7.2] - 2024-03-21
 
 ### Security

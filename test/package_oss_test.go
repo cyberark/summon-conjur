@@ -26,7 +26,12 @@ func TestPackageOSS(t *testing.T) {
 		defer e.RestoreEnv()
 		os.Setenv("PATH", Path)
 
-		WithoutArgs(t)
+		variableIdentifier := "variable"
+		_, stderr, err := RunCommand(PackageName, variableIdentifier)
+
+		//When both config and auth information is missing, then config errors take priority
+		assert.Error(t, err)
+		assert.Contains(t, stderr.String(), "Failed creating a Conjur client: Must specify an ApplianceURL -- Must specify an Account")
 	})
 
 	t.Run("Given valid OSS configuration", func(t *testing.T) {
@@ -40,9 +45,57 @@ func TestPackageOSS(t *testing.T) {
 		t.Run("Given valid APIKey credentials", func(t *testing.T) {
 			os.Setenv("CONJUR_AUTHN_LOGIN", Login)
 			os.Setenv("CONJUR_AUTHN_API_KEY", APIKey)
+			os.Setenv("HOME", "/root") //Workaround for Conjur API sending a warning to the stderr
 
-			WithoutArgs(t)
+			t.Run("Given interactive mode active", func(t *testing.T) {
+				t.Run("Retrieves multiple existing variable's values", func(t *testing.T) {
+					variableIdentifierUsername := "db/username"
+					variableIdentifierPassword := "db/password"
 
+					secretValueUsername := fmt.Sprintf("secret-value-username")
+					secretValuePassword := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
+					policy := fmt.Sprintf(`
+- !variable %s
+- !variable %s
+`, variableIdentifierUsername, variableIdentifierPassword)
+
+					config := conjurapi.Config{
+						ApplianceURL: ApplianceURL,
+						Account:      Account,
+					}
+					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login: Login, APIKey: APIKey})
+
+					conjur.LoadPolicy(
+						conjurapi.PolicyModePost,
+						"root",
+						strings.NewReader(policy),
+					)
+					defer conjur.LoadPolicy(
+						conjurapi.PolicyModePut,
+						"root",
+						strings.NewReader(""),
+					)
+
+					conjur.AddSecret(variableIdentifierUsername, secretValueUsername)
+					conjur.AddSecret(variableIdentifierPassword, secretValuePassword)
+					values := []string{variableIdentifierUsername, variableIdentifierPassword}
+					output, err := RunCommandInteractively(PackageName, values)
+
+					assert.Nil(t, err)
+					assert.Equal(t, EncodeStringToBase64(secretValueUsername), output[0])
+					assert.Equal(t, EncodeStringToBase64(secretValuePassword), output[1])
+				})
+				t.Run("Returns error on non-existent variables", func(t *testing.T) {
+					variableIdentifier1 := "non-existent-variable1"
+					variableIdentifier2 := "non-existent-variable2"
+
+					values := []string{variableIdentifier1, variableIdentifier2}
+
+					_, err := RunCommandInteractively(PackageName, values)
+
+					assert.Contains(t, string(err), "404 Not Found")
+				})
+			})
 			t.Run("Retrieves existing variable's defined value", func(t *testing.T) {
 				variableIdentifier := "db/password"
 				secretValue := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
@@ -72,7 +125,7 @@ func TestPackageOSS(t *testing.T) {
 				stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
 				assert.NoError(t, err)
-				assert.Equal(t, stdout.String(), secretValue)
+				assert.Equal(t, secretValue, stdout.String())
 			})
 
 			t.Run("Returns error on non-existent variable", func(t *testing.T) {
@@ -124,8 +177,6 @@ echo $token
 
 			os.Setenv("CONJUR_AUTHN_TOKEN_FILE", tokenFileName)
 
-			WithoutArgs(t)
-
 			t.Run("Retrieves existent variable's defined value", func(t *testing.T) {
 				variableIdentifier := "db/password"
 				secretValue := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
@@ -155,7 +206,7 @@ echo $token
 				stdout, _, err := RunCommand(PackageName, variableIdentifier)
 
 				assert.NoError(t, err)
-				assert.Equal(t, stdout.String(), secretValue)
+				assert.Equal(t, secretValue, stdout.String())
 			})
 
 			t.Run("Returns error on non-existent variable", func(t *testing.T) {
@@ -194,7 +245,6 @@ echo $token
 		})
 
 		t.Run("Given no authentication credentials", func(t *testing.T) {
-			WithoutArgs(t)
 
 			t.Run("Returns with error on non-existent variable", func(t *testing.T) {
 				variableIdentifier := "existent-or-non-existent-variable"
