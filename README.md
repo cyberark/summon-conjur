@@ -56,9 +56,21 @@ Otherwise, download the [latest release](https://github.com/cyberark/summon-conj
 
 Give summon-conjur a variable name and it will fetch it for you and print the value to stdout.
 
-```sh-session
+```shell
 $ summon-conjur prod/aws/iam/user/robot/access_key_id
-8h9psadf89sdahfp98
+flgwkeatfghhdqkflaqiwoagsmfgxool
+```
+
+You can also use interactive mode by starting the command without any arguments 
+and then passing paths to secrets one by one. This way you can fetch multiple values in a single command run.
+Keep in mind that by using interactive mode outputted values will be in BASE64 format.
+
+```shell
+$ summon-conjur
+prod/aws/iam/user/robot/access_key_id
+Zmxnd2tlYXRmZ2hoZHFrZmxhcWl3b2Fnc21mZ3hvb2w=
+prod/aws/s3/bucket_name/access_key_id
+YWNudmdlb3dycmd4dW1ic2tncW51Zm50dmRvYWVic3A=
 ```
 
 ### Flags

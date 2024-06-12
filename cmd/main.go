@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bufio"
+	"encoding/base64"
 	"fmt"
 	"os"
 
@@ -11,27 +13,25 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func RetrieveSecret(variableName string) {
+func makeSecretRetriever() (func(variableName string) ([]byte, error), error) {
 	config, err := conjurapi.LoadConfig()
 	if err != nil {
-		log.Errorf("Failed loading Conjur API config: %s\n", err.Error())
-		os.Exit(1)
+		return nil, fmt.Errorf("Failed loading Conjur API config: %s\n", err.Error())
 	}
 
 	conjur, err := conjurapi.NewClientFromEnvironment(config)
 	if err != nil {
-		log.Errorf("Failed creating a Conjur client: %s\n", err.Error())
-		os.Exit(1)
+		return nil, fmt.Errorf("Failed creating a Conjur client: %s\n", err.Error())
 	}
 
-	value, err := conjur.RetrieveSecret(variableName)
-	if err != nil {
-		log.Errorln(err.Error())
-		os.Exit(1)
-	}
+	return func(variableName string) ([]byte, error) {
+		value, err := conjur.RetrieveSecret(variableName)
+		if err != nil {
+			return nil, err
+		}
 
-	os.Stdout.Write([]byte(value))
-
+		return value, nil
+	}, nil
 }
 
 func main() {
@@ -50,10 +50,6 @@ func main() {
 		golf.Usage()
 		os.Exit(0)
 	}
-	if len(args) == 0 {
-		golf.Usage()
-		os.Exit(1)
-	}
 
 	log.SetFormatter(&log.TextFormatter{DisableTimestamp: true, DisableLevelTruncation: true})
 	if *verbose {
@@ -61,5 +57,40 @@ func main() {
 		logging.ApiLog.SetLevel(log.DebugLevel)
 	}
 
-	RetrieveSecret(args[0])
+	retrieveSecrets, err := makeSecretRetriever()
+	if err != nil {
+		log.Errorf("%s", err.Error())
+		os.Exit(1)
+	}
+
+	if len(args) == 0 {
+		scanner := bufio.NewScanner(os.Stdin)
+		// Breaking out of this loop is controlled by a parent process by sending EOF to the stdin
+		for scanner.Scan() {
+			variableName := scanner.Text()
+			if variableName == "" {
+				log.Errorln("Failed to retrieve variable from stdin")
+				continue
+			}
+			value, err := retrieveSecrets(variableName)
+			if err != nil {
+				log.Errorln(err.Error())
+				continue
+			}
+			base64Value := make([]byte, base64.StdEncoding.EncodedLen(len(value)))
+			base64.StdEncoding.Encode(base64Value, value)
+			fmt.Fprintln(os.Stdout, string(base64Value))
+		}
+		if err := scanner.Err(); err != nil {
+			log.Errorln(err.Error())
+			os.Exit(1)
+		}
+	} else {
+		value, err := retrieveSecrets(args[0])
+		if err != nil {
+			log.Errorln(err.Error())
+			os.Exit(1)
+		}
+		os.Stdout.Write(value)
+	}
 }
