@@ -2,7 +2,7 @@
 // 'product-pipelines-shared-library' draws from DevOps/product-pipelines-shared-library repository.
 // 'conjur-enterprise-sharedlib' draws from Conjur-Enterprise/jenkins-pipeline-library repository.
 // Point to a branch of a shared library by appending @my-branch-name to the library name
-@Library(['product-pipelines-shared-library', 'conjur-enterprise-sharedlib@copy-goreleaser-artifacts']) _
+@Library(['product-pipelines-shared-library', 'conjur-enterprise-sharedlib']) _
 
 // Automated release, promotion and dependencies
 properties([
