@@ -12,3 +12,5 @@ secrets.yml
 
 # VIM swapfiles
 *.sw[po]
+
+VERSION

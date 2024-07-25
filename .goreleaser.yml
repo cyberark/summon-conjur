@@ -14,8 +14,22 @@ builds:
   - windows
   goarch:
   - amd64
-  ldflags: []
+  ldflags:
+      - -w
+      - -X "github.com/cyberark/summon-conjur/pkg/summon_conjur.Tag={{ .ShortCommit }}"
+      - -X "github.com/cyberark/summon-conjur/pkg/summon_conjur.Version={{ .Env.VERSION }}"
   main: cmd/main.go
+  hooks:
+    post:
+      # Copy the binary out into the <dist> path, and give the copy the name we want
+      # in the release <extra_files>.
+      # e.g. Suppose a windows amd64 build generates a binary at
+      # path/to/binary.exe. This will be copied to
+      # path/to/../binary-windows_amd64.exe. The copy path can then be added to
+      # the release <extra_files> and will result in a release artifact with the name
+      # binary-windows_amd64.exe.
+      - mkdir -p "{{ dir .Path }}/../binaries"
+      - cp "{{ .Path }}" "{{ dir .Path }}/../binaries/summon_conjur_{{ .Target }}{{ .Ext }}"
 
 # Apple silicon support
 - id: summon-conjur-arm
@@ -26,8 +40,22 @@ builds:
   - darwin  # MacOS
   goarch:
   - arm64
-  ldflags: []
+  ldflags:
+    - -w
+    - -X "github.com/cyberark/summon-conjur/pkg/summon_conjur.Tag={{ .ShortCommit }}"
+    - -X "github.com/cyberark/summon-conjur/pkg/summon_conjur.Version={{ .Env.VERSION }}"
   main: ./cmd/main.go
+  hooks:
+    post:
+      # Copy the binary out into the <dist> path, and give the copy the name we want
+      # in the release <extra_files>.
+      # e.g. Suppose a windows amd64 build generates a binary at
+      # path/to/binary.exe. This will be copied to
+      # path/to/../binary-windows_amd64.exe. The copy path can then be added to
+      # the release <extra_files> and will result in a release artifact with the name
+      # binary-windows_amd64.exe.
+      - mkdir -p "{{ dir .Path }}/../binaries"
+      - cp "{{ .Path }}" "{{ dir .Path }}/../binaries/summon_conjur_{{ .Target }}{{ .Ext }}"
 
 archives:
   - id: summon-conjur-release-archive
@@ -74,7 +102,7 @@ nfpms:
 dist: ./dist/goreleaser
 
 release:
-  disable: false
+  disable: true
   draft: true
   extra_files:
     - glob: NOTICES.txt

@@ -21,6 +21,18 @@ func TestPackageOSS(t *testing.T) {
 
 	Path := os.Getenv("PATH")
 
+	t.Run("version flag", func(t *testing.T) {
+		e := ClearEnv()
+		defer e.RestoreEnv()
+		os.Setenv("PATH", Path)
+
+		stdout, stderr, err := RunCommand(PackageName, "--version")
+
+		assert.NoError(t, err)
+		assert.Empty(t, stderr.String())
+		assert.Equal(t, "unset-unset\n", stdout.String())
+	})
+
 	t.Run("Given no configuration and no authentication information", func(t *testing.T) {
 		e := ClearEnv()
 		defer e.RestoreEnv()

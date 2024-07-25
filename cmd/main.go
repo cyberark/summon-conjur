@@ -43,7 +43,7 @@ func main() {
 	args := golf.Args()
 
 	if *version {
-		fmt.Println(summon_conjur.VERSION)
+		fmt.Println(summon_conjur.FullVersionName)
 		os.Exit(0)
 	}
 	if *help {
