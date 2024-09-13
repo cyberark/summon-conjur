@@ -104,6 +104,9 @@ pipeline {
     }
 
     stage('Run unit tests') {
+      environment {
+        INFRAPOOL_REGISTRY_URL = "registry.tld"
+      }
       steps {
         script {
           infrapool.agentSh './bin/test.sh'

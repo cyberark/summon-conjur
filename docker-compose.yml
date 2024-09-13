@@ -1,15 +1,17 @@
 services:
   conjur:
-    image: cyberark/conjur:latest
+    image: ${REGISTRY_URL:-docker.io}/cyberark/conjur:edge
     command: server -a cucumber
     environment:
-      DATABASE_URL: postgres://postgres@postgres/postgres
+      DATABASE_URL: postgres://postgres:pa55w0rd@postgres/postgres
       CONJUR_DATA_KEY: 'WMfApcDBtocRWV+ZSUP3Tjr5XNU+Z2FdBb6BEezejIs='
     depends_on:
       - postgres
 
   postgres:
-    image: postgres:9.3
+    image: postgres:15
+    environment:
+      POSTGRES_PASSWORD: pa55w0rd
 
   test:
     build:
