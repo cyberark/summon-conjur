@@ -5,6 +5,8 @@ export COMPOSE_ARGS='-f docker-compose.yml'
 export CONJUR_ACCOUNT=cucumber
 export CONJUR_AUTHN_LOGIN=admin
 
+export REGISTRY_URL=${INFRAPOOL_REGISTRY_URL:-"docker.io"}
+
 source ./bin/functions.sh
 
 function finish {
