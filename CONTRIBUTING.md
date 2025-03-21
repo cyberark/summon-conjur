@@ -36,7 +36,30 @@ Run `./bin/test.sh`
 Releases should be created by maintainers only. To create and promote a
 release, follow the instructions in this section.
 
-### Update the changelog and notices
+### Verify and update dependencies
+
+1.  Review the changes to `go.mod` since the last release and make any needed
+    updates to [NOTICES.txt](./NOTICES.txt):
+    *   Verify that dependencies fit into supported licenses types:
+        ```shell
+         go-licenses check ./... --allowed_licenses="MIT,ISC,Apache-2.0,BSD-3-Clause" \
+            --ignore github.com/cyberark/conjur-summon \
+            --ignore $(go list std | awk 'NR > 1 { printf(",") } { printf("%s",$0) } END { print "" }')
+        ```
+        If there is new dependency having unsupported license, such license should be included to [notices.tpl](./notices.tpl)
+        file in order to get generated in NOTICES.txt.  
+
+        NOTE: The second ignore flag tells the command to ignore standard library packages, which
+        may or may not be necessary depending on your local Go installation and toolchain.
+
+    *   If no errors occur, proceed to generate updated NOTICES.txt:
+        ```shell
+         go-licenses report ./... --template notices.tpl > NOTICES.txt \
+            --ignore github.com/cyberark/summon-conjur \
+            --ignore $(go list std | awk 'NR > 1 { printf(",") } { printf("%s",$0) } END { print "" }')
+         ```
+
+### Update the changelog
 
 **NOTE:** If the Changelog and NOTICES.txt are already up-to-date, skip this
 step and promote the desired build from the main branch.
@@ -47,10 +70,6 @@ step and promote the desired build from the main branch.
 
 3. Review the git log and ensure the [changelog](CHANGELOG.md) contains all
    relevant recent changes with references to GitHub issues or PRs, if possible.
-
-4. Review the changes since the last tag, and if the dependencies have changed
-   revise the [NOTICES](NOTICES.txt) to correctly capture the included
-   dependencies and their licenses / copyrights.
 
 5. Commit these changes - `Bump version to x.y.z` is an acceptable commit
    message - and open a PR for review.
