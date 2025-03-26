@@ -157,11 +157,8 @@ func TestPackageOSS(t *testing.T) {
 
 					_, stderr, err := RunCommand(PackageName, variableIdentifier)
 
-					// Results in the following error:
-					// \"{\\\"error\\\":\\\"CONJ00007E 'non-existent-user' not found\\\"}. \"\n"
-
 					assert.Error(t, err)
-					assert.Contains(t, stderr.String(), "'non-existent-user' not found")
+					assert.Contains(t, stderr.String(), "401 Unauthorized")
 				})
 			})
 
