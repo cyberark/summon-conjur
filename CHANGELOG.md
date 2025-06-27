@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.8.1] - 2025-03-21
+## [0.8.1] - 2025-06-30
 
 ### Changed
 - Upgrade Go to 1.24.x
+
+### Fixed
+- Fix inconsistent behavior when fetching large numbers of variables
+  ([cyberark/summon#258](https://github.com/cyberark/summon/issues/258), CNJR-10325)
 
 ## [0.8.0] - 2024-06-06
 
@@ -153,7 +157,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/cyberark/summon-conjur/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/cyberark/summon-conjur/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/cyberark/summon-conjur/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/cyberark/summon-conjur/compare/v0.7.0...v0.7.1
