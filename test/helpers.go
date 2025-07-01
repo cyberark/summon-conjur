@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -71,9 +72,18 @@ func RunCommandInteractively(command string, values []string) ([][]byte, []byte)
 	go func() {
 		defer close(doneChan)
 		defer stdoutPipe.Close()
-		scanner := bufio.NewScanner(stdoutPipe)
-		for scanner.Scan() {
-			line := scanner.Bytes()
+		reader := bufio.NewReader(stdoutPipe)
+		for {
+			line, err := reader.ReadBytes('\n')
+			if err != nil {
+				if err == io.EOF {
+					break
+				}
+				errChan <- []byte(fmt.Sprintf("Reader error: %v", err))
+				break
+			}
+
+			line = bytes.TrimRight(line, "\r\n")
 			output = append(output, line)
 		}
 	}()

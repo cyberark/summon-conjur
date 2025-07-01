@@ -2,8 +2,10 @@ package test
 
 import (
 	"fmt"
+	"maps"
 	"math/rand"
 	"os"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -106,6 +108,51 @@ func TestPackageOSS(t *testing.T) {
 					_, err := RunCommandInteractively(PackageName, values)
 
 					assert.Contains(t, string(err), "404 Not Found")
+				})
+				t.Run("Retrieves large number of variables", func(t *testing.T) {
+					numVariables := 500
+					variableMap := make(map[string]string)
+					for i := range numVariables {
+						variableIdentifier := fmt.Sprintf("variable-%d", i)
+						secretValue := fmt.Sprintf("secret-value-%d", i)
+						variableMap[variableIdentifier] = secretValue
+					}
+					policy := strings.Builder{}
+					for key := range variableMap {
+						policy.WriteString(fmt.Sprintf("- !variable %s\n", key))
+					}
+
+					config := conjurapi.Config{
+						ApplianceURL: ApplianceURL,
+						Account:      Account,
+					}
+					conjur, _ := conjurapi.NewClientFromKey(config, conjur_authn.LoginPair{Login: Login, APIKey: APIKey})
+
+					conjur.LoadPolicy(
+						conjurapi.PolicyModePost,
+						"root",
+						strings.NewReader(policy.String()),
+					)
+					defer conjur.LoadPolicy(
+						conjurapi.PolicyModePut,
+						"root",
+						strings.NewReader(""),
+					)
+
+					for key, value := range variableMap {
+						err := conjur.AddSecret(key, value)
+						assert.NoError(t, err, fmt.Sprintf("Failed to add secret for variable %s", key))
+					}
+
+					varNames := slices.Collect(maps.Keys(variableMap))
+
+					output, err := RunCommandInteractively(PackageName, varNames)
+
+					assert.Nil(t, err)
+					assert.Len(t, output, len(varNames))
+					for i, value := range varNames {
+						assert.Equal(t, EncodeStringToBase64(variableMap[value]), output[i])
+					}
 				})
 			})
 			t.Run("Retrieves existing variable's defined value", func(t *testing.T) {

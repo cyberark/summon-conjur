@@ -1,6 +1,6 @@
 FROM golang:1.24-alpine
 
-MAINTAINER Conjur Inc
+LABEL maintainer="CyberArk Software Ltd."
 
 RUN apk add --no-cache bash \
                        build-base \
