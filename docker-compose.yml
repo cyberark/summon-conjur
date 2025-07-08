@@ -50,3 +50,16 @@ services:
       CONJUR_ACCOUNT:
       CONJUR_AUTHN_LOGIN:
       CONJUR_AUTHN_API_KEY:
+
+  cli:
+    image: cyberark/conjur-cli:latest
+    entrypoint: /bin/bash -c "sleep infinity"
+    depends_on:
+      - conjur
+    volumes:
+      - .:/summon-conjur
+    environment:
+      CONJUR_APPLIANCE_URL: http://conjur
+      CONJUR_ACCOUNT: cucumber
+      CONJUR_AUTHN_LOGIN:
+      CONJUR_AUTHN_API_KEY:

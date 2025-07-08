@@ -25,6 +25,7 @@ function runDevelopment() {
 
   export CONJUR_AUTHN_API_KEY="$api_key"
   docker compose up -d cli
+  docker-compose exec cli conjur login -i $CONJUR_AUTHN_LOGIN -p $CONJUR_AUTHN_API_KEY
 
   docker compose build --pull dev
 

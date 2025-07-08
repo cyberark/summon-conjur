@@ -64,9 +64,11 @@ func TestPackageOSS(t *testing.T) {
 			t.Run("Given interactive mode active", func(t *testing.T) {
 				t.Run("Retrieves multiple existing variable's values", func(t *testing.T) {
 					variableIdentifierUsername := "db/username"
+					// file deepcode ignore HardcodedPassword/test: This is a test file
 					variableIdentifierPassword := "db/password"
 
-					secretValueUsername := fmt.Sprintf("secret-value-username")
+					secretValueUsername := "secret-value-username"
+					// file deepcode ignore InsecurelyGeneratedPassword/test: This is a test file
 					secretValuePassword := fmt.Sprintf("secret-value-%v", rand.Intn(123456))
 					policy := fmt.Sprintf(`
 - !variable %s
@@ -110,11 +112,11 @@ func TestPackageOSS(t *testing.T) {
 					assert.Contains(t, string(err), "404 Not Found")
 				})
 				t.Run("Retrieves large number of variables", func(t *testing.T) {
-					numVariables := 500
+					numVariables := 250
 					variableMap := make(map[string]string)
 					for i := range numVariables {
 						variableIdentifier := fmt.Sprintf("variable-%d", i)
-						secretValue := fmt.Sprintf("secret-value-%d", i)
+						secretValue := generateRandomString(1024)
 						variableMap[variableIdentifier] = secretValue
 					}
 					policy := strings.Builder{}
@@ -315,4 +317,15 @@ echo $token
 			})
 		})
 	})
+}
+
+func generateRandomString(n int) string {
+	const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
+	ret := make([]byte, n)
+	for i := range n {
+		num := rand.Intn(len(letters))
+		ret[i] = letters[num]
+	}
+
+	return string(ret)
 }
