@@ -6,10 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.8.1] - 2025-06-30
+## [0.8.1] - 2025-07-23
 
 ### Changed
 - Upgrade Go to 1.24.x
+- Update Go dependencies to reflect conjur-api-go v0.13.2
+- Improve error handling for missing .netrc file. ([cyberark/summon-conjur#83](https://github.com/cyberark/summon-conjur/issues/83), CNJR-10190)
 
 ### Fixed
 - Fix inconsistent behavior when fetching large numbers of variables
