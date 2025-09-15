@@ -1,6 +1,6 @@
 # summon-conjur
 
-Conjur provider for [Summon](https://github.com/cyberark/summon).
+CyberArk Secrets Manager provider for [Summon](https://github.com/cyberark/summon).
 
 [![GitHub release](https://img.shields.io/github/release/cyberark/summon-conjur.svg)](https://github.com/cyberark/summon-conjur/releases/latest)
 
@@ -39,7 +39,7 @@ These can be installed with `dpkg -i summon-conjur_*.deb` and
 
 ### Auto Install
 
-**Note** Check the release notes and select an appropriate release to ensure support for your version of Conjur.
+**Note** Check the release notes and select an appropriate release to ensure support for your version of CyberArk Secrets Manager.
 
 Use the auto-install script. This will install the latest version of summon-conjur.
 The script requires sudo to place summon-conjur in dir `/usr/local/lib/summon`.
@@ -112,11 +112,11 @@ AWS_SECRET_ACCESS_KEY=A23MSKSKSJASHDIWM
 ...
 ```
 
-`summon` resolves the entries in secrets.yml with the conjur provider and makes the secret values available to the environment of the command `env`.
+`summon` resolves the entries in secrets.yml with the CyberArk Secrets Manager provider and makes the secret values available to the environment of the command `env`.
 
 ## Configuration
 
-This provider uses the same configuration pattern as the [Conjur CLI](https://github.com/cyberark/conjur-cli-go)
+This provider uses the same configuration pattern as the [CyberArk Secrets Manager CLI](https://github.com/cyberark/conjur-cli-go)
 to connect to Conjur. Specifically, it loads configuration from:
 
 * `.conjurrc` files, located in the home and current directories, or at the
