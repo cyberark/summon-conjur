@@ -40,7 +40,15 @@ pipeline {
 
   triggers {
     cron(getDailyCronString())
-    parameterizedCron(getWeeklyCronString("H(1-5)","%MODE=RELEASE"))
+    parameterizedCron("""
+      ${getDailyCronString("%TEST_AZURE=true;TEST_GCP=true")}
+      ${getWeeklyCronString("H(1-5)", "%MODE=RELEASE")}
+    """)
+  }
+
+  parameters {
+    booleanParam(name: 'TEST_AZURE', defaultValue: false, description: 'Run integration tests against Azure')
+    booleanParam(name: 'TEST_GCP', defaultValue: false, description: 'Run integration tests against GCP')
   }
 
   stages {
@@ -72,6 +80,14 @@ pipeline {
         script {
           // Request ExecutorV2 agents for 1 hour(s)
           infrapool = getInfraPoolAgent.connected(type: "ExecutorV2", quantity: 1, duration: 1)[0]
+
+          // Request additional executors for cloud specific tests
+          if (params.TEST_AZURE) {
+            INFRAPOOL_AZURE_EXECUTORV2_AGENT_0 = getInfraPoolAgent.connected(type: "AzureExecutorV2", quantity: 1, duration: 1)[0]
+          }
+          if (params.TEST_GCP){
+            INFRAPOOL_GCP_EXECUTORV2_AGENT_0 = getInfraPoolAgent.connected(type: "GcpExecutorV2", quantity: 1, duration: 1)[0]
+          }
         }
       }
     }
@@ -87,26 +103,26 @@ pipeline {
       }
     }
 
-    stage('Validate') {
-      parallel {
-        stage('Changelog') {
-          steps { 
-            parseChangelog(infrapool)
+    // Generates a VERSION file based on the current build number and latest version in CHANGELOG.md
+    stage('Validate changelog and set version') {
+      steps {
+        script {
+          updateVersion(infrapool, "CHANGELOG.md", "${BUILD_NUMBER}")
+
+          if (params.TEST_AZURE) {
+            updateVersion(INFRAPOOL_AZURE_EXECUTORV2_AGENT_0, "CHANGELOG.md", "${BUILD_NUMBER}")
+          }
+          if (params.TEST_GCP) {
+            updateVersion(INFRAPOOL_GCP_EXECUTORV2_AGENT_0, "CHANGELOG.md", "${BUILD_NUMBER}")
           }
         }
       }
     }
 
-    // Generates a VERSION file based on the current build number and latest version in CHANGELOG.md
-    stage('Validate changelog and set version') {
-      steps {
-        updateVersion(infrapool, "CHANGELOG.md", "${BUILD_NUMBER}")
-      }
-    }
-
-    stage('Run unit tests') {
+    stage('Run tests') {
       environment {
         INFRAPOOL_REGISTRY_URL = "registry.tld"
+        INFRAPOOL_TEST_AWS=true
       }
       steps {
         script {
@@ -117,6 +133,41 @@ pipeline {
           cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'output/coverage.xml', conditionalCoverageTargets: '70, 0, 70', failUnhealthy: true, failUnstable: false, lineCoverageTargets: '70, 0, 70', maxNumberOfBuilds: 0, methodCoverageTargets: '70, 0, 70', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
           infrapool.agentSh 'cp output/c.out .'
           codacy action: 'reportCoverage', filePath: "output/coverage.xml"
+        }
+      }
+    }
+
+    stage('Run Azure tests') {
+      when {
+        expression { params.TEST_AZURE }
+      }
+      environment {
+        REGISTRY_URL = "registry.tld"
+        INFRAPOOL_TEST_AZURE=true
+      }
+      steps {
+        script {
+          INFRAPOOL_AZURE_EXECUTORV2_AGENT_0.agentSh 'summon ./bin/test.sh'
+        }
+      }
+    }
+
+    stage('Run GCP tests') {
+      when {
+        expression { params.TEST_GCP }
+      }
+      environment {
+        REGISTRY_URL = "registry.tld"
+        INFRAPOOL_TEST_GCP=true
+        INFRAPOOL_CONJUR_AUTHN_LOGIN="test-app"
+      }
+      steps {
+        script {
+          INFRAPOOL_GCP_EXECUTORV2_AGENT_0.agentSh "./bin/get_gcp_token.sh host/test-app cucumber gcp"
+          INFRAPOOL_GCP_EXECUTORV2_AGENT_0.agentStash name: 'token-out', includes: "gcp/*"
+          GCP_TOKEN_STASHED = true
+          infrapool.agentUnstash name: 'token-out'
+          infrapool.agentSh "./bin/test.sh"
         }
       }
     }
@@ -171,6 +222,9 @@ pipeline {
     always {
       script {
         releaseInfraPoolAgent(".infrapool/release_agents")
+        // Resolve ownership issue before running infra post hook
+        sh 'git config --global --add safe.directory ${PWD}'
+        infraPostHook()
       }
     }
   }
