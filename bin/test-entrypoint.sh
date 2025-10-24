@@ -1,17 +1,12 @@
-#!/bin/bash -eo pipefail
+#!/bin/bash
+set -eox pipefail
 
 export PATH="$(pwd):$PATH"
-echo "Path: $PATH"
 
-echo "Running tests..."
+echo "Running Go tests..."
 
-TEST_PARAMS="-run TestPackage*"
-
-echo "Running go tests: $TEST_PARAMS"
 echo "Current dir: $(pwd)"
-
-set -x
-go test --coverprofile=output/c.out -v ./test/... $TEST_PARAMS | tee output/junit.output
+go test --coverprofile=output/c.out -v ./test/... | tee output/junit.output
 
 go-junit-report < output/junit.output > output/junit.xml
 

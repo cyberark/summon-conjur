@@ -4,7 +4,6 @@ webapp1.json
 junit.xml
 summon-conjur
 *.sublime-project
-secrets.yml
 
 *.exe
 *.prof
