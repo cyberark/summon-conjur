@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.9.0] - 2025-10-24
+## [0.9.0] - 2025-10-27
 
 ### Added
 - Added support for authn-iam, authn-gcp, and authn-azure authenticators. (CNJR-11056)
