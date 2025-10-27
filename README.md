@@ -140,6 +140,12 @@ to connect to Conjur. Specifically, it loads configuration from:
     * JWT Token
       * `CONJUR_AUTHN_JWT_SERVICE_ID`  (e.g. `kubernetes`)
       * `JWT_TOKEN_PATH` (optional)  (default: `/var/run/secrets/kubernetes.io/serviceaccount/token`)
+    * AWS/Azure/GCP
+      * `CONJUR_AUTHN_TYPE` (set to `iam`, `azure`, or `gcp`)
+      * `CONJUR_SERVICE_ID` (except for GCP)
+      * `CONJUR_AUTHN_JWT_HOST_ID`
+      * `CONJUR_AUTHN_JWT_TOKEN` (optional - if not set, token will be read from the metadata service)
+
 
 If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE` or `CONJUR_AUTHN_JWT_SERVICE_ID` are not provided, the username and API key are read from system keychain or `~/.netrc`, stored there by `conjur login`.
 
@@ -157,7 +163,7 @@ The provider will fail unless all of the following values are provided:
 
 * An appliance url (`CONJUR_APPLIANCE_URL`)
 * An organization account (`CONJUR_ACCOUNT`)
-* A username and api key, or Conjur authn token, or a path to `CONJUR_AUTHN_TOKEN_FILE` a dynamic Conjur authn token
+* A valid authentication method (e.g., username/api key, token, or JWT or cloud auth configuration)
 * A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
 
 ---
