@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.9.1] - 2025-10-28
+
+### Added
+- Added `close-stale.yml` GitHub workflow
+
 ## [0.9.0] - 2025-10-27
 
 ### Added
@@ -169,7 +174,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.8.1...HEAD
+[Unreleased]: https://github.com/cyberark/summon-conjur/compare/v0.9.1...HEAD
+[0.9.1]: https://github.com/cyberark/summon-conjur/compare/v0.9.0...v0.9.1
+[0.9.0]: https://github.com/cyberark/summon-conjur/compare/v0.8.1...v0.9.0
 [0.8.1]: https://github.com/cyberark/summon-conjur/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/cyberark/summon-conjur/compare/v0.7.2...v0.8.0
 [0.7.2]: https://github.com/cyberark/summon-conjur/compare/v0.7.1...v0.7.2
