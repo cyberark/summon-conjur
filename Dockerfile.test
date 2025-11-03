@@ -1,4 +1,4 @@
-FROM golang:1.24-alpine
+FROM golang:1.25-alpine
 
 LABEL maintainer="CyberArk Software Ltd."
 
@@ -9,7 +9,7 @@ RUN apk add --no-cache bash \
                        jq \
                        less && \
     go install github.com/jstemmer/go-junit-report@latest && \
-    go install github.com/axw/gocov/gocov@latest && \
+    go install github.com/afunix/gocov/gocov@latest && \
     go install github.com/AlekSi/gocov-xml@latest && \
     mkdir -p /summon-conjur/output
 
