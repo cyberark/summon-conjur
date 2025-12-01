@@ -145,28 +145,51 @@ to connect to Conjur. Specifically, it loads configuration from:
       * `CONJUR_SERVICE_ID` (except for GCP)
       * `CONJUR_AUTHN_JWT_HOST_ID`
       * `CONJUR_AUTHN_JWT_TOKEN` (optional - if not set, token will be read from the metadata service)
+  * Credential Storage
+    * `CONJUR_CREDENTIAL_STORAGE` (options: `keyring`, `file`, `none`)
+    * `CONJUR_NETRC_PATH` (custom path for `.netrc` file when using `file` storage)
 
+If authentication details are not provided via environment variables,
+summon-conjur attempts to read them from the system keychain or `~/.netrc`,
+stored there by `conjur login`.
 
-If `CONJUR_AUTHN_LOGIN` and `CONJUR_AUTHN_API_KEY` or `CONJUR_AUTHN_TOKEN` or `CONJUR_AUTHN_TOKEN_FILE` or `CONJUR_AUTHN_JWT_SERVICE_ID` are not provided, the username and API key are read from system keychain or `~/.netrc`, stored there by `conjur login`.
+### Credential Storage Options
 
-On systems that support keychain storage, that will be used by default, and if that fails the `~/.netrc` file will be used,
-though this behavior can be modified in the `.conjurrc` file:
+The provider supports multiple credential storage backends for caching authentication credentials:
+
+#### Keyring Storage (default on supported systems)
+
+* Uses the operating system's native credential storage (e.g., macOS Keychain, Windows Credential Manager, Linux Secret Service)
+* Automatically selected if available on the system
+* Most secure option as credentials are encrypted by the OS
+
+#### File Storage (`.netrc`)
+
+* Stores credentials in a `.netrc` file (defaults to `~/.netrc`)
+* Used as fallback when keyring is unavailable
+* Can be explicitly selected for compatibility
+
+#### No Storage
+
+* Disables credential caching entirely
+* Useful for ephemeral environments or when credentials are always provided via environment variables
+* **Use this option in environments where there are no file permissions to create a `.netrc` file**, such as restricted containers, read-only filesystems, or ephemeral compute instances.
+
+The storage backend can be configured via the `CONJUR_CREDENTIAL_STORAGE` environment variable or in the `.conjurrc` file:
 
 ```yaml
-...
-credential_storage: "netrc"
+# Use file-based storage with custom path
+credential_storage: "file"
 netrc_path: "/etc/conjur.identity"
-...
+
+# Or use keyring explicitly
+credential_storage: "keyring"
+
+# Or disable credential caching
+credential_storage: "none"
 ```
 
-The provider will fail unless all of the following values are provided:
-
-* An appliance url (`CONJUR_APPLIANCE_URL`)
-* An organization account (`CONJUR_ACCOUNT`)
-* A valid authentication method (e.g., username/api key, token, or JWT or cloud auth configuration)
-* A path to (`CONJUR_CERT_FILE`) **or** content of (`CONJUR_SSL_CERTIFICATE`) the appliance's public SSL certificate
-
----
+If not specified, the provider automatically selects `keyring` when available, otherwise falls back to `file`.
 
 ## Contributing
 

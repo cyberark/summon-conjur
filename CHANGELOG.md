@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.9.3] - 2025-11-26
+
+### Added
+- Improved documentation for credential storage options (CNJR-10891)
+
 ## [0.9.2] - 2025-11-10
 
 ### Changed
