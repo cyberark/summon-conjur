@@ -130,7 +130,16 @@ pipeline {
           infrapool.agentStash name: 'output-xml', includes: 'output/*.xml'
           unstash 'output-xml'
           junit 'output/junit.xml'
-          cobertura autoUpdateHealth: false, autoUpdateStability: false, coberturaReportFile: 'output/coverage.xml', conditionalCoverageTargets: '70, 0, 70', failUnhealthy: true, failUnstable: false, lineCoverageTargets: '70, 0, 70', maxNumberOfBuilds: 0, methodCoverageTargets: '70, 0, 70', onlyStable: false, sourceEncoding: 'ASCII', zoomCoverageChart: false
+          recordCoverage(
+            tools: [[parser: 'COBERTURA', pattern: 'coverage.xml']],
+            sourceCodeEncoding: 'ASCII',
+            qualityGates: [
+                [threshold: 70.0, metric: 'LINE', baseline: 'PROJECT', unstable: true],
+                [threshold: 70.0, metric: 'BRANCH', baseline: 'PROJECT', unstable: true],
+                [threshold: 70.0, metric: 'METHOD', baseline: 'PROJECT', unstable: true]
+            ],
+            skipPublishingChecks: false
+          )
           infrapool.agentSh 'cp output/c.out .'
           codacy action: 'reportCoverage', filePath: "output/coverage.xml"
         }
