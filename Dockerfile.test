@@ -1,6 +1,8 @@
-FROM golang:1.25-alpine
+FROM golang:1.26-alpine
 
 LABEL maintainer="CyberArk Software Ltd."
+
+RUN apk update && apk upgrade --no-cache
 
 RUN apk add --no-cache bash \
                        build-base \
